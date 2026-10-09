@@ -7,5 +7,9 @@ window.TURBO_CONFIG = {
   token: "bp-ft-50a52f708f03",
   // Startvideo (ca. 2 Min.). Leer = kein Video. Erlaubt: YouTube-Link (am besten „Nicht gelistet“),
   // Vimeo-Link oder eine MP4-Datei im Repo, z. B. "video/turbo.mp4".
-  videoUrl: ""
+  videoUrl: "https://vimeo.com/1232915422",
+  // Format des Videos: "16:9" (quer) oder "9:16" (hochkant)
+  videoFormat: "9:16",
+  // Länge, wird auf dem Play-Knopf angezeigt
+  videoLength: "6 Min."
 };

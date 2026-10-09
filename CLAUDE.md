@@ -9,7 +9,7 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - `src/app.js` – gesamte App-Logik (Vanilla JS, kein Optional Chaining – iOS-Safari-kompatibel)
 - `src/i18n/de.js` – alle Texte. **de.js ist die Referenz.** Weitere Sprachen (en/it/hr/pl/tr) als eigene Datei mit exakt derselben Struktur anlegen – build.py bindet jede vorhandene Datei automatisch ein, die Sprachauswahl erscheint ab 2 Sprachen.
 - `build.py` – baut `index.html` aus src/. **Nach jeder Änderung in src/ ausführen** und index.html mit committen.
-- `config.js` – Sync-URL + Token + `videoUrl` (Startvideo auf Startseite und im Schritt 1; YouTube/Vimeo-Link oder MP4 im Repo, leer = kein Video). YouTube lädt erst nach Klick (DSGVO, youtube-nocookie).
+- `config.js` – Sync-URL + Token + `videoUrl`/`videoFormat` ("16:9"|"9:16")/`videoLength` (Startvideo auf Startseite und im Schritt 1; YouTube/Vimeo-Link oder MP4 im Repo, leer = kein Video). YouTube lädt erst nach Klick (DSGVO, youtube-nocookie).
 - `sw.js` – Offline-Cache, network-first.
 - `gas/Turbo.gs` – Zusatzdatei für das Apps Script der bestehenden Tabelle „FastTrack Controlling – Best Prime“. Schreibt ins Blatt **„Turbo“**. Einrichtung: siehe ANLEITUNG.md.
 

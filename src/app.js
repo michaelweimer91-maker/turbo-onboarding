@@ -199,15 +199,15 @@ function videoSrc(){
   var u=VIDEO, m;
   if(!u) return null;
   if((m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/))) return {type:"frame",prov:"YouTube",src:"https://www.youtube-nocookie.com/embed/"+m[1]+"?autoplay=1&rel=0&modestbranding=1&playsinline=1",thumb:"https://i.ytimg.com/vi/"+m[1]+"/hqdefault.jpg"};
-  if((m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return {type:"frame",prov:"Vimeo",src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1&dnt=1"};
+  if((m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]{6,}))?/))) return {type:"frame",prov:"Vimeo",src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1&dnt=1&title=0&byline=0&portrait=0"+(m[2]?"&h="+m[2]:"")+((u.match(/[?&]h=([0-9a-f]+)/)||[])[1]?"&h="+u.match(/[?&]h=([0-9a-f]+)/)[1]:"")};
   return {type:"file",src:u};
 }
 function videoBlock(){
   var v=videoSrc(); if(!v) return "";
-  var u=L.ui, inner;
+  var u=L.ui, inner, tall=String(CFG.videoFormat||"").replace(/\s/g,"")==="9:16", len=String(CFG.videoLength||"").trim();
   if(v.type==="file") inner='<video src="'+esc(v.src)+'" controls playsinline preload="metadata"></video>';
-  else inner='<button class="vplay" data-act="playVideo"'+(v.thumb?' style="background-image:url('+esc(v.thumb)+')"':'')+'><span class="vbtn">▶</span><span class="vlbl">'+u.videoPlay+'</span></button>';
-  return '<div class="card stack video noprint"><span class="label">'+u.videoT+'</span><div class="vbox" id="vbox">'+inner+'</div>'+(v.type==="frame"?'<p class="small muted">'+F(u.videoNote,{p:v.prov})+'</p>':'')+'</div>';
+  else inner='<button class="vplay" data-act="playVideo"'+(v.thumb?' style="background-image:url('+esc(v.thumb)+')"':'')+'><span class="vbtn">▶</span><span class="vlbl">'+u.videoPlay+(len?' · '+esc(len):'')+'</span></button>';
+  return '<div class="card stack video noprint"><span class="label">'+u.videoT+'</span><div class="vbox'+(tall?' tall':'')+'" id="vbox">'+inner+'</div>'+(v.type==="frame"?'<p class="small muted">'+F(u.videoNote,{p:v.prov})+'</p>':'')+'</div>';
 }
 function playVideo(){
   var v=videoSrc(), box=document.getElementById("vbox"); if(!v||!box) return;
