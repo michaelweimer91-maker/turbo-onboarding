@@ -1,9 +1,8 @@
 /* Turbo-Onboarding – Konfiguration. Nur diese Datei anpassen. */
 window.TURBO_CONFIG = {
   // Web-App-URL des Apps Scripts der Controlling-Tabelle (endet auf /exec) – dieselbe URL wie im FastTrack.
-  // ERST eintragen, wenn gas/Turbo.gs + die Weiche in doPost eingespielt und als neue Version bereitgestellt sind,
-  // sonst landen Turbo-Partner im FastTrack-Blatt. Leer = kein Controlling, App läuft nur lokal.
-  syncUrl: "",
+  // Voraussetzung: gas/Turbo.gs + Weiche in doPost sind eingespielt (09.10.2026). Leer = kein Controlling, App läuft nur lokal.
+  syncUrl: "https://script.google.com/macros/s/AKfycbx7iOJnQLtD041rcV7yotms-LGOBxuJsjhvUU7lpK17YbaTJRiASQtWWjinf7S7RoKT/exec",
   // Gleiches Passwort wie TOKEN in Code.gs
   token: "bp-ft-50a52f708f03"
 };
