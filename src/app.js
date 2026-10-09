@@ -193,12 +193,33 @@ function renderFoot(id){
    (i<ORDER.length-1?'<button class="btn pri" data-go="'+ORDER[i+1]+'">'+MT(ORDER[i+1])+' →</button>':'')+'</div></div>';
 }
 
+/* ---------- Startvideo (config.js → videoUrl) ---------- */
+var VIDEO=String(CFG.videoUrl||"").trim();
+function videoSrc(){
+  var u=VIDEO, m;
+  if(!u) return null;
+  if((m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/))) return {type:"frame",prov:"YouTube",src:"https://www.youtube-nocookie.com/embed/"+m[1]+"?autoplay=1&rel=0&modestbranding=1&playsinline=1",thumb:"https://i.ytimg.com/vi/"+m[1]+"/hqdefault.jpg"};
+  if((m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return {type:"frame",prov:"Vimeo",src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1&dnt=1"};
+  return {type:"file",src:u};
+}
+function videoBlock(){
+  var v=videoSrc(); if(!v) return "";
+  var u=L.ui, inner;
+  if(v.type==="file") inner='<video src="'+esc(v.src)+'" controls playsinline preload="metadata"></video>';
+  else inner='<button class="vplay" data-act="playVideo"'+(v.thumb?' style="background-image:url('+esc(v.thumb)+')"':'')+'><span class="vbtn">▶</span><span class="vlbl">'+u.videoPlay+'</span></button>';
+  return '<div class="card stack video noprint"><span class="label">'+u.videoT+'</span><div class="vbox" id="vbox">'+inner+'</div>'+(v.type==="frame"?'<p class="small muted">'+F(u.videoNote,{p:v.prov})+'</p>':'')+'</div>';
+}
+function playVideo(){
+  var v=videoSrc(), box=document.getElementById("vbox"); if(!v||!box) return;
+  box.innerHTML='<iframe src="'+esc(v.src)+'" title="'+esc(L.ui.videoT)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+}
+
 /* ---------- Welcome ---------- */
 var draftName="", draftLeader="", draftConsent=false;
 function renderWelcome(){
   var u=L.ui;
   return '<div class="welcome"><div class="row" style="justify-content:space-between">'+brand()+langButtons()+'</div>'+
-   '<div class="stack"><div class="eyebrow">'+u.kicker+'</div><h1 style="font-size:clamp(40px,8vw,68px)">'+u.hero+'</h1><p class="lead">'+u.heroLead+'</p></div>'+
+   '<div class="stack"><div class="eyebrow">'+u.kicker+'</div><h1 style="font-size:clamp(40px,8vw,68px)">'+u.hero+'</h1><p class="lead">'+u.heroLead+'</p></div>'+videoBlock()+
    '<div class="steps4">'+u.steps.map(function(s){ return '<div><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join("")+'</div>'+
    '<div class="grid3">'+u.metrics.map(function(s){ return '<div class="kpi"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join("")+'</div>'+
    '<form class="card hi stack" id="startform"><h2>'+u.startTitle+'</h2>'+
@@ -218,7 +239,7 @@ function consentBanner(){
 var R={};
 R.start=function(){
   var m=L.m.start, h=hoursGone(), left=Math.max(0,HOURS-h);
-  var out=head("start",m.lead)+'<div class="grid4">';
+  var out=head("start",m.lead)+videoBlock()+'<div class="grid4">';
   m.cards.forEach(function(t,i){ out+='<div class="card'+(i===0?" hi":"")+'"><span class="label">'+L.ui.phase+' '+(i+1)+'</span><h3>'+L.phases[i]+'</h3><p class="small muted" style="margin-top:4px">'+t+'</p></div>'; });
   out+='</div><div class="card"><div class="row" style="justify-content:space-between"><div><span class="label">'+m.sprint+'</span><div class="kpi"><b class="tab">'+(left>0?Math.floor(left)+" h "+Math.round((left%1)*60)+" min":m.expired)+'</b><span>'+F(m.started,{d:fdate(S.startedAt,{dateStyle:"medium",timeStyle:"short"})})+'</span></div></div>'+
    '<div style="flex:1;min-width:200px"><div class="bar"><i style="width:'+Math.min(100,h/HOURS*100).toFixed(1)+'%"></i></div><div class="row small muted" style="justify-content:space-between;margin-top:6px">'+m.tl.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div></div></div></div>'+
@@ -467,6 +488,7 @@ document.addEventListener("click",function(e){
    case "delTalk": S.talks.splice(+el.getAttribute("data-i"),1); save(); render(); break;
    case "copyLink": copyText(location.href.split("#")[0]); break;
    case "print": window.print(); break;
+   case "playVideo": playVideo(); break;
    case "backup": showBackup(); break;
    case "closeBackup": var b=document.getElementById("backupbox"); if(b){ if(S.startedAt) b.parentNode.removeChild(b); else b.innerHTML=""; } break;
    case "exportFile": exportFile(); break;

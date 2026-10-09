@@ -4,5 +4,8 @@ window.TURBO_CONFIG = {
   // Voraussetzung: gas/Turbo.gs + Weiche in doPost sind eingespielt (09.10.2026). Leer = kein Controlling, App läuft nur lokal.
   syncUrl: "https://script.google.com/macros/s/AKfycbx7iOJnQLtD041rcV7yotms-LGOBxuJsjhvUU7lpK17YbaTJRiASQtWWjinf7S7RoKT/exec",
   // Gleiches Passwort wie TOKEN in Code.gs
-  token: "bp-ft-50a52f708f03"
+  token: "bp-ft-50a52f708f03",
+  // Startvideo (ca. 2 Min.). Leer = kein Video. Erlaubt: YouTube-Link (am besten „Nicht gelistet“),
+  // Vimeo-Link oder eine MP4-Datei im Repo, z. B. "video/turbo.mp4".
+  videoUrl: ""
 };

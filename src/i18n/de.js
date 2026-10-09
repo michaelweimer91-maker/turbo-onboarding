@@ -17,6 +17,7 @@ ui:{
  lbl:{task:"Aufgabe",first:"Dein erster Schritt",today:"Aufgabe heute",rule:"Regel",mantra:"Merksatz",next:"Dein nächster Schritt"},
  consent:"Ich bin einverstanden, dass mein Onboarding-Fortschritt (Schritte, Kennzahlen, Startprofil) an mein Leader-Team übermittelt wird, damit es mich gezielt unterstützen kann. Namen meiner Kontakte werden nicht übertragen.",
  consentNeed:"Bitte der Übermittlung an dein Leader-Team zustimmen",consentBtn:"Zustimmen",consentTitle:"Fortschritt mit deinem Leader-Team teilen",
+ videoT:"In 2 Minuten: Was dir der Turbo bringt",videoPlay:"Video abspielen · 2 Min.",videoNote:"Beim Abspielen werden Inhalte von {p} geladen.",
  syncOk:"Synchronisiert {t}",syncErr:"Nicht synchronisiert – Verbindung prüfen",syncWait:"Wird synchronisiert …"
 },
 phases:["Verstehen","Fokus","Aktivität","Duplizieren"],
