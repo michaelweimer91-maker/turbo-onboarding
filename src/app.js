@@ -42,7 +42,7 @@ function payload(){
     pct:Math.round(done.length/ORDER.length*100),level:level(),diagDone:autoDone("start"),pitchReps:S.pitch.reps,leaderOk:!!S.pitch.leaderOk,quizOk:quizOk(),
     list:S.list.length,top:tops().length,contacted:contacted().length,replies:S.list.filter(function(c){return c.reply;}).length,
     st:{NEU:stCount("NEU"),TERMIN:stCount("TERMIN"),FU:stCount("FU"),ENT:stCount("ENT"),GO:stCount("GO"),NO:stCount("NO")},
-    talks:S.talks.length,nextSteps:nextSteps(),sent:sentTotal("an"),type:t?t[0]:"",diag:diag,dupDone:dupCount(),review:!!S.fin.review};
+    talks:S.talks.length,nextSteps:nextSteps(),sent:sentAll(),type:t?t[0]:"",diag:diag,dupDone:dupCount(),review:!!S.fin.review};
 }
 function sync(beacon){
   if(!SYNC || !S.consent || !S.startedAt) return;
@@ -90,8 +90,9 @@ var ORDER=[]; PHASES.forEach(function(p){ ORDER=ORDER.concat(p); });
 function MT(id){ return L.mods[id][0]; }
 var QUIZ_C=[1,0,0];
 var STATUSES=["","NEU","TERMIN","FU","ENT","GO","NO"];
-var SC_IDS={an:["a1","a2","a3","a4","a5"],fu:["f1","f2","f3"]};
-function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1]}; }); }
+var SC_PRE={an:"a",vk:"v",fu:"f"};
+var SC_IDS={}; for(var gk in SC_PRE){ SC_IDS[gk]=[]; for(var si=1;si<=(I18N.de.scripts[gk]||[]).length;si++) SC_IDS[gk].push(SC_PRE[gk]+si); }
+function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||""}; }); }
 
 /* ---------- Derived ---------- */
 function tops(){ return S.list.filter(function(c){return c.top;}); }
@@ -99,6 +100,8 @@ function first5(){ return S.list.filter(function(c){return c.first5;}); }
 function contacted(){ return S.list.filter(function(c){return !!c.status;}); }
 function scoreOf(c){ return (c.t||0)+(c.p||0)+(c.s||0); }
 function sentTotal(g){ var n=0; SC_IDS[g].forEach(function(id){ n+=S.sent[id]||0; }); return n; }
+/* Ansprachen gesamt: Einsteiger-Vorlagen + Vertriebskopf-Sequenz */
+function sentAll(){ return sentTotal("an")+sentTotal("vk"); }
 function quizOk(){ return QUIZ_C.every(function(c,i){ return S.quiz[i]===c; }); }
 function nextSteps(){ return S.list.filter(function(c){return c.next && c.date;}).length; }
 function dupCount(){ var n=0; for(var i=0;i<5;i++){ if(S.dup["d"+i]) n++; } return n; }
@@ -110,7 +113,7 @@ function autoDone(id){
    case "system": return systemOk();
    case "list": return S.list.length>=30;
    case "top": return tops().length>=10 && first5().length>=5;
-   case "talkto": return sentTotal("an")>=5;
+   case "talkto": return sentAll()>=5;
    case "pipe": return contacted().length>=5 && nextSteps()>=1;
    case "talk": return S.talks.length>=1;
    case "dup": return !!(S.dup.partner||"").trim() && !!S.dup.t0;
@@ -128,7 +131,7 @@ function level(){
 /* Tageschecks (Start + Abschluss): automatisch aus den Daten */
 function dayChecks(){
   return [[profileOk(), S.pitch.reps>=3, quizOk()&&!!S.pitch.leaderOk, S.list.length>=30, tops().length>=10&&first5().length>=5],
-          [sentTotal("an")>=5, contacted().length>=5, nextSteps()>=1, S.talks.length>=1, autoDone("dup")]];
+          [sentAll()>=5, contacted().length>=5, nextSteps()>=1, S.talks.length>=1, autoDone("dup")]];
 }
 function dayBlocks(){
   var ch=dayChecks(), h='<div class="grid2">';
@@ -322,7 +325,7 @@ R.top=function(){
   return h+task(L.ui.lbl.task,m.task);
 };
 
-var pick={an:"",fu:""};
+var pick={an:"",vk:"",fu:""}, scf="", vkOpen=false;
 function findC(id){ return S.list.filter(function(c){return c.id===id;})[0]; }
 function fill(x,who){ return who? x.split(L.ph).join(who.name.split(" ")[0]) : x; }
 function hl(s){ return s.replace(/\[[^\]]+\]/g,function(mm){return "<mark>"+mm+"</mark>";}); }
@@ -331,7 +334,13 @@ function scriptBlock(g,title){
   var opts='<option value="">'+esc(F(sc.manual,{ph:L.ph}))+'</option>'+S.list.slice().sort(function(a,b){return ((b.first5?2:0)+(b.top?1:0))-((a.first5?2:0)+(a.top?1:0));}).map(function(c){ return '<option value="'+c.id+'"'+(pick[g]===c.id?" selected":"")+'>'+(c.first5?"★★ ":c.top?"★ ":"")+esc(c.name)+(c.status?" · "+L.status[c.status]:"")+'</option>'; }).join("");
   var who=findC(pick[g]);
   var h='<div class="card stack"><div class="row" style="justify-content:space-between"><h2>'+title+'</h2><label class="field" style="min-width:220px;flex:0 1 280px"><span>'+sc.forWho+'</span><select id="pick_'+g+'" data-act="pick" data-g="'+g+'">'+opts+'</select></label></div><div class="grid2">';
-  scripts(g).forEach(function(s){
+  var list=scripts(g);
+  if(list.some(function(s){return s.g;})){
+    var gs=[]; list.forEach(function(s){ if(s.g && gs.indexOf(s.g)<0) gs.push(s.g); });
+    h=h.replace(/<div class="grid2">$/,'<div class="chips">'+[""].concat(gs).map(function(k){ return '<button class="chip'+(scf===k?" on":"")+'" data-act="scf" data-v="'+k+'">'+(k?sc.groups[k]:sc.all)+'</button>'; }).join("")+'</div><div class="grid2">');
+    if(scf) list=list.filter(function(s){ return s.g===scf; });
+  }
+  list.forEach(function(s){
     var txt=fill(s.x,who);
     h+='<div class="script"><div class="t">'+s.t+'</div><p>'+hl(esc(txt))+'</p><div class="row"><button class="btn sm pri" data-act="copyScript" data-id="'+s.id+'" data-g="'+g+'">'+sc.copy+'</button>'+
      '<a class="btn sm" href="https://wa.me/?text='+encodeURIComponent(txt)+'" target="_blank" rel="noopener" data-act="waScript" data-id="'+s.id+'" data-g="'+g+'">WhatsApp</a>'+
@@ -341,12 +350,16 @@ function scriptBlock(g,title){
 }
 
 R.talkto=function(){
-  var m=L.m.talkto, n=sentTotal("an");
+  var m=L.m.talkto, n=sentAll();
   return head("talkto",m.lead)+
    '<div class="card stack"><div class="row" style="justify-content:space-between"><div class="kpi"><b class="tab">'+n+' / 5</b><span>'+L.m.finish.k[2]+'</span></div><div style="flex:1;min-width:160px"><div class="bar"><i style="width:'+Math.min(100,n/5*100)+'%"></i></div></div></div></div>'+
-   scriptBlock("an",L.m.sc.templates)+'<p class="small muted">'+m.note+'</p>'+
+   '<div class="card hi stack"><h3 style="color:var(--gold)">'+m.tonT+'</h3><p class="small">'+m.ton+'</p></div>'+
+   scriptBlock("an",L.m.sc.templates)+'<p class="small muted">'+m.note+(scf==="re"?' <b style="color:var(--gold)">'+m.reT+':</b> '+m.re:'')+'</p>'+
+   '<div class="card stack"><h2>'+m.rulesT+'</h2><ol class="small" style="margin-top:4px">'+m.rules.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ol></div>'+
    '<div class="card stack"><h2>'+m.f4T+'</h2><div class="flow">'+m.f4.map(function(x,i){ return '<span>'+(i+1)+'. '+x[0]+'<br><small class="muted">'+x[1]+'</small></span>'; }).join("")+'</div></div>'+
    '<div class="grid2"><div class="card"><h3 style="color:var(--ok)">'+m.doT+'</h3>'+ul(m.do)+'</div><div class="card"><h3 style="color:var(--bad)">'+m.dontT+'</h3>'+ul(m.dont)+'</div></div>'+
+   '<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkarrow">'+(vkOpen?"−":"+")+'</span></button>'+
+   (vkOpen?'<p class="small muted">'+m.vkLead+'</p><p class="small" style="color:var(--gold)">'+m.vkPos+'</p>'+scriptBlock("vk",L.m.sc.vkSeq)+'<p class="small muted">'+m.vkWarn+'</p>':'')+'</div>'+
    task(L.ui.lbl.task,m.task);
 };
 
@@ -485,6 +498,8 @@ document.addEventListener("click",function(e){
    case "rate": var c=findC(id); c[el.getAttribute("data-k")]=+el.getAttribute("data-v"); save(); render(); break;
    case "copyScript": var grp=el.getAttribute("data-g"), sc=scripts(grp).filter(function(s){return s.id===id;})[0]; copyText(fill(sc.x,findC(pick[grp]))); S.sent[id]=(S.sent[id]||0)+1; markContacted(grp); save(); setTimeout(render,50); break;
    case "waScript": S.sent[id]=(S.sent[id]||0)+1; markContacted(el.getAttribute("data-g")); save(); setTimeout(render,300); break;
+   case "scf": scf=el.getAttribute("data-v")||""; render(); break;
+   case "vk": vkOpen=!vkOpen; render(); break;
    case "delTalk": S.talks.splice(+el.getAttribute("data-i"),1); save(); render(); break;
    case "copyLink": copyText(location.href.split("#")[0]); break;
    case "print": window.print(); break;

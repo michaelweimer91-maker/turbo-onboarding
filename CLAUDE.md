@@ -16,6 +16,7 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 ## Inhaltliche Regeln
 - **Händler-Thema bleibt draußen** (Merchant Activation, Händlergespräche, Händlervorteile) – das wird beim Event in München präsentiert. Einziger Verweis: ein Satz im Schritt „System in 60 Sekunden“.
 - Keine Einkommensversprechen, keine erfundenen Zahlen. Das Duplikations-Rechenbeispiel immer mit Hinweis „keine Prognose“.
+- Ansprache-Vorlagen in `scripts` (de.js): `an` = Einsteiger (3. Feld = Gruppe für Filter-Chips: fr/be/wa/ka/re), `vk` = Vertriebsköpfe (aufklappbar im Schritt Ansprache), `fu` = Follow-ups & Einwände (Schritt Pipeline). IDs werden aus der Reihenfolge erzeugt (a1…, v1…, f1…) – neue Vorlagen nur hinten anhängen, sonst verschieben sich die Nutzungszähler. `sent` im Controlling = an + vk.
 - Keine Kontaktnamen ins Controlling (DSGVO, Daten Dritter) – `payload()` sendet nur Zählwerte.
 
 ## Technische Regeln

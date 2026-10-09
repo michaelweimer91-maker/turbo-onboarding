@@ -127,6 +127,13 @@ td input,td select{padding:6px 8px}
 .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .3s}
 
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--panel2);color:var(--fg);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#06121f;font-weight:600}
+.vktoggle{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;background:none;border:0;padding:0;color:var(--fg);text-align:left;cursor:pointer;font-family:inherit}
+.vkarrow{font-size:26px;line-height:1;color:var(--gold);flex:none}
+.vkbox{border-color:rgba(217,180,92,.45)}
+.vkbox>.card{background:transparent;border:0;padding:0}
 .script{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .script .t{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
 .script p{font-size:14.5px}
@@ -234,9 +241,33 @@ types:[["Closer","schnell zu Gesprächen & Terminen"],["Connector","Netzwerke & 
 quiz:[{q:"Was ist die Rolle von Best Prime?",a:["Technologieplattform","Vertriebs- und Community-Organisation"]},{q:"Was ist ePOINT?",a:["Technologieplattform und zentrale Marke des Ökosystems","Klassische Bank"]},{q:"Was ist ePAY im Gesamtbild?",a:["Payment- / Transaktionsebene","Recruiting-App"]}],
 cats:["Freunde & Bekannte","Familie","Unternehmer","Vertrieb","Multiplikator","Community","Netzwerköffner"],
 scripts:{
- an:[["Freund / Bekannter · WhatsApp","Servus [Name], ich baue gerade im Hintergrund ein neues Thema rund um Netzwerk- und Vertriebsaufbau mit auf. Ich denke bei dir nicht an einen klassischen Verkauf, sondern eher daran, ob das für dich oder dein Umfeld spannend sein könnte. Hast du die Tage mal 10 Minuten?"],["Freund / Bekannter · persönlich","Ich will dir gar nichts am Tisch verkaufen. Ich möchte dir kurz zeigen, was wir gerade aufbauen, weil ich glaube, dass du sofort siehst, wo darin für dich und dein Netzwerk ein Hebel sein könnte."],["Warmer Kontakt · WhatsApp","Hi [Name], ich musste bei einem aktuellen Thema direkt an dich denken, weil du genau die richtigen Kontakte dafür hast. Es geht um den Aufbau einer Vertriebsstruktur in einem neuen Ökosystem. Ich würde dir den Gedanken gern einmal kurz zeigen. Wann passen 10 Minuten?"],["Vertriebsmensch · direkt","Du hast bereits Zugang zu Menschen und Unternehmen. Genau deshalb möchte ich dir unser Modell zeigen. Es geht nicht darum, dein bestehendes Geschäft zu ersetzen, sondern vorhandene Kontakte und Strukturen um einen zusätzlichen Hebel zu erweitern. Hast du diese Woche 10 Minuten?"],["Multiplikator · kurz (Sie)","Guten Tag [Name], ich bin auf Sie gestoßen, weil Sie Zugang zu [Branche/Netzwerk] haben. Wir suchen aktuell nicht einfach weitere Einzelkontakte, sondern strategische Netzwerkpartner. Wenn das grundsätzlich interessant klingt, würde ich Ihnen die Logik in 10 Minuten zeigen."]],
- fu:[["Nach einem guten Erstgespräch","Danke dir für den Austausch. Für mich sind vor allem [Punkt 1] und [Punkt 2] interessant. Lass uns als nächsten Schritt [konkrete Aktion] machen. Passt dir [Tag/Uhrzeit]?"],["Keine Rückmeldung","Hi [Name], ich hake einmal sauber nach, damit das Thema nicht irgendwo im Chat hängen bleibt. Ist das aktuell grundsätzlich interessant, sollen wir es später wieder aufnehmen oder passt es für dich nicht? Alles drei ist völlig okay."],["Noch unsicher","Was ist aktuell der eine Punkt, der dich davon abhält, einen nächsten Schritt zu machen? Dann können wir genau den klären, statt das komplette Thema noch einmal durchzugehen."]]
+ an:[["Freunde · locker","Hey [Name], ich hab mir nebenbei was Neues aufgebaut und will’s dir unbedingt zeigen, weil deine ehrliche Meinung mir wichtig ist. Keine Sorge, ich will dir nichts andrehen. Hast du die Tage mal 15 Minuten, gern auch bei einem Kaffee?","fr"],
+  ["Freunde · sachlich","Hi [Name], ich starte gerade ein Projekt neben meinem Job und würde gern hören, wie du das einschätzt. Du sagst mir ja immer direkt, was du denkst. Wann passt dir ein kurzes Treffen?","fr"],
+  ["Bekannte · locker","Hey [Name], lang nichts gehört! Ich bin gerade bei einem neuen Thema dabei, und irgendwie musste ich dabei an dich denken. Magst du mal kurz telefonieren?","be"],
+  ["Bekannte · sachlich","Hallo [Name], ich habe vor Kurzem etwas Neues gestartet, das für dich oder dein Umfeld interessant sein könnte. Ich erkläre es lieber kurz am Telefon als lang im Chat. Passt dir diese Woche?","be"],
+  ["Warmer Kontakt · locker","Hi [Name], du bist doch jemand, der viele Leute kennt und offen für Neues ist. Ich hab gerade was am Start, wo genau so jemand gefragt ist. Lust auf 10 Minuten?","wa"],
+  ["Warmer Kontakt · sachlich","Hallo [Name], ich baue gerade nebenberuflich etwas auf und suche Menschen, die gut vernetzt sind und gern etwas bewegen. Du bist mir sofort eingefallen. Hättest du kurz Zeit für einen Austausch?","wa"],
+  ["Kalter Kontakt · locker","Hey [Name], ich hab gesehen, dass du [konkreter Bezug: Post, Beruf, Gruppe]. Find ich stark! Ich bin selbst gerade an etwas dran, das gut dazu passen könnte. Darf ich dir mal kurz erzählen, worum’s geht?","ka"],
+  ["Kalter Kontakt · sachlich","Hallo [Name], ich bin über [Bezug] auf dich gestoßen. Ich suche gerade Menschen, die unternehmerisch denken, für ein Projekt im Aufbau. Wenn du grundsätzlich offen bist, zeige ich dir die Idee in 10 Minuten. Wenn nicht, ist das auch völlig okay.","ka"],
+  ["Alter Kontakt · Nachricht 1","Hey [Name], ich war ehrlich gesagt ewig nicht mehr bei dir gemeldet, aber ich musste neulich an dich denken. Wie läuft’s bei dir?","re"],
+  ["Alter Kontakt · Nachricht 2 (nach Antwort)","Schön, von dir zu hören! Bei mir tut sich gerade auch einiges, ich hab was Neues gestartet. Erzähl ich dir gern mal in Ruhe. Magst du die Tage kurz telefonieren?","re"]],
+ vk:[["1 · Augenhöhe (Standard)","Servus [Name], du hast über Jahre etwas aufgebaut, das die meisten nie schaffen: Menschen, Reichweite und Vertrauen. Mich beschäftigt eine Frage: Warum arbeitet so eine Struktur wirtschaftlich nur für ein einziges Geschäftsmodell? Wir haben dazu einen Ansatz, der dein Kerngeschäft ergänzt und nichts davon ersetzt oder abzieht. Hast du nächste Woche 15 Minuten?"],
+  ["2 · Unternehmer / Geschäftsführer","Servus [Name], eine unternehmerische Frage an dich: Der eigentliche Wert deiner Organisation steckt in den Menschen und Beziehungen, aber monetarisiert wird meist nur das Kernprodukt. Genau an dieser Lücke setzen wir an, als zusätzliches Ertragsfeld für die Organisation und ihre Partner. Ich würde das gern mit dir als Unternehmer durchspielen. Passt dir Dienstag oder Donnerstag für 20 Minuten?"],
+  ["3 · Kurz für Vielbeschäftigte","Servus [Name], kurze Frage: Was wäre, wenn deine Struktur eine zusätzliche Einnahmequelle erschließt, ohne dass sich an deinem Geschäft etwas ändert? Daran arbeiten wir gerade. 15 Minuten in den nächsten Tagen?"],
+  ["4 · Über Empfehlung","Servus [Name], [Kontaktperson] hat mir geraten, dich direkt anzusprechen. Ich verantworte bei uns den strategischen Aufbau mit bestehenden Vertriebsorganisationen. Uns geht es nicht um Abwerbung, sondern darum, Netzwerke so zu verbinden, dass beide Seiten wirtschaftlich davon profitieren. Wie sieht es bei dir nächste Woche für ein kurzes Telefonat aus?"],
+  ["5 · Provokant (nur bei Bekannten)","Servus [Name], deine Leute sind da, dein Netzwerk ist da, das Vertrauen ist da. Warum arbeitet das alles nur für ein Geschäftsmodell? Ich habe dazu einen Ansatz, den ich gern mit dir durchspiele. Über einen klassischen Vertrieb reden wir dabei nicht. Bist du nächste Woche für 20 Minuten offen?"],
+  ["6 · Vertriebsinhaber (Partnerbindung)","Servus [Name], du investierst laufend in Menschen, Führung und Ausbildung, und trotzdem hängt deren Einkommen meist an einem einzigen Produkt. Wir haben einen Ansatz, der deinen Partnern ein zusätzliches Ertragsfeld gibt, innerhalb deiner Organisation. Damit hätten sie einen Grund mehr, bei dir zu bleiben. Lass uns das in 15 Minuten prüfen. Wann passt es dir?"],
+  ["Follow-up · nach 3–5 Tagen","Servus [Name], ich hake einmal kurz nach. Ist das Thema grundsätzlich interessant, später wieder relevant oder passt es nicht? Alle drei Antworten sind völlig okay."],
+  ["Abschluss · nach weiteren 7 Tagen","Servus [Name], ich nehme das Thema auf meiner Seite raus, damit nichts offen herumliegt. Falls du den Gedanken später prüfen willst, melde dich jederzeit. Weiter viel Erfolg mit deinem Team!"],
+  ["Wenn Interesse kommt","Sehr gern! Damit du es richtig einordnen kannst: Ich will dir im Gespräch nicht einfach etwas präsentieren. Zuerst möchte ich verstehen, wie deine Struktur aufgestellt ist, und dann zeige ich dir, wo wir konkret ansetzen könnten. Dann siehst du schnell, ob es passt. [Tag] um [Uhrzeit]?"],
+  ["Einwand · „Worum geht’s genau?“","Ehrlich gesagt würde ich es im Chat verkürzt und damit falsch erklären. In 15 Minuten siehst du selbst, ob es zu dir passt. [Tag] oder [Tag]?"]],
+ fu:[["Nach einem guten Erstgespräch","Danke dir für den Austausch. Für mich sind vor allem [Punkt 1] und [Punkt 2] interessant. Lass uns als nächsten Schritt [konkrete Aktion] machen. Passt dir [Tag/Uhrzeit]?"],["Keine Rückmeldung","Hi [Name], ich hake einmal sauber nach, damit das Thema nicht irgendwo im Chat hängen bleibt. Ist das aktuell grundsätzlich interessant, sollen wir es später wieder aufnehmen oder passt es für dich nicht? Alles drei ist völlig okay."],["Noch unsicher","Was ist aktuell der eine Punkt, der dich davon abhält, einen nächsten Schritt zu machen? Dann können wir genau den klären, statt das komplette Thema noch einmal durchzugehen."],
+  ["Kurz nachfassen · nach 3–4 Tagen","Hey [Name], nur kurz nachgefragt, damit’s nicht untergeht: Grundsätzlich interessant, später oder eher nicht dein Ding? Alles drei ist völlig okay 🙂"],
+  ["Einwand · „Was ist es denn?“","Ehrlich? Im Chat würde ich’s nur halb erklären und du hättest ein falsches Bild. In 10 Minuten am Telefon siehst du selbst, ob’s was für dich ist. Heute Abend oder morgen?"],
+  ["Einwand · „Ist das so ein Schneeballding?“","Gute Frage, die hab ich mir auch gestellt. Lass es dir einfach zeigen und urteile selbst. Ich will dich zu nichts überreden."],
+  ["Nach einer Absage","Alles gut, danke für die ehrliche Antwort! Falls dir mal jemand einfällt, für den das passen könnte, sag gern Bescheid."]]
 },
+
 days:[["Tag 1 · 0–24 h","Verstehen · Fokus",["Startprofil ausgefüllt","60-Sekunden-Erklärung sitzt (3×)","Leader-Check bestanden","Mindestens 30 Namen","TOP 10 + erste 5 gewählt"]],["Tag 2 · 24–48 h","Aktivität · Duplizieren",["5 Ansprachen gesendet","5 Kontakte mit Status","Follow-up mit Datum gesetzt","Erstes Gespräch geführt","Duplikation geplant"]]],
 dupSteps:["Startprofil","60-Sekunden-Erklärung","Namensliste + TOP 10","Erste 5 Ansprachen","48h-Review"],
 m:{
@@ -278,9 +309,15 @@ top:{lead:"Fokus schlägt Masse. Die Liste gibt dir Breite – die TOP 10 geben 
  quote:["Deine TOP 10 sind nicht zwingend die bekanntesten Kontakte.","Es sind die mit dem besten Mix aus Zugang, Hebel und realistischer Geschwindigkeit."],
  max5:"Maximal 5 – das ist der Fokus",
  task:"Wähle deine TOP 10 und markiere davon die ersten 5, die du innerhalb von 24 Stunden ansprichst."},
-sc:{forWho:"Für wen?",manual:"{ph} manuell anpassen",copy:"Kopieren",used:"{n}× genutzt",templates:"Vorlagen",fu:"Follow-up-Vorlagen"},
+sc:{forWho:"Für wen?",manual:"{ph} manuell anpassen",copy:"Kopieren",used:"{n}× genutzt",templates:"Vorlagen",fu:"Follow-ups & Einwände",vkSeq:"Erstnachrichten, Follow-ups & Einwände",all:"Alle",groups:{fr:"Freunde",be:"Bekannte",wa:"Warme Kontakte",ka:"Kalte Kontakte",re:"Alte Kontakte"}},
 talkto:{lead:"Bei warmen Kontakten ist Vertrauen bereits vorhanden. Nutze es nicht für Druck – nutze es für einen ehrlichen, relevanten Einstieg und einen kleinen nächsten Schritt.",
- note:"Beim Kopieren oder Öffnen in WhatsApp wird der gewählte Kontakt in der Pipeline automatisch auf „NEU“ gesetzt. Passe die Vorlage vor dem Senden an deinen Sprachstil an.",
+ note:"Beim Kopieren oder Öffnen in WhatsApp wird der gewählte Kontakt in der Pipeline automatisch auf „NEU“ gesetzt.",
+ tonT:"Klingt das nach dir?",ton:"Für Einsteiger wirkt Echtheit am stärksten, nicht Perfektion. Wer ehrlich sagt „ich bin gerade neu und finde das spannend“, wirkt glaubwürdiger als jemand, der Profi spielt. Jede Vorlage gibt es locker und sachlich – nimm die, die nach dir klingt.",
+ rulesT:"Drei Regeln vor dem Senden",rules:["Vorlage einmal laut lesen. Klingt sie nicht nach dir, schreib sie in deinen Worten um.","Ohne persönlichen Bezug geht es nicht. Bei kalten Kontakten immer ein konkretes Detail nennen.","Keine Einkommensandeutungen, keine Firmennamen im ersten Text. Erklärt wird erst im Gespräch."],
+ reT:"Tipp für alte Kontakte",re:"Erst echtes Interesse zeigen, das Thema erst in der zweiten Nachricht aufmachen.",
+ vkT:"Für Vertriebsköpfe & große Organisationen",vkLead:"Hier geht es nicht um Anwerben, sondern um eine strategische Partnerschaft auf Augenhöhe. Den Vertriebskopf als Kooperationspartner ansprechen, nie als Bewerber. Kein Markenname im ersten Kontakt, maximal 4 Sätze, immer eine klare Terminfrage.",
+ vkPos:"Leitsatz fürs Gespräch: „Wir suchen keine Vertriebe, die für uns arbeiten, sondern Organisationen, mit denen wir gemeinsam wachsen.“",
+ vkWarn:"Im Gespräch gilt: Ein großes Netzwerk allein ist noch kein Business Case. Entscheidend sind aktive Partner, echte Kontakte und Ertrag – keine Zahlen versprechen, Konditionen nur aus offiziellen Unterlagen.",
  f4T:"Die 4-Satz-Formel",f4:[["Kontext","Warum du?"],["Relevanz","Warum interessant?"],["Neugier","Nicht alles erklären"],["Nächster Schritt","10 Min. / Termin"]],
  doT:"Das funktioniert",do:["echter persönlicher Bezug","Relevanz für die Person","kleiner nächster Schritt (10 Minuten)","Neugier statt Informationsdump"],
  dontT:"Das vermeiden",dont:["Copy-Paste ohne Bezug","Provisionen und Einkommen im ersten Text","Druck oder künstliche Verknappung","alles im Chat erklären"],
@@ -367,7 +404,7 @@ function payload(){
     pct:Math.round(done.length/ORDER.length*100),level:level(),diagDone:autoDone("start"),pitchReps:S.pitch.reps,leaderOk:!!S.pitch.leaderOk,quizOk:quizOk(),
     list:S.list.length,top:tops().length,contacted:contacted().length,replies:S.list.filter(function(c){return c.reply;}).length,
     st:{NEU:stCount("NEU"),TERMIN:stCount("TERMIN"),FU:stCount("FU"),ENT:stCount("ENT"),GO:stCount("GO"),NO:stCount("NO")},
-    talks:S.talks.length,nextSteps:nextSteps(),sent:sentTotal("an"),type:t?t[0]:"",diag:diag,dupDone:dupCount(),review:!!S.fin.review};
+    talks:S.talks.length,nextSteps:nextSteps(),sent:sentAll(),type:t?t[0]:"",diag:diag,dupDone:dupCount(),review:!!S.fin.review};
 }
 function sync(beacon){
   if(!SYNC || !S.consent || !S.startedAt) return;
@@ -415,8 +452,9 @@ var ORDER=[]; PHASES.forEach(function(p){ ORDER=ORDER.concat(p); });
 function MT(id){ return L.mods[id][0]; }
 var QUIZ_C=[1,0,0];
 var STATUSES=["","NEU","TERMIN","FU","ENT","GO","NO"];
-var SC_IDS={an:["a1","a2","a3","a4","a5"],fu:["f1","f2","f3"]};
-function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1]}; }); }
+var SC_PRE={an:"a",vk:"v",fu:"f"};
+var SC_IDS={}; for(var gk in SC_PRE){ SC_IDS[gk]=[]; for(var si=1;si<=(I18N.de.scripts[gk]||[]).length;si++) SC_IDS[gk].push(SC_PRE[gk]+si); }
+function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||""}; }); }
 
 /* ---------- Derived ---------- */
 function tops(){ return S.list.filter(function(c){return c.top;}); }
@@ -424,6 +462,8 @@ function first5(){ return S.list.filter(function(c){return c.first5;}); }
 function contacted(){ return S.list.filter(function(c){return !!c.status;}); }
 function scoreOf(c){ return (c.t||0)+(c.p||0)+(c.s||0); }
 function sentTotal(g){ var n=0; SC_IDS[g].forEach(function(id){ n+=S.sent[id]||0; }); return n; }
+/* Ansprachen gesamt: Einsteiger-Vorlagen + Vertriebskopf-Sequenz */
+function sentAll(){ return sentTotal("an")+sentTotal("vk"); }
 function quizOk(){ return QUIZ_C.every(function(c,i){ return S.quiz[i]===c; }); }
 function nextSteps(){ return S.list.filter(function(c){return c.next && c.date;}).length; }
 function dupCount(){ var n=0; for(var i=0;i<5;i++){ if(S.dup["d"+i]) n++; } return n; }
@@ -435,7 +475,7 @@ function autoDone(id){
    case "system": return systemOk();
    case "list": return S.list.length>=30;
    case "top": return tops().length>=10 && first5().length>=5;
-   case "talkto": return sentTotal("an")>=5;
+   case "talkto": return sentAll()>=5;
    case "pipe": return contacted().length>=5 && nextSteps()>=1;
    case "talk": return S.talks.length>=1;
    case "dup": return !!(S.dup.partner||"").trim() && !!S.dup.t0;
@@ -453,7 +493,7 @@ function level(){
 /* Tageschecks (Start + Abschluss): automatisch aus den Daten */
 function dayChecks(){
   return [[profileOk(), S.pitch.reps>=3, quizOk()&&!!S.pitch.leaderOk, S.list.length>=30, tops().length>=10&&first5().length>=5],
-          [sentTotal("an")>=5, contacted().length>=5, nextSteps()>=1, S.talks.length>=1, autoDone("dup")]];
+          [sentAll()>=5, contacted().length>=5, nextSteps()>=1, S.talks.length>=1, autoDone("dup")]];
 }
 function dayBlocks(){
   var ch=dayChecks(), h='<div class="grid2">';
@@ -647,7 +687,7 @@ R.top=function(){
   return h+task(L.ui.lbl.task,m.task);
 };
 
-var pick={an:"",fu:""};
+var pick={an:"",vk:"",fu:""}, scf="", vkOpen=false;
 function findC(id){ return S.list.filter(function(c){return c.id===id;})[0]; }
 function fill(x,who){ return who? x.split(L.ph).join(who.name.split(" ")[0]) : x; }
 function hl(s){ return s.replace(/\[[^\]]+\]/g,function(mm){return "<mark>"+mm+"</mark>";}); }
@@ -656,7 +696,13 @@ function scriptBlock(g,title){
   var opts='<option value="">'+esc(F(sc.manual,{ph:L.ph}))+'</option>'+S.list.slice().sort(function(a,b){return ((b.first5?2:0)+(b.top?1:0))-((a.first5?2:0)+(a.top?1:0));}).map(function(c){ return '<option value="'+c.id+'"'+(pick[g]===c.id?" selected":"")+'>'+(c.first5?"★★ ":c.top?"★ ":"")+esc(c.name)+(c.status?" · "+L.status[c.status]:"")+'</option>'; }).join("");
   var who=findC(pick[g]);
   var h='<div class="card stack"><div class="row" style="justify-content:space-between"><h2>'+title+'</h2><label class="field" style="min-width:220px;flex:0 1 280px"><span>'+sc.forWho+'</span><select id="pick_'+g+'" data-act="pick" data-g="'+g+'">'+opts+'</select></label></div><div class="grid2">';
-  scripts(g).forEach(function(s){
+  var list=scripts(g);
+  if(list.some(function(s){return s.g;})){
+    var gs=[]; list.forEach(function(s){ if(s.g && gs.indexOf(s.g)<0) gs.push(s.g); });
+    h=h.replace(/<div class="grid2">$/,'<div class="chips">'+[""].concat(gs).map(function(k){ return '<button class="chip'+(scf===k?" on":"")+'" data-act="scf" data-v="'+k+'">'+(k?sc.groups[k]:sc.all)+'</button>'; }).join("")+'</div><div class="grid2">');
+    if(scf) list=list.filter(function(s){ return s.g===scf; });
+  }
+  list.forEach(function(s){
     var txt=fill(s.x,who);
     h+='<div class="script"><div class="t">'+s.t+'</div><p>'+hl(esc(txt))+'</p><div class="row"><button class="btn sm pri" data-act="copyScript" data-id="'+s.id+'" data-g="'+g+'">'+sc.copy+'</button>'+
      '<a class="btn sm" href="https://wa.me/?text='+encodeURIComponent(txt)+'" target="_blank" rel="noopener" data-act="waScript" data-id="'+s.id+'" data-g="'+g+'">WhatsApp</a>'+
@@ -666,12 +712,16 @@ function scriptBlock(g,title){
 }
 
 R.talkto=function(){
-  var m=L.m.talkto, n=sentTotal("an");
+  var m=L.m.talkto, n=sentAll();
   return head("talkto",m.lead)+
    '<div class="card stack"><div class="row" style="justify-content:space-between"><div class="kpi"><b class="tab">'+n+' / 5</b><span>'+L.m.finish.k[2]+'</span></div><div style="flex:1;min-width:160px"><div class="bar"><i style="width:'+Math.min(100,n/5*100)+'%"></i></div></div></div></div>'+
-   scriptBlock("an",L.m.sc.templates)+'<p class="small muted">'+m.note+'</p>'+
+   '<div class="card hi stack"><h3 style="color:var(--gold)">'+m.tonT+'</h3><p class="small">'+m.ton+'</p></div>'+
+   scriptBlock("an",L.m.sc.templates)+'<p class="small muted">'+m.note+(scf==="re"?' <b style="color:var(--gold)">'+m.reT+':</b> '+m.re:'')+'</p>'+
+   '<div class="card stack"><h2>'+m.rulesT+'</h2><ol class="small" style="margin-top:4px">'+m.rules.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ol></div>'+
    '<div class="card stack"><h2>'+m.f4T+'</h2><div class="flow">'+m.f4.map(function(x,i){ return '<span>'+(i+1)+'. '+x[0]+'<br><small class="muted">'+x[1]+'</small></span>'; }).join("")+'</div></div>'+
    '<div class="grid2"><div class="card"><h3 style="color:var(--ok)">'+m.doT+'</h3>'+ul(m.do)+'</div><div class="card"><h3 style="color:var(--bad)">'+m.dontT+'</h3>'+ul(m.dont)+'</div></div>'+
+   '<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkarrow">'+(vkOpen?"−":"+")+'</span></button>'+
+   (vkOpen?'<p class="small muted">'+m.vkLead+'</p><p class="small" style="color:var(--gold)">'+m.vkPos+'</p>'+scriptBlock("vk",L.m.sc.vkSeq)+'<p class="small muted">'+m.vkWarn+'</p>':'')+'</div>'+
    task(L.ui.lbl.task,m.task);
 };
 
@@ -810,6 +860,8 @@ document.addEventListener("click",function(e){
    case "rate": var c=findC(id); c[el.getAttribute("data-k")]=+el.getAttribute("data-v"); save(); render(); break;
    case "copyScript": var grp=el.getAttribute("data-g"), sc=scripts(grp).filter(function(s){return s.id===id;})[0]; copyText(fill(sc.x,findC(pick[grp]))); S.sent[id]=(S.sent[id]||0)+1; markContacted(grp); save(); setTimeout(render,50); break;
    case "waScript": S.sent[id]=(S.sent[id]||0)+1; markContacted(el.getAttribute("data-g")); save(); setTimeout(render,300); break;
+   case "scf": scf=el.getAttribute("data-v")||""; render(); break;
+   case "vk": vkOpen=!vkOpen; render(); break;
    case "delTalk": S.talks.splice(+el.getAttribute("data-i"),1); save(); render(); break;
    case "copyLink": copyText(location.href.split("#")[0]); break;
    case "print": window.print(); break;
