@@ -7,14 +7,14 @@ var L=I18N.de;
 /* ---------- State ---------- */
 function blank(lang){
   return {v:VERSION,lang:lang||detectLang(),pid:uid(),consent:false,updatedAt:0,name:"",leader:"",startedAt:0,view:"start",done:{},
-    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},multi:{size:100,rate:10,levels:4}};
+    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},multi:{size:100,rate:10,levels:6}};
 }
 function detectLang(){
   var n=((navigator.language||"de")+"").slice(0,2).toLowerCase();
   return LANGS.indexOf(n)>=0?n:"de";
 }
 var S=blank();
-function migrate(d){ if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; return d; }
+function migrate(d){ if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
 function load(){
   try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d && d.v===VERSION){ S=merge(blank(),migrate(d)); } } }catch(e){}
 }
@@ -290,6 +290,7 @@ R.list=function(){
   var h=head("list",m.lead);
   h+='<div class="card stack"><div class="row" style="justify-content:space-between"><div class="kpi"><b class="tab">'+n+' / 30</b><span>'+m.count+'</span></div><span class="badge '+(n>=100?"b-ok":n>=30?"b-ok":"b-warn")+'">'+(n>=100?m.goal:n>=30?m.go100:m.min30)+'</span></div>'+
    '<div class="bar"><i style="width:'+Math.min(100,n/30*100).toFixed(1)+'%"></i></div><p class="small muted">'+m.rules+'</p></div>';
+  h+='<div class="card hi row" style="justify-content:space-between"><div style="flex:1;min-width:220px"><span class="label">'+L.m.dup.multiL+'</span><h3>'+m.whyT+'</h3><p class="small muted" style="margin-top:4px">'+m.why+'</p></div><button class="btn gold sm" data-go="dup">'+m.whyBtn+'</button></div>';
   h+='<div class="card"><h3>'+m.helpT+'</h3>'+ul(m.help)+'</div>';
   h+='<form class="card stack" id="addform"><h3>'+m.add+'</h3><div class="grid2"><label class="field"><span>'+m.name+'</span><input type="text" id="add_name" placeholder="'+esc(m.namePh)+'" autocomplete="off"></label><label class="field"><span>'+m.ctx+'</span><input type="text" id="add_ctx" placeholder="'+esc(m.ctxPh)+'"></label></div>'+
    '<div class="row" id="catpills">'+L.cats.map(function(c,i){ return '<button type="button" class="pill'+(addCat===i?" on":"")+'" data-act="addCat" data-v="'+i+'">'+c+'</button>'; }).join("")+'</div>'+
@@ -405,21 +406,25 @@ R.talk=function(){
 };
 
 function multiRows(){
-  var m=S.multi, size=Math.max(1,+m.size||100), r=Math.max(0,+m.rate||0)/100, Lv=Math.min(8,Math.max(1,+m.levels||4)), act=1, out="";
+  var m=S.multi, size=Math.max(1,+m.size||100), r=Math.max(0,+m.rate||0)/100, Lv=Math.min(8,Math.max(1,+m.levels||6)), act=1, out="";
   for(var i=1;i<=Lv;i++){ var lst=act*size, nw=Math.round(lst*r); out+='<tr><td><b>'+L.m.dup.lv+i+'</b></td><td class="tab">'+fmt(act)+'</td><td class="tab">'+fmt(lst)+'</td><td class="tab" style="color:var(--teal)"><b>'+fmt(nw)+'</b></td></tr>'; act=nw; if(!act) break; }
   return out;
 }
+function multiBlock(){
+  var m=L.m.dup, mm=S.multi;
+  return '<div class="card hi stack"><span class="label">'+m.multiL+'</span><h2>'+m.multiT+'</h2><p class="muted">'+m.multiIdea+'</p>'+
+   '<div class="grid3"><label class="field"><span>'+m.size+'</span><input type="number" id="m_size" min="10" max="500" step="10" data-mbind="size" value="'+esc(mm.size)+'"></label><label class="field"><span>'+m.rate+'</span><input type="number" id="m_rate" min="1" max="50" step="1" data-mbind="rate" value="'+esc(mm.rate)+'"></label><label class="field"><span>'+m.levels+'</span><input type="number" id="m_lv" min="1" max="8" step="1" data-mbind="levels" value="'+esc(mm.levels)+'"></label></div>'+
+   '<div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody id="multibody">'+multiRows()+'</tbody></table></div>'+
+   '<div class="grid2"><div class="card"><h3>'+m.learnT+'</h3><p class="muted small" style="margin-top:6px">'+m.learn+'</p></div>'+
+   '<div class="card" style="border-color:var(--warn)"><h3>'+m.notT+'</h3><p class="muted small" style="margin-top:6px">'+m.not+'</p></div></div></div>';
+}
 R.dup=function(){
   var m=L.m.dup, mm=S.multi;
-  var h=head("dup",m.lead)+'<div class="flow">'+m.flow.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>'+
+  var h=head("dup",m.lead)+multiBlock()+'<div class="flow">'+m.flow.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>'+
    '<div class="grid2"><div class="card"><h3>'+m.noT+'</h3>'+ul(m.no)+'</div><div class="card hi"><h3>'+m.yesT+'</h3>'+ul(m.yes)+'</div></div>'+
    '<div class="card stack"><h2>'+m.title+'</h2><label class="field"><span>'+m.partner+'</span><input type="text" id="dupname" data-bind="dup.partner" value="'+esc(S.dup.partner||"")+'"></label><div class="tablewrap"><table><thead><tr>'+m.cols2.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody>';
   L.dupSteps.forEach(function(s,i){ h+='<tr><td>'+s+'</td><td><input type="date" id="dt'+i+'" data-bind="dup.t'+i+'" value="'+esc(S.dup["t"+i]||"")+'"></td><td><input type="checkbox" id="dd'+i+'" data-bind="dup.d'+i+'" '+(S.dup["d"+i]?"checked":"")+' aria-label="'+esc(m.cols2[2])+'"></td></tr>'; });
   h+='</tbody></table></div><div class="row"><button class="btn sm" data-act="copyLink">'+m.link+'</button><span class="small muted">'+m.linkHint+'</span></div></div>';
-  h+='<details class="card"><summary style="cursor:pointer"><b>'+m.multiT+'</b></summary><div class="stack" style="margin-top:12px"><p class="small muted">'+m.multiHint+'</p>'+
-   '<div class="grid3"><label class="field"><span>'+m.size+'</span><input type="number" id="m_size" min="10" max="500" step="10" data-mbind="size" value="'+esc(mm.size)+'"></label><label class="field"><span>'+m.rate+'</span><input type="number" id="m_rate" min="1" max="50" step="1" data-mbind="rate" value="'+esc(mm.rate)+'"></label><label class="field"><span>'+m.levels+'</span><input type="number" id="m_lv" min="1" max="8" step="1" data-mbind="levels" value="'+esc(mm.levels)+'"></label></div>'+
-   '<div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody id="multibody">'+multiRows()+'</tbody></table></div>'+
-   '<div class="card" style="border-color:var(--warn)"><h3>'+m.notT+'</h3><p class="muted small" style="margin-top:6px">'+m.not+'</p></div></div></details>';
   return h+task(L.ui.lbl.mantra,m.task);
 };
 
