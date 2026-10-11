@@ -155,6 +155,8 @@ td input,td select{padding:6px 8px}
 .vbtn{position:relative;width:72px;height:72px;border-radius:50%;background:var(--gold);color:#1a1405;display:grid;place-items:center;font-size:26px;padding-left:4px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .vlbl{position:relative;font-weight:600;font-size:14px;letter-spacing:.04em}
 .vplay:hover .vbtn{transform:scale(1.06)}
+.planimg{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#000}
+.planimg img{display:block;width:100%;height:auto}
 .modfoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:9px 16px;border-radius:9px;font-weight:600;font-size:14px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 
@@ -234,7 +236,7 @@ ui:{
  syncOk:"Synchronisiert {t}",syncErr:"Nicht synchronisiert – Verbindung prüfen",syncWait:"Wird synchronisiert …"
 },
 phases:["Verstehen","Fokus","Aktivität","Duplizieren"],
-mods:{start:["Dein 48h-Fahrplan","Startprofil"],system:["Das System in 60 Sekunden","Pflichtverständnis"],list:["Deine Namensliste","Potenzial sammeln"],top:["Deine TOP 10","Fokus"],talkto:["Ansprache","Partner gewinnen"],pipe:["Pipeline & Follow-up","Jeder Kontakt hat einen nächsten Schritt"],talk:["Dein erstes Gespräch","Fragen vor Erklären"],dup:["Duplikation","Den Prozess weitergeben"],finish:["48h-Check","Abschluss mit deinem Leader"]},
+mods:{start:["Dein 48h-Fahrplan","Startprofil"],system:["Das System in 60 Sekunden","Pflichtverständnis"],plan:["Dein Weg","Der Vergütungsplan"],list:["Deine Namensliste","Potenzial sammeln"],top:["Deine TOP 10","Fokus"],talkto:["Ansprache","Partner gewinnen"],pipe:["Pipeline & Follow-up","Jeder Kontakt hat einen nächsten Schritt"],talk:["Dein erstes Gespräch","Fragen vor Erklären"],dup:["Duplikation","Den Prozess weitergeben"],finish:["48h-Check","Abschluss mit deinem Leader"]},
 status:{NEU:"NEU",TERMIN:"TERMIN",FU:"FOLLOW-UP",ENT:"ENTSCHEIDUNG",GO:"GESTARTET",NO:"KEIN INTERESSE",open:"– offen –"},
 diagQ:["Warum willst du dieses Business wirklich aufbauen?","Wie viel Zeit investierst du realistisch pro Woche?","Wo brauchst du in den nächsten 48 Stunden am meisten Unterstützung?"],
 types:[["Closer","schnell zu Gesprächen & Terminen"],["Connector","Netzwerke & Synergien öffnen"],["Builder","Partner gewinnen & aktivieren"],["Leader","Teams & Märkte strukturieren"]],
@@ -292,6 +294,14 @@ system:{lead:"Wer das System nicht einfach erklären kann, kann es nicht sauber 
  unlock:"Leader-Check",unlockHint:"Erkläre deinem Leader das System in 60 Sekunden – am Telefon reicht. Wenn er bestätigt, geht es in die Namensliste.",
  leaderOk:"Mein Leader{l} hat meine 60-Sekunden-Erklärung bestätigt",unlocked:"Freigeschaltet – weiter zur Namensliste",locked:"Noch nicht freigeschaltet",
  task:"Erkläre das Gesamtsystem ohne abzulesen in maximal 60 Sekunden. Wiederhole es, bis es klar, ruhig und ohne Fachchinesisch funktioniert – dann Leader-Check."},
+plan:{lead:"Du weißt jetzt, warum du startest und wie das System funktioniert. Hier siehst du, wohin dich dein Weg bei Best Prime führen kann – Stufe für Stufe.",
+ imgL:"Der Best-Prime-Vergütungsplan",alt:"Best Prime Vergütungsplan mit allen Karrierestufen von Partner bis Innercircle Board Member",
+ zoom:"Groß ansehen",zoomHint:"Tipp: Antippen öffnet den Plan in voller Größe – zum Zoomen.",
+ goalT:"Dein Warum – und dein Weg",goal:"Schau dir den Plan mit deinem Ziel im Kopf an: Welche Stufe passt zu dem, was sich für dich verändern soll? Sprich das mit deinem Leader durch.",
+ yourWhy:"Dein Warum aus dem Startprofil",toProfile:"Erst dein Warum im Startprofil eintragen",
+ soon:"Folgt in Kürze",parts:[["So liest du den Plan","Die Stufen, CP und die wichtigsten Begriffe – einfach erklärt."],["Szenarien","Beispiele, wie sich ein Weg Stufe für Stufe aufbauen kann."],["Dein Rechner","Rechne selbst durch, was dein Ziel konkret bedeutet."]],
+ rule:"<b>Wichtig:</b> Der Vergütungsplan zeigt, was das System ermöglicht – keine Garantie für ein bestimmtes Einkommen. Ergebnisse hängen von deiner eigenen Aktivität und der deines Teams ab. Verbindlich sind die aktuellen offiziellen Unterlagen im Backoffice.",
+ task:"Schau dir den Plan in Ruhe an und markiere für dich die Stufe, die zu deinem Ziel passt. Dann weiter zur Namensliste – denn jede Stufe beginnt mit den Menschen auf deiner Liste."},
 list:{lead:"Die Liste ist kein Adressbuch. Sie ist dein Ausgangsmaterial für neue Partner, Synergien und Multiplikatoren.",
  count:"Namen auf deiner Liste",goal:"100 – stark!",go100:"Turbo-Ziel erreicht – gern weiter bis 100",min30:"Mindestens 30",
  rules:"<b>Regel 1:</b> Namen sammeln, noch nicht bewerten. <b>Regel 2:</b> Die Liste darf beliebig wachsen. <b>Regel 3:</b> Erst nach dem Sammeln wird priorisiert.",
@@ -372,14 +382,14 @@ var L=I18N.de;
 /* ---------- State ---------- */
 function blank(lang){
   return {v:VERSION,lang:lang||detectLang(),pid:uid(),consent:false,updatedAt:0,name:"",leader:"",startedAt:0,view:"start",done:{},
-    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},multi:{size:100,rate:10,levels:6}};
+    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},plan:{},multi:{size:100,rate:10,levels:6}};
 }
 function detectLang(){
   var n=((navigator.language||"de")+"").slice(0,2).toLowerCase();
   return LANGS.indexOf(n)>=0?n:"de";
 }
 var S=blank();
-function migrate(d){ if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
+function migrate(d){ if(!d.plan) d.plan={}; if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
 function load(){
   try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d && d.v===VERSION){ S=merge(blank(),migrate(d)); } } }catch(e){}
 }
@@ -450,7 +460,7 @@ function fmt(n){ return Number(n).toLocaleString(L.locale); }
 function fdate(ts,opt){ try{ return new Date(ts).toLocaleString(L.locale,opt); }catch(e){ return new Date(ts).toLocaleString(); } }
 
 /* ---------- Structure: 4 Phasen, 9 Schritte ---------- */
-var PHASES=[["start","system"],["list","top"],["talkto","pipe","talk"],["dup","finish"]];
+var PHASES=[["start","system","plan"],["list","top"],["talkto","pipe","talk"],["dup","finish"]];
 var ORDER=[]; PHASES.forEach(function(p){ ORDER=ORDER.concat(p); });
 function MT(id){ return L.mods[id][0]; }
 var QUIZ_C=[1,0,0];
@@ -476,6 +486,7 @@ function autoDone(id){
   switch(id){
    case "start": return profileOk();
    case "system": return systemOk();
+   case "plan": return !!S.plan.seen;
    case "list": return S.list.length>=30;
    case "top": return tops().length>=10 && first5().length>=5;
    case "talkto": return sentAll()>=5;
@@ -650,6 +661,21 @@ R.system=function(){
 
 var addCat=0, listFilter="";
 function catName(c){ return (c===""||c==null)?"":(L.cats[c]||""); }
+/* Vergütungsplan: Bild jetzt, Erklärung / Szenarien / Rechner folgen (Platzhalter in de.js → m.plan.parts) */
+R.plan=function(){
+  if(!S.plan.seen){ S.plan.seen=true; save(); }
+  var m=L.m.plan, img="img/verguetungsplan.jpg";
+  var h=head("plan",m.lead)+
+   '<div class="card stack"><span class="label">'+m.imgL+'</span>'+
+   '<a class="planimg" href="'+img+'" target="_blank" rel="noopener" aria-label="'+esc(m.zoom)+'"><img src="'+img+'" alt="'+esc(m.alt)+'" loading="lazy"></a>'+
+   '<div class="row" style="justify-content:space-between"><span class="small muted">'+m.zoomHint+'</span><a class="btn sm" href="'+img+'" target="_blank" rel="noopener">'+m.zoom+'</a></div></div>'+
+   '<div class="card stack"><h2>'+m.goalT+'</h2><p class="muted small">'+m.goal+'</p>'+
+   (S.diag.q0?'<div class="quote" style="font-size:18px">„'+esc(S.diag.q0)+'“<small>'+m.yourWhy+'</small></div>':'<button class="btn sm" data-go="start">'+m.toProfile+'</button>')+'</div>'+
+   '<div class="grid3">'+m.parts.map(function(x){ return '<div class="card"><span class="badge b-mut">'+m.soon+'</span><h3 style="margin-top:8px">'+x[0]+'</h3><p class="small muted" style="margin-top:4px">'+x[1]+'</p></div>'; }).join("")+'</div>'+
+   '<div class="card" style="background:var(--panel2)"><span class="muted small">'+m.rule+'</span></div>';
+  return h+task(L.ui.lbl.task,m.task);
+};
+
 R.list=function(){
   var m=L.m.list, n=S.list.length;
   var h=head("list",m.lead);

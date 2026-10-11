@@ -1,7 +1,7 @@
 # Best Prime Turbo-Onboarding
 
 Installierbare Web-App (PWA): neue Vertriebspartner in 48 Stunden ins Verständnis und in die Aktivität bringen.
-Abgeleitet aus dem FastTrack (michaelweimer91-maker/fasttrack), deutlich kürzer: 4 Phasen, 9 Schritte.
+Abgeleitet aus dem FastTrack (michaelweimer91-maker/fasttrack), deutlich kürzer: 4 Phasen, 10 Schritte.
 Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.io/turbo-onboarding/
 
 ## Aufbau
@@ -12,6 +12,10 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - `config.js` – Sync-URL + Token + `videoUrl`/`videoFormat` ("16:9"|"9:16")/`videoLength` (Startvideo auf Startseite und im Schritt 1; YouTube/Vimeo-Link oder MP4 im Repo, leer = kein Video). YouTube lädt erst nach Klick (DSGVO, youtube-nocookie).
 - `sw.js` – Offline-Cache, network-first.
 - `gas/Turbo.gs` – Zusatzdatei für das Apps Script der bestehenden Tabelle „FastTrack Controlling – Best Prime“. Schreibt ins Blatt **„Turbo“**. Einrichtung: siehe ANLEITUNG.md.
+
+## Vergütungsplan
+- Schritt 3 „Dein Weg“ (`plan`) zwischen System und Namensliste: Warum → Was → Wohin → Mit wem. Bild: `img/verguetungsplan.jpg` (austauschen = Datei ersetzen). Erklärung, Szenarien und Rechner sind Platzhalter (`m.plan.parts` in de.js) und werden nachgereicht.
+- Immer mit Hinweis „keine Einkommensgarantie, verbindlich sind die offiziellen Unterlagen“.
 
 ## Inhaltliche Regeln
 - **Händler-Thema bleibt draußen** (Merchant Activation, Händlergespräche, Händlervorteile) – das wird beim Event in München präsentiert. Einziger Verweis: ein Satz im Schritt „System in 60 Sekunden“.

@@ -7,14 +7,14 @@ var L=I18N.de;
 /* ---------- State ---------- */
 function blank(lang){
   return {v:VERSION,lang:lang||detectLang(),pid:uid(),consent:false,updatedAt:0,name:"",leader:"",startedAt:0,view:"start",done:{},
-    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},multi:{size:100,rate:10,levels:6}};
+    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},plan:{},multi:{size:100,rate:10,levels:6}};
 }
 function detectLang(){
   var n=((navigator.language||"de")+"").slice(0,2).toLowerCase();
   return LANGS.indexOf(n)>=0?n:"de";
 }
 var S=blank();
-function migrate(d){ if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
+function migrate(d){ if(!d.plan) d.plan={}; if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
 function load(){
   try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d && d.v===VERSION){ S=merge(blank(),migrate(d)); } } }catch(e){}
 }
@@ -85,7 +85,7 @@ function fmt(n){ return Number(n).toLocaleString(L.locale); }
 function fdate(ts,opt){ try{ return new Date(ts).toLocaleString(L.locale,opt); }catch(e){ return new Date(ts).toLocaleString(); } }
 
 /* ---------- Structure: 4 Phasen, 9 Schritte ---------- */
-var PHASES=[["start","system"],["list","top"],["talkto","pipe","talk"],["dup","finish"]];
+var PHASES=[["start","system","plan"],["list","top"],["talkto","pipe","talk"],["dup","finish"]];
 var ORDER=[]; PHASES.forEach(function(p){ ORDER=ORDER.concat(p); });
 function MT(id){ return L.mods[id][0]; }
 var QUIZ_C=[1,0,0];
@@ -111,6 +111,7 @@ function autoDone(id){
   switch(id){
    case "start": return profileOk();
    case "system": return systemOk();
+   case "plan": return !!S.plan.seen;
    case "list": return S.list.length>=30;
    case "top": return tops().length>=10 && first5().length>=5;
    case "talkto": return sentAll()>=5;
@@ -285,6 +286,21 @@ R.system=function(){
 
 var addCat=0, listFilter="";
 function catName(c){ return (c===""||c==null)?"":(L.cats[c]||""); }
+/* Vergütungsplan: Bild jetzt, Erklärung / Szenarien / Rechner folgen (Platzhalter in de.js → m.plan.parts) */
+R.plan=function(){
+  if(!S.plan.seen){ S.plan.seen=true; save(); }
+  var m=L.m.plan, img="img/verguetungsplan.jpg";
+  var h=head("plan",m.lead)+
+   '<div class="card stack"><span class="label">'+m.imgL+'</span>'+
+   '<a class="planimg" href="'+img+'" target="_blank" rel="noopener" aria-label="'+esc(m.zoom)+'"><img src="'+img+'" alt="'+esc(m.alt)+'" loading="lazy"></a>'+
+   '<div class="row" style="justify-content:space-between"><span class="small muted">'+m.zoomHint+'</span><a class="btn sm" href="'+img+'" target="_blank" rel="noopener">'+m.zoom+'</a></div></div>'+
+   '<div class="card stack"><h2>'+m.goalT+'</h2><p class="muted small">'+m.goal+'</p>'+
+   (S.diag.q0?'<div class="quote" style="font-size:18px">„'+esc(S.diag.q0)+'“<small>'+m.yourWhy+'</small></div>':'<button class="btn sm" data-go="start">'+m.toProfile+'</button>')+'</div>'+
+   '<div class="grid3">'+m.parts.map(function(x){ return '<div class="card"><span class="badge b-mut">'+m.soon+'</span><h3 style="margin-top:8px">'+x[0]+'</h3><p class="small muted" style="margin-top:4px">'+x[1]+'</p></div>'; }).join("")+'</div>'+
+   '<div class="card" style="background:var(--panel2)"><span class="muted small">'+m.rule+'</span></div>';
+  return h+task(L.ui.lbl.task,m.task);
+};
+
 R.list=function(){
   var m=L.m.list, n=S.list.length;
   var h=head("list",m.lead);
