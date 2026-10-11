@@ -15,3 +15,9 @@ html=('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n<meta 
      +pwa+head[:cut]+"\n</head>\n<body>\n"+head[cut:]+'\n<script src="config.js"></script>\n<script>\n'+i18n+"\n"+app+"\n</script>\n"+swreg+"</body>\n</html>\n")
 open(f"{R}/index.html","w",encoding="utf8").write(html)
 print("index.html gebaut:",len(html),"Bytes · Sprachen:",", ".join(langs))
+# Testversion: gleiche App + window.TURBO_TEST (eigener Speicher, kein Controlling, Test-Texte aus I18N.de.test)
+test=html.replace('<script src="config.js"></script>\n','<script src="config.js"></script>\n<script>window.TURBO_TEST=true;</script>\n',1).replace("<title>Turbo-Onboarding</title>","<title>TEST · Turbo-Onboarding</title>",1).replace('<link rel="manifest" href="manifest.webmanifest">\n','',1)
+test=test.replace('<meta charset="utf-8">','<meta charset="utf-8">\n<meta name="robots" content="noindex">',1)
+assert "TURBO_TEST" in test
+open(f"{R}/test.html","w",encoding="utf8").write(test)
+print("test.html gebaut:",len(test),"Bytes")

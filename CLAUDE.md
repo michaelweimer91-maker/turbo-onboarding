@@ -13,6 +13,12 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - `sw.js` – Offline-Cache, network-first.
 - `gas/Turbo.gs` – Zusatzdatei für das Apps Script der bestehenden Tabelle „FastTrack Controlling – Best Prime“. Schreibt ins Blatt **„Turbo“**. Einrichtung: siehe ANLEITUNG.md.
 
+## Testversion (`test.html`)
+- `build.py` erzeugt zusätzlich `test.html`: gleiche App + `window.TURBO_TEST=true` → eigener Speicher `bp_turbo_test_v1`, **kein Controlling-Sync**, Banner „TESTVERSION“, noindex.
+- Neue Funktionen nur über `TEST` in app.js schalten; Texte im Block `I18N.de.test` (de.js): `over` (Überschreibungen), `scriptsAdd` (Vorlagen hinten anhängen), `easy` (Einsteiger-Tempo).
+- Aktuell im Test: Tempo-Wahl Turbo 48 h (30/10/5) vs. Einsteiger 7 Tage (10/5/3) über `P()`, „Kopiert ≠ Gesendet“ (Button „✓ Gesendet“), „Woran hängt es?“ unter jedem offenen Schritt, „Nächste Aktion mit Datum“ im Abschluss, ePAY-Formulierung „geplant / gemäß offiziellem Produktstatus“, zwei Einwand-Vorlagen, „Ehrliche Grenze“ im Gespräch.
+- Übernahme in Live: Funktion aus dem `TEST`-Schalter lösen, Texte aus `test.over` in den Hauptblock verschieben. Tempo + „Woran hängt es?“ brauchen dann Felder in `payload()` + Spalten/Ampel in `gas/Turbo.gs` (Script neu einspielen).
+
 ## Vergütungsplan
 - Schritt 3 „Dein Weg“ (`plan`) zwischen System und Namensliste: Warum → Was → Wohin → Mit wem. Bild: `img/verguetungsplan.jpg` (austauschen = Datei ersetzen). Erklärung, Szenarien und Rechner sind Platzhalter (`m.plan.parts` in de.js) und werden nachgereicht.
 - Immer mit Hinweis „keine Einkommensgarantie, verbindlich sind die offiziellen Unterlagen“.

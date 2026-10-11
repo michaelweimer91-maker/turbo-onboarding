@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Turbo">
+<title>TEST · Turbo-Onboarding</title>
+<meta name="theme-color" content="#0b1a22">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Arbeits-App – Sidebar mit 4 Phasen / 9 Schritten links, Arbeitsfläche rechts; mobil Top-Bar + Modul-Drawer + Weiter-Leiste */
+:root{
+  --bg:#0b1a22; --panel:#11252e; --panel2:#17313c; --line:#24434f;
+  --fg:#e9f2f4; --muted:#8ea6ae; --teal:#48bdc8; --teal-d:#289bad; --gold:#d9b45c;
+  --ok:#5fcf9a; --warn:#e3a54c; --bad:#e07a6f;
+  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --body:"Poppins","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--teal)}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,5vw,46px);line-height:1.02;letter-spacing:.01em;text-transform:uppercase}
+h2{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.02em;text-transform:uppercase}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.tab{font-variant-numeric:tabular-nums}
+
+/* App shell */
+.app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+.brand{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand .p{color:var(--teal)}.brand .sep{color:var(--muted);padding:0 4px}.brand .t{color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+.me{display:flex;align-items:center;gap:12px}
+.ring{width:54px;height:54px;flex:none}
+.ring circle{fill:none;stroke-width:6}
+.ring .bgc{stroke:var(--line)}.ring .fgc{stroke:var(--gold);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.ring text{fill:var(--fg);font:600 13px var(--body)}
+.phase{display:flex;flex-direction:column;gap:2px}
+.phase-h{display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 8px 4px}
+.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:8px;cursor:pointer;color:var(--fg);font-size:14px}
+.nav:hover{background:var(--panel2)}
+.nav.on{background:var(--panel2);box-shadow:inset 3px 0 0 var(--teal)}
+.dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center;font-size:11px;color:var(--muted)}
+.dot.done{background:var(--ok);border-color:var(--ok);color:#0b1a22}
+.dot.auto{border-color:var(--gold);color:var(--gold)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+
+.main{min-width:0;padding-block:28px 110px;padding-inline:clamp(16px,4vw,48px)}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.topbar{display:none}
+
+/* Elements */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.card.hi{border-color:var(--teal-d);background:linear-gradient(160deg,#143843,#11252e)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.lead{font-size:16px;color:var(--muted);max-width:62ch}
+.task{border-left:3px solid var(--gold);background:#1a2b2a;border-radius:0 10px 10px 0;padding:14px 16px}
+.task b{color:var(--gold);letter-spacing:.08em;font-size:12px;text-transform:uppercase;display:block;margin-bottom:3px}
+.quote{font-family:var(--display);font-size:22px;line-height:1.2;text-transform:uppercase;letter-spacing:.01em;color:var(--fg)}
+.quote small{display:block;font-family:var(--body);text-transform:none;font-size:14px;color:var(--muted);margin-top:6px;letter-spacing:0}
+.label{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+ul.clean{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+ul.clean li{padding-left:16px;position:relative}
+ul.clean li:before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+ul.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px}
+ul.checks li{display:flex;align-items:center;gap:10px;color:var(--muted)}
+ul.checks li.ok{color:var(--fg)}
+ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--panel2);border-radius:9px;padding:9px 14px;cursor:pointer;font-weight:500;font-size:14px;text-decoration:none;color:var(--fg)}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#08161c;font-weight:600}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#1a1405;font-weight:600}
+.btn.ghost{background:none}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal)}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field>span{font-size:13px;color:var(--muted)}
+
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:500;background:var(--panel2);cursor:pointer}
+.pill.on{background:var(--teal);color:#08161c;border-color:var(--teal)}
+.badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:600;letter-spacing:.04em}
+.b-ok{background:rgba(95,207,154,.15);color:var(--ok)}
+.b-warn{background:rgba(227,165,76,.15);color:var(--warn)}
+.b-mut{background:var(--panel2);color:var(--muted)}
+
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input,td select{padding:6px 8px}
+
+.stars{display:inline-flex;gap:3px}
+.stars button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;font-size:12px;color:var(--muted)}
+.stars button.on{background:var(--teal-d);border-color:var(--teal-d);color:#fff}
+
+.flow{display:flex;gap:8px;flex-wrap:wrap}
+.flow span{flex:1 1 120px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px 6px;font-weight:600;font-size:13px;background:var(--panel)}
+
+.kpi{display:flex;flex-direction:column;gap:2px}
+.kpi b{font-family:var(--display);font-weight:400;font-size:34px;line-height:1;color:var(--gold)}
+.kpi span{font-size:12px;color:var(--muted)}
+
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .3s}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--panel2);color:var(--fg);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#06121f;font-weight:600}
+.vktoggle{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;background:none;border:0;padding:0;color:var(--fg);text-align:left;cursor:pointer;font-family:inherit}
+.vkbox{border-color:rgba(217,180,92,.45)}
+.vkbox>.card{background:transparent;border:0;padding:0}
+.script{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.script .t{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.script p{font-size:14.5px}
+.script mark{background:rgba(217,180,92,.18);color:var(--gold);border-radius:3px;padding:0 3px}
+
+.opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer;background:var(--bg)}
+.opt.sel{border-color:var(--teal)}
+.opt.right{border-color:var(--ok);background:rgba(95,207,154,.08)}
+.opt.wrong{border-color:var(--bad);background:rgba(224,122,111,.08)}
+
+.timer{font-family:var(--display);font-size:72px;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.timer.run{color:var(--teal)}.timer.over{color:var(--bad)}
+
+.vbox{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#06121a;border:1px solid var(--line)}
+.vbox.tall{aspect-ratio:9/16;width:100%;max-width:260px;margin:0 auto}
+.vbox iframe,.vbox video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.vplay{position:absolute;inset:0;width:100%;border:0;cursor:pointer;color:var(--fg);background:radial-gradient(circle at 70% 20%,rgba(72,189,200,.22),transparent 60%),#0d222b center/cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.vplay:before{content:"";position:absolute;inset:0;background:rgba(11,26,34,.45)}
+.vbtn{position:relative;width:72px;height:72px;border-radius:50%;background:var(--gold);color:#1a1405;display:grid;place-items:center;font-size:26px;padding-left:4px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.vlbl{position:relative;font-weight:600;font-size:14px;letter-spacing:.04em}
+.vplay:hover .vbtn{transform:scale(1.06)}
+.planimg{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#000}
+.planimg img{display:block;width:100%;height:auto}
+.more{border:1px dashed var(--teal-d);border-radius:10px;background:rgba(72,189,200,.06)}
+.more>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;font-weight:600;font-size:14px;color:var(--fg)}
+.more>summary::-webkit-details-marker{display:none}
+.more>summary:before{content:"＋";display:grid;place-items:center;width:22px;height:22px;flex:none;border-radius:50%;background:var(--teal);color:#08161c;font-size:13px;font-weight:700}
+.more[open]>summary:before{content:"−"}
+.more-t{flex:1;min-width:0}
+.more-b{padding:0 14px 14px}
+.more.danger{border-color:rgba(224,122,111,.5);background:rgba(224,122,111,.05)}
+.more.danger>summary{color:var(--bad)}
+.more.danger>summary:before{background:var(--bad)}
+.more-hint{font-size:12px;font-weight:500;color:var(--teal);white-space:nowrap}
+.more.danger .more-hint{color:var(--bad)}
+.more-hint .h-c,.more[open] .more-hint .h-o,.vkhint.open .h-o{display:none}
+.more[open] .more-hint .h-c,.vkhint.open .h-c{display:inline}
+.more-chev{font-size:22px;line-height:1;color:var(--gold);transition:transform .2s;flex:none}
+.more[open] .more-chev,.vkhint.open .more-chev{transform:rotate(90deg)}
+.vkhint{display:flex;align-items:center;gap:8px;flex:none;border:1px solid rgba(217,180,92,.5);border-radius:999px;padding:5px 12px}
+.vkhint .more-hint{color:var(--gold)}
+@media (max-width:860px){.more-hint{font-size:11px}.vktoggle{flex-direction:column;align-items:flex-start}.vkhint{padding:4px 10px}}
+.testbar{border:1px dashed var(--gold);background:rgba(217,180,92,.1);color:var(--fg);border-radius:10px;padding:9px 14px;font-size:13px}
+.testbar b{color:var(--gold);letter-spacing:.1em;margin-right:6px}
+.pace{text-align:left;cursor:pointer}
+.pace.on{border-color:var(--gold);background:linear-gradient(160deg,#2a2614,#11252e)}
+.pace.on h3{color:var(--gold)}
+.pulse{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,180,92,.55)}50%{box-shadow:0 0 0 6px rgba(217,180,92,0)}}
+.na-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.na-sum>div{display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+input[type=datetime-local]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;color:inherit}
+.modfoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:9px 16px;border-radius:9px;font-weight:600;font-size:14px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+
+.listrow{display:grid;grid-template-columns:34px minmax(0,1.2fr) minmax(0,1.4fr) 140px 34px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.listrow .n{color:var(--muted);font-size:12px}
+.iconbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);background:none;cursor:pointer;color:var(--muted)}
+.iconbtn:hover{color:var(--bad);border-color:var(--bad)}
+
+.cert{border:2px solid var(--gold);border-radius:16px;padding:32px;background:radial-gradient(circle at 85% 10%,rgba(72,189,200,.16),transparent 55%),var(--panel);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.cert .lv{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cert .lv span{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:600;font-size:13px;color:var(--muted)}
+.cert .lv span.on{border-color:var(--gold);color:var(--gold)}
+
+.welcome{max-width:760px;margin:0 auto;padding-block:clamp(28px,7vh,80px) 60px;padding-inline:16px;display:flex;flex-direction:column;gap:26px}
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps4 div{padding:14px 12px;border-right:1px solid var(--line)}
+.steps4 div:last-child{border-right:0}
+.steps4 b{display:block;font-size:12px;letter-spacing:.08em;color:var(--teal)}
+.steps4 span{font-size:13px;color:var(--muted)}
+
+.langs{display:flex;flex-wrap:wrap;gap:4px}
+.langs button{border:1px solid var(--line);background:none;border-radius:6px;padding:3px 7px;font-size:11px;font-weight:600;letter-spacing:.06em;cursor:pointer;color:var(--muted)}
+.langs button.on{background:var(--teal);border-color:var(--teal);color:#08161c}
+.topbar .langsel{width:auto;padding:5px 8px;font-size:13px}
+.mobnav{display:none}
+.overlay{display:none}
+
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:fixed;left:0;top:0;bottom:0;width:min(86vw,320px);z-index:50;transform:translateX(-105%);transition:transform .25s;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+  .side.open{transform:none}
+  .overlay.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+  .main{padding-block:20px 110px}
+  .grid2,.grid3,.grid4,.steps4{grid-template-columns:minmax(0,1fr)}
+  .steps4 div{border-right:0;border-bottom:1px solid var(--line)}
+  .listrow{grid-template-columns:28px minmax(0,1fr) 34px;row-gap:6px}
+  .listrow .ctx,.listrow .cat{grid-column:2 / 3}
+  .mobnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--panel);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));gap:10px}
+  .mobnav .btn{flex:1}
+  .timer{font-size:56px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.side,.topbar,.mobnav,.modfoot,.noprint{display:none!important}.app{display:block}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+
+
+<div id="root"></div>
+<div id="toast" class="toast" hidden></div>
+
+
+<script src="config.js"></script>
+<script>window.TURBO_TEST=true;</script>
+<script>
+var I18N={};
+I18N.de={
+locale:"de-DE",label:"Deutsch",ph:"[Name]",
+ui:{
+ kicker:"Best Prime · Turbo-Onboarding · 48 Stunden",
+ hero:"Dein 48h-<br>Turbo-Start",
+ heroLead:"In 48 Stunden vom neuen Partner zum aktiven Vertriebsaufbau: System in 60 Sekunden erklären, Namensliste und TOP 10 aufbauen, die ersten Menschen ansprechen und dein erstes Gespräch führen.",
+ steps:[["01 · VERSTEHEN","System in 60 Sekunden"],["02 · FOKUS","Namensliste und TOP 10"],["03 · AKTIVITÄT","Ansprache und erstes Gespräch"],["04 · DUPLIZIEREN","Prozess weitergeben"]],
+ metrics:[["60 s","um das System einfach zu erklären"],["30 → 10 → 5","Namen · TOP 10 · erste Ansprachen"],["48 h","bis zum ersten Gespräch"]],
+ startTitle:"Starte deinen Turbo",
+ yourName:"Dein Name",namePh:"Vor- und Nachname",leader:"Dein Sponsor / Leader",leaderPh:"Name deines Leaders",
+ localNote:"Deine Eingaben bleiben auf diesem Gerät gespeichert. Mit „Fortschritt sichern“ kannst du sie jederzeit exportieren und auf einem anderen Gerät laden.",
+ startBtn:"Turbo starten – 48h laufen ab jetzt",loadBackup:"Gesicherten Fortschritt laden",needName:"Bitte deinen Namen eingeben",
+ modulesOf:"{a} von {b} Schritten",sprintLeft:"Turbo: noch {h} h",sprintOver:"48 h vorbei",
+ backup:"Fortschritt sichern / laden",menu:"Schritte",back:"Zurück",next:"Weiter",phase:"Phase",
+ critOk:"Kriterium erfüllt",critOpen:"Kriterium offen",markDone:"Als erledigt markieren",doneReset:"✓ Erledigt – zurücksetzen",toastDone:"Schritt erledigt",
+ moreOpen:"Antippen zum Öffnen",moreClose:"Zuklappen",copied:"Kopiert",copyManual:"Bitte Text markieren und kopieren",language:"Sprache",
+ lbl:{task:"Aufgabe",first:"Dein erster Schritt",today:"Aufgabe heute",rule:"Regel",mantra:"Merksatz",next:"Dein nächster Schritt"},
+ consent:"Ich bin einverstanden, dass mein Onboarding-Fortschritt (Schritte, Kennzahlen, Startprofil) an mein Leader-Team übermittelt wird, damit es mich gezielt unterstützen kann. Namen meiner Kontakte werden nicht übertragen.",
+ consentNeed:"Bitte der Übermittlung an dein Leader-Team zustimmen",consentBtn:"Zustimmen",consentTitle:"Fortschritt mit deinem Leader-Team teilen",
+ videoT:"Kurz erklärt: Was dir der Turbo bringt",videoPlay:"Video abspielen",videoNote:"Beim Abspielen werden Inhalte von {p} geladen.",
+ syncOk:"Synchronisiert {t}",syncErr:"Nicht synchronisiert – Verbindung prüfen",syncWait:"Wird synchronisiert …"
+},
+phases:["Verstehen","Fokus","Aktivität","Duplizieren"],
+mods:{start:["Dein 48h-Fahrplan","Startprofil"],system:["Das System in 60 Sekunden","Pflichtverständnis"],plan:["Dein Weg","Der Vergütungsplan"],list:["Deine Namensliste","Potenzial sammeln"],top:["Deine TOP 10","Fokus"],talkto:["Ansprache","Partner gewinnen"],pipe:["Pipeline & Follow-up","Jeder Kontakt hat einen nächsten Schritt"],talk:["Dein erstes Gespräch","Fragen vor Erklären"],dup:["Duplikation","Den Prozess weitergeben"],finish:["48h-Check","Abschluss mit deinem Leader"]},
+status:{NEU:"NEU",TERMIN:"TERMIN",FU:"FOLLOW-UP",ENT:"ENTSCHEIDUNG",GO:"GESTARTET",NO:"KEIN INTERESSE",open:"– offen –"},
+diagQ:["Warum willst du dieses Business wirklich aufbauen?","Wie viel Zeit investierst du realistisch pro Woche?","Wo brauchst du in den nächsten 48 Stunden am meisten Unterstützung?"],
+types:[["Closer","schnell zu Gesprächen & Terminen"],["Connector","Netzwerke & Synergien öffnen"],["Builder","Partner gewinnen & aktivieren"],["Leader","Teams & Märkte strukturieren"]],
+quiz:[{q:"Was ist die Rolle von Best Prime?",a:["Technologieplattform","Vertriebs- und Community-Organisation"]},{q:"Was ist ePOINT?",a:["Technologieplattform und zentrale Marke des Ökosystems","Klassische Bank"]},{q:"Was ist ePAY im Gesamtbild?",a:["Payment- / Transaktionsebene","Recruiting-App"]}],
+cats:["Freunde & Bekannte","Familie","Unternehmer","Vertrieb","Multiplikator","Community","Netzwerköffner"],
+scripts:{
+ an:[["Freunde · locker","Hey [Name], ich hab mir nebenbei was Neues aufgebaut und will’s dir unbedingt zeigen, weil deine ehrliche Meinung mir wichtig ist. Keine Sorge, ich will dir nichts andrehen. Hast du die Tage mal 15 Minuten, gern auch bei einem Kaffee?","fr"],
+  ["Freunde · sachlich","Hi [Name], ich starte gerade ein Projekt neben meinem Job und würde gern hören, wie du das einschätzt. Du sagst mir ja immer direkt, was du denkst. Wann passt dir ein kurzes Treffen?","fr"],
+  ["Bekannte · locker","Hey [Name], lang nichts gehört! Ich bin gerade bei einem neuen Thema dabei, und irgendwie musste ich dabei an dich denken. Magst du mal kurz telefonieren?","be"],
+  ["Bekannte · sachlich","Hallo [Name], ich habe vor Kurzem etwas Neues gestartet, das für dich oder dein Umfeld interessant sein könnte. Ich erkläre es lieber kurz am Telefon als lang im Chat. Passt dir diese Woche?","be"],
+  ["Warmer Kontakt · locker","Hi [Name], du bist doch jemand, der viele Leute kennt und offen für Neues ist. Ich hab gerade was am Start, wo genau so jemand gefragt ist. Lust auf 10 Minuten?","wa"],
+  ["Warmer Kontakt · sachlich","Hallo [Name], ich baue gerade nebenberuflich etwas auf und suche Menschen, die gut vernetzt sind und gern etwas bewegen. Du bist mir sofort eingefallen. Hättest du kurz Zeit für einen Austausch?","wa"],
+  ["Kalter Kontakt · locker","Hey [Name], ich hab gesehen, dass du [konkreter Bezug: Post, Beruf, Gruppe]. Find ich stark! Ich bin selbst gerade an etwas dran, das gut dazu passen könnte. Darf ich dir mal kurz erzählen, worum’s geht?","ka"],
+  ["Kalter Kontakt · sachlich","Hallo [Name], ich bin über [Bezug] auf dich gestoßen. Ich suche gerade Menschen, die unternehmerisch denken, für ein Projekt im Aufbau. Wenn du grundsätzlich offen bist, zeige ich dir die Idee in 10 Minuten. Wenn nicht, ist das auch völlig okay.","ka"],
+  ["Alter Kontakt · Nachricht 1","Hey [Name], ich war ehrlich gesagt ewig nicht mehr bei dir gemeldet, aber ich musste neulich an dich denken. Wie läuft’s bei dir?","re"],
+  ["Alter Kontakt · Nachricht 2 (nach Antwort)","Schön, von dir zu hören! Bei mir tut sich gerade auch einiges, ich hab was Neues gestartet. Erzähl ich dir gern mal in Ruhe. Magst du die Tage kurz telefonieren?","re"]],
+ vk:[["1 · Augenhöhe (Standard)","Servus [Name], du hast über Jahre etwas aufgebaut, das die meisten nie schaffen: Menschen, Reichweite und Vertrauen. Mich beschäftigt eine Frage: Warum arbeitet so eine Struktur wirtschaftlich nur für ein einziges Geschäftsmodell? Wir haben dazu einen Ansatz, der dein Kerngeschäft ergänzt und nichts davon ersetzt oder abzieht. Hast du nächste Woche 15 Minuten?"],
+  ["2 · Unternehmer / Geschäftsführer","Servus [Name], eine unternehmerische Frage an dich: Der eigentliche Wert deiner Organisation steckt in den Menschen und Beziehungen, aber monetarisiert wird meist nur das Kernprodukt. Genau an dieser Lücke setzen wir an, als zusätzliches Ertragsfeld für die Organisation und ihre Partner. Ich würde das gern mit dir als Unternehmer durchspielen. Passt dir Dienstag oder Donnerstag für 20 Minuten?"],
+  ["3 · Kurz für Vielbeschäftigte","Servus [Name], kurze Frage: Was wäre, wenn deine Struktur eine zusätzliche Einnahmequelle erschließt, ohne dass sich an deinem Geschäft etwas ändert? Daran arbeiten wir gerade. 15 Minuten in den nächsten Tagen?"],
+  ["4 · Über Empfehlung","Servus [Name], [Kontaktperson] hat mir geraten, dich direkt anzusprechen. Ich verantworte bei uns den strategischen Aufbau mit bestehenden Vertriebsorganisationen. Uns geht es nicht um Abwerbung, sondern darum, Netzwerke so zu verbinden, dass beide Seiten wirtschaftlich davon profitieren. Wie sieht es bei dir nächste Woche für ein kurzes Telefonat aus?"],
+  ["5 · Provokant (nur bei Bekannten)","Servus [Name], deine Leute sind da, dein Netzwerk ist da, das Vertrauen ist da. Warum arbeitet das alles nur für ein Geschäftsmodell? Ich habe dazu einen Ansatz, den ich gern mit dir durchspiele. Über einen klassischen Vertrieb reden wir dabei nicht. Bist du nächste Woche für 20 Minuten offen?"],
+  ["6 · Vertriebsinhaber (Partnerbindung)","Servus [Name], du investierst laufend in Menschen, Führung und Ausbildung, und trotzdem hängt deren Einkommen meist an einem einzigen Produkt. Wir haben einen Ansatz, der deinen Partnern ein zusätzliches Ertragsfeld gibt, innerhalb deiner Organisation. Damit hätten sie einen Grund mehr, bei dir zu bleiben. Lass uns das in 15 Minuten prüfen. Wann passt es dir?"],
+  ["Follow-up · nach 3–5 Tagen","Servus [Name], ich hake einmal kurz nach. Ist das Thema grundsätzlich interessant, später wieder relevant oder passt es nicht? Alle drei Antworten sind völlig okay."],
+  ["Abschluss · nach weiteren 7 Tagen","Servus [Name], ich nehme das Thema auf meiner Seite raus, damit nichts offen herumliegt. Falls du den Gedanken später prüfen willst, melde dich jederzeit. Weiter viel Erfolg mit deinem Team!"],
+  ["Wenn Interesse kommt","Sehr gern! Damit du es richtig einordnen kannst: Ich will dir im Gespräch nicht einfach etwas präsentieren. Zuerst möchte ich verstehen, wie deine Struktur aufgestellt ist, und dann zeige ich dir, wo wir konkret ansetzen könnten. Dann siehst du schnell, ob es passt. [Tag] um [Uhrzeit]?"],
+  ["Einwand · „Worum geht’s genau?“","Ehrlich gesagt würde ich es im Chat verkürzt und damit falsch erklären. In 15 Minuten siehst du selbst, ob es zu dir passt. [Tag] oder [Tag]?"]],
+ fu:[["Nach einem guten Erstgespräch","Danke dir für den Austausch. Für mich sind vor allem [Punkt 1] und [Punkt 2] interessant. Lass uns als nächsten Schritt [konkrete Aktion] machen. Passt dir [Tag/Uhrzeit]?"],["Keine Rückmeldung","Hi [Name], ich hake einmal sauber nach, damit das Thema nicht irgendwo im Chat hängen bleibt. Ist das aktuell grundsätzlich interessant, sollen wir es später wieder aufnehmen oder passt es für dich nicht? Alles drei ist völlig okay."],["Noch unsicher","Was ist aktuell der eine Punkt, der dich davon abhält, einen nächsten Schritt zu machen? Dann können wir genau den klären, statt das komplette Thema noch einmal durchzugehen."],
+  ["Kurz nachfassen · nach 3–4 Tagen","Hey [Name], nur kurz nachgefragt, damit’s nicht untergeht: Grundsätzlich interessant, später oder eher nicht dein Ding? Alles drei ist völlig okay 🙂"],
+  ["Einwand · „Was ist es denn?“","Ehrlich? Im Chat würde ich’s nur halb erklären und du hättest ein falsches Bild. In 10 Minuten am Telefon siehst du selbst, ob’s was für dich ist. Heute Abend oder morgen?"],
+  ["Einwand · „Ist das so ein Schneeballding?“","Gute Frage, die hab ich mir auch gestellt. Lass es dir einfach zeigen und urteile selbst. Ich will dich zu nichts überreden."],
+  ["Nach einer Absage","Alles gut, danke für die ehrliche Antwort! Falls dir mal jemand einfällt, für den das passen könnte, sag gern Bescheid."]]
+},
+
+days:[["Tag 1 · 0–24 h","Verstehen · Fokus",["Startprofil ausgefüllt","60-Sekunden-Erklärung sitzt (3×)","Leader-Check bestanden","Mindestens 30 Namen","TOP 10 + erste 5 gewählt"]],["Tag 2 · 24–48 h","Aktivität · Duplizieren",["5 Ansprachen gesendet","5 Kontakte mit Status","Follow-up mit Datum gesetzt","Erstes Gespräch geführt","Duplikation geplant"]]],
+dupSteps:["Startprofil","60-Sekunden-Erklärung","Namensliste + TOP 10","Erste 5 Ansprachen","48h-Review"],
+m:{
+start:{lead:"Das Turbo-Onboarding ist kein Lesebuch, sondern ein Arbeitsplan für deine ersten 48 Stunden. Jeder Schritt endet mit einer konkreten Handlung – alles, was du einträgst, wird automatisch gespeichert.",
+ cards:["Das System in 60 Sekunden erklären – ruhig, klar, ohne Fachchinesisch.","Namensliste aufbauen und daraus deine TOP 10 wählen.","Die ersten Menschen ansprechen und dein erstes Gespräch führen.","Den gleichen einfachen Start mit deinem nächsten Partner wiederholen."],
+ sprint:"Deine 48 Stunden",started:"gestartet am {d}",expired:"abgelaufen",
+ tl:["Start","Tag 1: Verstehen + Fokus","Tag 2: Aktivität","48 h"],
+ profile:"Dein Startprofil",type:"Dein stärkster Starttyp",
+ quote:["Du musst nicht alles wissen, bevor du startest.","Du musst genug verstehen, um den nächsten sinnvollen Schritt sicher auszulösen."],
+ task:"Beantworte die drei Fragen und wähle deinen Starttyp. Dein Sponsor / Leader richtet daran deine 48 Stunden aus. Ein goldener Kreis im Menü heißt: Kriterium erfüllt – markiere den Schritt dann als erledigt."},
+system:{lead:"Wer das System nicht einfach erklären kann, kann es nicht sauber weitergeben. Deshalb ist dieser Schritt Pflicht.",
+ sys:[["Best Prime","Vertrieb & Wachstum","Die internationale Vertriebs- und Community-Organisation. Sie strukturiert Recruiting, Onboarding, Duplikation, Führung und Marktausbau."],["ePOINT","Plattform & Ökosystem","Die Technologieplattform und zentrale Marke des Ökosystems. Verbraucher, Unternehmen und Partner werden in einer gemeinsamen Infrastruktur verbunden."],["ePAY","Payment & Nutzung","Die Payment- und Transaktionsebene. Dadurch wird der Nutzen des Ökosystems im realen Konsum und im Alltag praktisch verankert."]],
+ youT:"Deine Rolle als Partner",you:["Menschen gewinnen, die mit aufbauen wollen","bestehende Netzwerke nutzen","Organisation und Duplikation aufbauen"],
+ coreL:"Die Kernlogik in 60 Sekunden",
+ core:"Best Prime baut die Vertriebs- und Wachstumsstruktur. ePOINT ist die Technologieplattform, die Verbraucher, Unternehmen und Partner in einem gemeinsamen Ökosystem verbindet. ePAY ergänzt die Zahlungs- und Transaktionsebene. Meine Aufgabe als Partner: Menschen gewinnen, die diesen Aufbau mit mir gemeinsam duplizieren.",
+ munich:"Wie das Händlermodell im Detail funktioniert, lernst du beim Event in München. Für deinen Start brauchst du es nicht.",
+ tr:"60-Sekunden-Trainer",trHint:"Starte den Timer, erkläre das Gesamtsystem laut und ohne abzulesen. Stoppe, wenn du fertig bist. Ziel: mindestens 3 saubere Durchgänge unter 60 Sekunden.",
+ start:"Start",stop:"Stopp",reset:"Zurücksetzen",reps:"gültige Durchgänge (≤ 60 s)",best:"beste Zeit",ready:"bereit für Leader-Check",
+ short:"Zu kurz – erkläre das ganze System",valid:"{s} s – gültiger Durchgang",long:"{s} s – zu lang, noch einmal kürzer",
+ quizT:"Mini-Check – ohne Unterlagen",right:"Richtig.",wrong:"Nicht ganz – lies die drei Karten oben noch einmal.",
+ qrule:"<b>Qualitätsregel:</b> Preise, Vergütungen, Produktfeatures und Marktdaten nur aus den aktuellen offiziellen Best-Prime-Unterlagen bzw. dem Backoffice. Keine alten Screenshots, keine erfundenen Zahlen, keine Einkommensversprechen.",
+ unlock:"Leader-Check",unlockHint:"Erkläre deinem Leader das System in 60 Sekunden – am Telefon reicht. Wenn er bestätigt, geht es in die Namensliste.",
+ leaderOk:"Mein Leader{l} hat meine 60-Sekunden-Erklärung bestätigt",unlocked:"Freigeschaltet – weiter zur Namensliste",locked:"Noch nicht freigeschaltet",
+ task:"Erkläre das Gesamtsystem ohne abzulesen in maximal 60 Sekunden. Wiederhole es, bis es klar, ruhig und ohne Fachchinesisch funktioniert – dann Leader-Check."},
+plan:{lead:"Du weißt jetzt, warum du startest und wie das System funktioniert. Hier siehst du, wohin dich dein Weg bei Best Prime führen kann – Stufe für Stufe.",
+ imgL:"Der Best-Prime-Vergütungsplan",alt:"Best Prime Vergütungsplan mit allen Karrierestufen von Partner bis Innercircle Board Member",
+ zoom:"Groß ansehen",zoomHint:"Tipp: Antippen öffnet den Plan in voller Größe – zum Zoomen.",
+ goalT:"Dein Warum – und dein Weg",goal:"Schau dir den Plan mit deinem Ziel im Kopf an: Welche Stufe passt zu dem, was sich für dich verändern soll? Sprich das mit deinem Leader durch.",
+ yourWhy:"Dein Warum aus dem Startprofil",toProfile:"Erst dein Warum im Startprofil eintragen",
+ soon:"Folgt in Kürze",parts:[["So liest du den Plan","Die Stufen, CP und die wichtigsten Begriffe – einfach erklärt."],["Szenarien","Beispiele, wie sich ein Weg Stufe für Stufe aufbauen kann."],["Dein Rechner","Rechne selbst durch, was dein Ziel konkret bedeutet."]],
+ rule:"<b>Wichtig:</b> Der Vergütungsplan zeigt, was das System ermöglicht – keine Garantie für ein bestimmtes Einkommen. Ergebnisse hängen von deiner eigenen Aktivität und der deines Teams ab. Verbindlich sind die aktuellen offiziellen Unterlagen im Backoffice.",
+ task:"Schau dir den Plan in Ruhe an und markiere für dich die Stufe, die zu deinem Ziel passt. Dann weiter zur Namensliste – denn jede Stufe beginnt mit den Menschen auf deiner Liste."},
+list:{lead:"Die Liste ist kein Adressbuch. Sie ist dein Ausgangsmaterial für neue Partner, Synergien und Multiplikatoren.",
+ count:"Namen auf deiner Liste",goal:"100 – stark!",go100:"Turbo-Ziel erreicht – gern weiter bis 100",min30:"Mindestens 30",
+ rules:"<b>Regel 1:</b> Namen sammeln, noch nicht bewerten. <b>Regel 2:</b> Die Liste darf beliebig wachsen. <b>Regel 3:</b> Erst nach dem Sammeln wird priorisiert.",
+ add:"Namen hinzufügen",name:"Name",namePh:"z. B. Max Mustermann",ctx:"Beziehung / Kontext (optional)",ctxPh:"z. B. Sportverein, Ex-Kollege",addBtn:"Hinzufügen",tip:"Tipp: Enter drücken, nächster Name – Kategorie bleibt gesetzt.",
+ bulk:"Viele Namen auf einmal einfügen",bulkPh:"Ein Name pro Zeile",bulkBtn:"Alle hinzufügen",bulkToast:"{n} Namen hinzugefügt",
+ yours:"Deine Liste",search:"Suchen…",empty:"Noch keine Namen. Starte mit Freunden, Familie und Bekannten – erst sammeln, dann bewerten.",ctxCol:"Kontext",cat:"Kategorie",remove:"Entfernen",
+ whyT:"Warum überhaupt eine Liste?",why:"Deine Liste ist nicht nur dein Start – sie ist der Anfang einer Kette. Sieh dir an, was passiert, wenn dein Prozess dupliziert wird.",whyBtn:"Multiplikator ansehen",
+ helpT:"Wer fällt dir ein?",help:["Wer ist unzufrieden mit seinem Job oder will mehr?","Wer ist unternehmerisch, offen und gut vernetzt?","Wer war schon einmal im Vertrieb oder Network?","Wen kennst du aus Verein, Schule, Arbeit, Nachbarschaft?","Wer kennt viele Menschen und öffnet Türen?"],
+ t30:"30 Namen – Turbo-Ziel geschafft",t100:"100 Namen – stark!",
+ task:"Schreibe jetzt mindestens 30 Namen auf – ohne zu bewerten. Je größer die Liste, desto entspannter die Ansprache."},
+top:{lead:"Fokus schlägt Masse. Die Liste gibt dir Breite – die TOP 10 geben dir Geschwindigkeit.",
+ crit:[["Vertrauen","Wie gut ist dein Zugang?"],["Potenzial","Einzelkontakt oder Multiplikator?"],["Tempo","Wie schnell ist ein Gespräch möglich?"]],
+ empty:"Erst Namen sammeln – deine Liste ist noch leer.",toList:"Zur Namensliste",
+ rate:"Bewerten & auswählen",of:"{n} / 10 TOP-Kontakte",hint:"Vergib 1–5 Punkte. Die Liste sortiert sich nach Gesamtpunkten. Markiere 10 als TOP und davon 5, die du in den nächsten 24 Stunden ansprichst.",
+ cols:["TOP","Name","Vertrauen","Potenzial","Tempo","Σ","Erste 5"],
+ quote:["Deine TOP 10 sind nicht zwingend die bekanntesten Kontakte.","Es sind die mit dem besten Mix aus Zugang, Hebel und realistischer Geschwindigkeit."],
+ max5:"Maximal 5 – das ist der Fokus",
+ task:"Wähle deine TOP 10 und markiere davon die ersten 5, die du innerhalb von 24 Stunden ansprichst."},
+sc:{forWho:"Für wen?",manual:"{ph} manuell anpassen",copy:"Kopieren",used:"{n}× genutzt",templates:"Vorlagen",fu:"Follow-ups & Einwände",vkSeq:"Erstnachrichten, Follow-ups & Einwände",all:"Alle",groups:{fr:"Freunde",be:"Bekannte",wa:"Warme Kontakte",ka:"Kalte Kontakte",re:"Alte Kontakte"}},
+talkto:{lead:"Bei warmen Kontakten ist Vertrauen bereits vorhanden. Nutze es nicht für Druck – nutze es für einen ehrlichen, relevanten Einstieg und einen kleinen nächsten Schritt.",
+ note:"Beim Kopieren oder Öffnen in WhatsApp wird der gewählte Kontakt in der Pipeline automatisch auf „NEU“ gesetzt.",
+ tonT:"Klingt das nach dir?",ton:"Für Einsteiger wirkt Echtheit am stärksten, nicht Perfektion. Wer ehrlich sagt „ich bin gerade neu und finde das spannend“, wirkt glaubwürdiger als jemand, der Profi spielt. Jede Vorlage gibt es locker und sachlich – nimm die, die nach dir klingt.",
+ rulesT:"Drei Regeln vor dem Senden",rules:["Vorlage einmal laut lesen. Klingt sie nicht nach dir, schreib sie in deinen Worten um.","Ohne persönlichen Bezug geht es nicht. Bei kalten Kontakten immer ein konkretes Detail nennen.","Keine Einkommensandeutungen, keine Firmennamen im ersten Text. Erklärt wird erst im Gespräch."],
+ reT:"Tipp für alte Kontakte",re:"Erst echtes Interesse zeigen, das Thema erst in der zweiten Nachricht aufmachen.",
+ vkT:"Für Vertriebsköpfe & große Organisationen",vkLead:"Hier geht es nicht um Anwerben, sondern um eine strategische Partnerschaft auf Augenhöhe. Den Vertriebskopf als Kooperationspartner ansprechen, nie als Bewerber. Kein Markenname im ersten Kontakt, maximal 4 Sätze, immer eine klare Terminfrage.",
+ vkPos:"Leitsatz fürs Gespräch: „Wir suchen keine Vertriebe, die für uns arbeiten, sondern Organisationen, mit denen wir gemeinsam wachsen.“",
+ vkWarn:"Im Gespräch gilt: Ein großes Netzwerk allein ist noch kein Business Case. Entscheidend sind aktive Partner, echte Kontakte und Ertrag – keine Zahlen versprechen, Konditionen nur aus offiziellen Unterlagen.",
+ f4T:"Die 4-Satz-Formel",f4:[["Kontext","Warum du?"],["Relevanz","Warum interessant?"],["Neugier","Nicht alles erklären"],["Nächster Schritt","10 Min. / Termin"]],
+ doT:"Das funktioniert",do:["echter persönlicher Bezug","Relevanz für die Person","kleiner nächster Schritt (10 Minuten)","Neugier statt Informationsdump"],
+ dontT:"Das vermeiden",dont:["Copy-Paste ohne Bezug","Provisionen und Einkommen im ersten Text","Druck oder künstliche Verknappung","alles im Chat erklären"],
+ task:"Sende heute 5 Ansprachen – an deine „Erste 5“ aus den TOP 10. Ziel jeder Nachricht ist nur ein 10-Minuten-Termin."},
+pipe:{lead:"Vertrieb verliert Geschwindigkeit, wenn Gespräche offen enden. Jeder Kontakt braucht einen Status und einen nächsten Schritt.",
+ steps:[["1 · Erstkontakt","Relevanz prüfen, kurzen Termin erzeugen. Nicht alles im Chat erklären."],["2 · Termin","Fragen vor Erklären: Was will die Person, was bringt sie mit?"],["3 · Follow-up","Nie „Meld dich einfach“. Immer Datum oder Entscheidung festhalten."],["4 · Doku","Gedächtnis ist kein CRM. Sofort hier eintragen."]],
+ empty:"Hier erscheinen deine TOP-Kontakte und alle, die du angesprochen hast.",cols:["Kontakt","Status","Nächster Schritt","Datum","Reagiert"],nextPh:"z. B. Termin 10 Min.",
+ task:"Gib jedem angesprochenen Kontakt einen Status und einen nächsten Schritt mit Datum. Rot markierte Daten sind überfällig."},
+talk:{lead:"Ein gutes Gespräch ist kein Vortrag, sondern eine Diagnose. Erst verstehen, was die Person will und mitbringt – dann den passenden Teil des Systems zeigen.",
+ qT:"5 Kernfragen",
+ pq:["Was machst du heute beruflich – und was soll sich verändern?","Wie groß ist dein direktes Netzwerk?","Arbeitest du lieber allein oder im Team?","Welche Menschen, Branchen oder Regionen kannst du öffnen?","Willst du eher nebenbei starten oder eine Organisation aufbauen?"],
+ flow:["1. Verstehen","2. Einordnen","3. Passend erklären","4. Nächster Schritt"],
+ tipT:"Tipp: 2er-Gespräch",tip:"Dein erstes Gespräch führst du am besten gemeinsam mit deinem Leader. Du stellst die Fragen, dein Leader erklärt – so lernst du am schnellsten.",
+ quote:["Erst Bedarf verstehen. Dann Nutzen erklären.","Je mehr du vor der Bedarfsanalyse redest, desto größer die Gefahr, am eigentlichen Hebel vorbeizuargumentieren."],
+ prot:"Gesprächsprotokoll",f:["Kontakt","Größter Hebel","Größte offene Frage","Nächster Schritt + Termin"],save:"Gespräch speichern",saved:"Gespräch gespeichert",
+ cols:["Datum","Kontakt","Hebel","Offene Frage","Nächster Schritt"],del:"Löschen",
+ task:"Führe innerhalb deiner 48 Stunden mindestens ein Gespräch mit echter Bedarfsanalyse – gern als 2er-Gespräch mit deinem Leader."},
+dup:{lead:"Der größte Hebel entsteht nicht dadurch, dass du immer mehr selbst machst, sondern dadurch, dass ein einfacher Prozess von vielen sauber wiederholt wird.",
+ flow:["1. Startprofil","2. System","3. Liste + TOP 10","4. Ansprache","5. 48h Aktion"],
+ multiL:"Der Multiplikator",multiT:"Warum deine Liste ein Multiplikator ist",
+ multiIdea:"<b>Die Idee:</b> Du erstellst eine Liste mit 100 Kontakten. Wenn im Rechenbeispiel 10 % davon starten und jeder den identischen Prozess wiederholt – wieder eine Liste, wieder 10 % –, wächst die Organisation Ebene für Ebene exponentiell. Spiel mit den Werten.",
+ learnT:"Was du daraus lernen sollst",learn:"Der größte Hebel entsteht nicht dadurch, dass eine Person immer mehr selbst macht, sondern dadurch, dass ein einfacher Prozess von vielen sauber wiederholt wird.",
+ size:"Kontakte pro Liste",rate:"Startquote in %",levels:"Ebenen",cols:["Ebene","Aktive Partner","Personen auf Listen","Neue Partner"],lv:"E",
+ notT:"Was du daraus nicht ableiten darfst",not:"Das Beispiel ist keine Prognose und kein Einkommens- oder Wachstumsversprechen. Reale Quoten hängen von Markt, Qualität, Aktivität und vielen weiteren Faktoren ab. Nutze diese Rechnung nie als Versprechen gegenüber Interessenten.",
+ noT:"Du machst NICHT",no:["alles für den neuen Partner","jeden Kontakt selbst","stundenlange Sonderschulungen","einen eigenen Prozess pro Person"],
+ yesT:"Du machst STATTDESSEN",yes:["den gleichen Turbo gemeinsam","erste Schritte vormachen","danach den Partner selbst machen lassen","an Zahlen und Fähigkeiten coachen"],
+ title:"Dein erster Duplikationsauftrag",partner:"Name deines nächsten Partners (bleibt nur auf deinem Gerät)",cols2:["Schritt","Termin","Erledigt"],
+ link:"Turbo-Link für den Partner kopieren",linkHint:"Jeder Partner arbeitet mit seinem eigenen Fortschritt.",
+ task:"Nicht „Wie viele kann ich selbst erreichen?“, sondern „Wie einfach kann mein Prozess von der nächsten Person wiederholt werden?“ Trag den Namen deines nächsten Partners und den ersten Termin ein."},
+finish:{lead:"Nach 48 Stunden setzt du dich mit deinem Leader zusammen: Zahlen anschauen, nächste Schritte festlegen. Abschluss = Wissen + echte Aktivität.",
+ sc:"Dein 48h-Scoreboard",scHint:"Wird automatisch aus Liste, Pipeline und Gesprächen berechnet.",
+ k:["Namen auf der Liste","TOP-Kontakte","Kontaktaufnahmen","Reaktionen","Gespräche","Nächste Schritte mit Datum"],
+ lv:[["Verstanden","System sitzt","60-Sekunden-Erklärung, Mini-Check und Leader-Bestätigung."],["Aktiv","Aktivität nachweisbar","30+ Namen, TOP 10, 5 Kontakte angesprochen, erstes Gespräch geführt."],["Dupliziert","Prozess weitergegeben","Dein erster eigener Partner hat den Turbo mit dir durchlaufen."]],
+ reviewT:"Review mit deinem Leader",review:"48h-Review mit meinem Leader{l} ist erledigt",date:"Datum des Reviews",
+ did:"hat den 48h-Turbo durchlaufen · Stufe",status:"Aktuelle Stufe",none:"Noch offen",yourName:"Dein Name",print:"Drucken / als PDF",
+ rulesT:"Unsere Standards",rules:["klar statt kompliziert","Bedarf vor Präsentation","keine Einkommensversprechen","keine erfundenen Produkt- oder Unternehmenszahlen","offizielle Unterlagen für aktuelle Konditionen","jeder Kontakt bekommt einen klaren nächsten Schritt"],
+ munichT:"Als Nächstes: München",munich:"Beim Event in München geht es weiter. Bis dahin gilt: Liste wachsen lassen, täglich ansprechen, Gespräche führen.",
+ chain:"Klarheit → Aktivität → Ergebnis → Duplikation",
+ task:"Öffne deine TOP 10, wähle den nächsten Kontakt, entscheide dich für die passende Ansprache – und löse die nächste Aktion aus."},
+bk:{title:"Fortschritt sichern / laden",close:"Schließen",hint:"Dein Fortschritt liegt auf diesem Gerät. Zum Gerätewechsel: Datei speichern oder Code kopieren – auf dem neuen Gerät laden.",
+ file:"Als Datei speichern",copy:"Code kopieren",loadL:"Sicherung laden: Datei wählen oder Code einfügen",codePh:"Sicherungscode hier einfügen",load:"Sicherung laden",
+ resetSum:"Alles zurücksetzen",resetBtn:"Ja, alle Daten auf diesem Gerät löschen",loaded:"Sicherung geladen",invalid:"Das ist keine gültige Turbo-Sicherung",need:"Bitte Code einfügen oder Datei wählen",saved:"Gespeichert",canceled:"Speichern abgebrochen",reset:"Zurückgesetzt"}
+}};
+/* ===== TESTVERSION (test.html) – wird nur mit window.TURBO_TEST angewendet. Live-App bleibt unverändert. =====
+   over      = ersetzt/ergänzt Texte (Arrays werden komplett ersetzt)
+   scriptsAdd= hängt Vorlagen hinten an (IDs bleiben stabil)
+   easy      = zusätzliche Überschreibungen im Einsteiger-Tempo (7 Tage · 10/5/3) */
+I18N.de.test={
+over:{
+ ui:{
+  testT:"TESTVERSION",test:"Neue Funktionen zum Ausprobieren. Daten bleiben nur auf diesem Gerät, nichts geht ins Controlling.",
+  startBtn:"Jetzt starten",
+  paceT:"Dein Tempo",paces:[["turbo","Turbo · 48 Stunden","30 Namen · TOP 10 · 5 Ansprachen. Für alle, die jetzt richtig Gas geben wollen."],["easy","Einsteiger · 7 Tage","10 Namen · TOP 5 · 3 Ansprachen. Gleicher Weg, kleinere Schritte – wenn du wenig Zeit hast."]],
+  paceSet:"Tempo geändert",toEasy:"Zum Einsteiger-Tempo wechseln",
+  sprintLeftD:"Start: noch {d} Tage",
+  copiedSend:"Kopiert. Nach dem Senden auf „Gesendet“ tippen.",sentOk:"Gesendet ✓ – in der Pipeline als NEU eingetragen",
+  yourLeader:"deinem Leader",
+  stuckT:"Woran hängt es gerade?",
+  stuckR:[["understand","Nicht verstanden"],["time","Keine Zeit"],["unsure","Unsicher bei der Ansprache"],["help","Brauche Hilfe"]],
+  stuckA:{understand:"Kein Problem – schau dir das Video im 48h-Fahrplan noch einmal an und lies die drei Karten im Schritt „System in 60 Sekunden“. Was dann noch offen ist, klärst du in 10 Minuten mit {l}.",
+   time:"Dann mach es kleiner statt gar nicht: Das Einsteiger-Tempo gibt dir 7 Tage und kleinere Ziele. Gleicher Weg, nur in deinem Rhythmus.",
+   unsure:"Ganz normal am Anfang. Nimm die lockere Vorlage, lies sie einmal laut und schreib sie in deinen Worten. Oder führe die ersten Ansprachen gemeinsam mit {l} – im 2er-Team lernst du am schnellsten.",
+   help:"Melde dich jetzt bei {l} – eine kurze Nachricht reicht: „Ich hänge bei [Schritt], hast du heute 10 Minuten?“"}
+ },
+ m:{
+  sc:{used:"{n}× gesendet",sentBtn:"✓ Gesendet"},
+  talkto:{note:"So zählt es: Vorlage kopieren oder in WhatsApp öffnen, anpassen, absenden – und erst dann auf „✓ Gesendet“ tippen. Dann wird der Kontakt in der Pipeline auf „NEU“ gesetzt. Nur kopieren zählt nicht als Ansprache."},
+  system:{
+   sys:[["Best Prime","Vertrieb & Wachstum","Die internationale Vertriebs- und Community-Organisation. Sie strukturiert Recruiting, Onboarding, Duplikation, Führung und Marktausbau."],["ePOINT","Plattform & Ökosystem","Die Technologieplattform und zentrale Marke des Ökosystems. Verbraucher, Unternehmen und Partner werden in einer gemeinsamen Infrastruktur verbunden."],["ePAY","Payment-Ebene","Die geplante Payment- und Transaktionsebene des Ökosystems. Mit dem Start von ePAY wird der Nutzen direkt beim Bezahlen im Alltag verankert. Verfügbarkeit und Starttermin nur gemäß offiziellem Produktstatus."]],
+   core:"Best Prime baut die Vertriebs- und Wachstumsstruktur. ePOINT ist die Technologieplattform, die Verbraucher, Unternehmen und Partner in einem gemeinsamen Ökosystem verbindet. Mit ePAY kommt die Zahlungs- und Transaktionsebene dazu. Meine Aufgabe als Partner: Menschen gewinnen, die diesen Aufbau mit mir gemeinsam duplizieren."},
+  talk:{honestT:"Ehrliche Grenze",honest:"Nicht alles ist für jeden interessant – und das ist okay. Lass dein Gegenüber Kosten, Aufwand und persönliche Passung selbst prüfen. Ein ehrliches Nein ist mehr wert als ein überredetes Ja: Es schützt deinen Ruf und deine Beziehung."},
+  finish:{
+   naL:"Nächste Aktion",naT:"Dein nächster Schritt – mit Datum",naLead:"Ohne festen Termin passiert meist nichts. Leg genau eine machbare Handlung fest.",
+   naWhatL:"Das mache ich als Nächstes",naWhatPh:"z. B. Kontakt Nr. 6 aus meiner TOP 10 anschreiben",
+   naWhenL:"Ich mache es am",naNeedL:"Dafür brauche ich (optional)",naNeedPh:"z. B. 15 Minuten, Handy, Vorlage",
+   naHelp:"Wenn du hängen bleibst: kurze Nachricht an {l}.",
+   naBtn:"Als nächsten Schritt festhalten",naNeed:"Bitte Handlung und Termin eintragen",
+   naPrepared:"Du hast den nächsten Schritt vorbereitet.",naDoneBtn:"✓ Erledigt – nächsten Schritt festlegen",naDoneT:"Erledigt. Was ist dein nächster sinnvoller Schritt?",
+   naCount:"{n} Schritte erledigt"}
+ }
+},
+scriptsAdd:{
+ fu:[["Einwand · „Ist das ein Schneeballsystem?“ (sachlich)","Berechtigte Frage – die solltest du auch stellen. Entscheidend ist, ob es echte Produkte und Kundenleistungen gibt und welche Aktivitäten tatsächlich vergütet werden. Lass uns das anhand der offiziellen Unterlagen gemeinsam anschauen. Ich möchte, dass du dir selbst ein fundiertes Urteil bildest."],
+  ["Einwand · „Was ist das genau?“ (mit Unterlagen)","Gern kurz und direkt: Es geht um Best Prime und ePOINT – ein Ökosystem mit Nutzen für Kunden und Partner. Funktionsweise, Kosten und Vergütung zeige ich dir anhand der offiziellen Unterlagen. Was ist für dich zuerst wichtig?"]]
+},
+easy:{
+ ui:{sprintOver:"7 Tage vorbei"},
+ mods:{start:["Dein 7-Tage-Fahrplan","Startprofil"],finish:["7-Tage-Check","Abschluss mit deinem Leader"]},
+ days:[["Tag 1–2","Verstehen · Fokus",["Startprofil ausgefüllt","60-Sekunden-Erklärung sitzt (3×)","Leader-Check bestanden","Mindestens 10 Namen","TOP 5 + erste 3 gewählt"]],["Tag 3–7","Aktivität · Duplizieren",["3 Ansprachen gesendet","3 Kontakte mit Status","Follow-up mit Datum gesetzt","Erstes Gespräch geführt","Duplikation geplant"]]],
+ dupSteps:["Startprofil","60-Sekunden-Erklärung","Namensliste + TOP 5","Erste 3 Ansprachen","7-Tage-Review"],
+ m:{
+  start:{lead:"Das Einsteiger-Tempo ist dein Arbeitsplan für die ersten 7 Tage: gleicher Weg wie der Turbo, nur mit kleineren Schritten. Jeder Schritt endet mit einer konkreten Handlung – alles wird automatisch gespeichert.",
+   sprint:"Deine 7 Tage",tl:["Start","Tag 1–2: Verstehen + Fokus","Tag 3–7: Aktivität","7 Tage"],
+   task:"Beantworte die drei Fragen und wähle deinen Starttyp. Dein Sponsor / Leader richtet daran deine 7 Tage aus. Ein goldener Kreis im Menü heißt: Kriterium erfüllt – markiere den Schritt dann als erledigt."},
+  list:{min30:"Mindestens 10",go100:"Ziel erreicht – gern weiter",t30:"10 Namen – Ziel geschafft",
+   task:"Schreibe mindestens 10 Namen auf – ohne zu bewerten. Mehr geht immer, aber 10 reichen für deinen Start."},
+  top:{of:"{n} / 5 TOP-Kontakte",hint:"Vergib 1–5 Punkte. Die Liste sortiert sich nach Gesamtpunkten. Markiere 5 als TOP und davon 3, die du in den nächsten Tagen ansprichst.",
+   cols:["TOP","Name","Vertrauen","Potenzial","Tempo","Σ","Erste 3"],max5:"Maximal 3 – das ist der Fokus",
+   task:"Wähle deine TOP 5 und markiere davon die ersten 3, die du in den nächsten Tagen ansprichst."},
+  talkto:{task:"Sende in deinen 7 Tagen 3 Ansprachen – an deine „Erste 3“ aus den TOP 5. Ziel jeder Nachricht ist nur ein 10-Minuten-Termin."},
+  talk:{task:"Führe in deinen 7 Tagen mindestens ein Gespräch mit echter Bedarfsanalyse – gern als 2er-Gespräch mit deinem Leader."},
+  dup:{flow:["1. Startprofil","2. System","3. Liste + TOP 5","4. Ansprache","5. 7 Tage Aktion"]},
+  finish:{lead:"Nach 7 Tagen setzt du dich mit deinem Leader zusammen: Zahlen anschauen, nächste Schritte festlegen. Abschluss = Wissen + echte Aktivität.",
+   sc:"Dein 7-Tage-Scoreboard",eyebrow:"Einsteiger-Start · 7 Tage",
+   lv:[["Verstanden","System sitzt","60-Sekunden-Erklärung, Mini-Check und Leader-Bestätigung."],["Aktiv","Aktivität nachweisbar","10+ Namen, TOP 5, 3 Kontakte angesprochen, erstes Gespräch geführt."],["Dupliziert","Prozess weitergegeben","Dein erster eigener Partner hat den Start mit dir durchlaufen."]],
+   review:"7-Tage-Review mit meinem Leader{l} ist erledigt",did:"hat den 7-Tage-Start durchlaufen · Stufe"}
+ }
+}
+};
+
+(function(){
+"use strict";
+var KEY="bp_turbo_v1", VERSION=1;
+/* TESTVERSION (test.html setzt window.TURBO_TEST): eigener Speicher, kein Controlling, Text-Overlay aus I18N.de.test */
+var TEST=!!window.TURBO_TEST;
+if(TEST) KEY="bp_turbo_test_v1";
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function dmerge(a,b){ for(var k in b){ if(!Object.prototype.hasOwnProperty.call(b,k)) continue; if(b[k] && typeof b[k]==="object" && !Array.isArray(b[k]) && a[k] && typeof a[k]==="object" && !Array.isArray(a[k])) dmerge(a[k],b[k]); else a[k]=b[k]; } return a; }
+var EASY=null, BASE_DE=null;
+if(TEST && I18N.de.test){
+  var TT=I18N.de.test;
+  if(TT.scriptsAdd) for(var tg in TT.scriptsAdd) I18N.de.scripts[tg]=I18N.de.scripts[tg].concat(TT.scriptsAdd[tg]);
+  dmerge(I18N.de,clone(TT.over||{}));
+  EASY=TT.easy||null; BASE_DE=clone(I18N.de);
+}
+var LANGS=Object.keys(I18N);
+var L=I18N.de;
+/* Tempo: Turbo (48 h · 30/10/5) oder Einsteiger (7 Tage · 10/5/3) – nur in der Testversion wählbar */
+function P(){ return (TEST && S.pace==="easy")?{h:168,names:10,top:5,first:3,sent:3,cont:3}:{h:48,names:30,top:10,first:5,sent:5,cont:5}; }
+function applyPace(){ if(!TEST||!BASE_DE) return; var b=clone(BASE_DE); I18N.de=(S.pace==="easy"&&EASY)?dmerge(b,clone(EASY)):b; }
+
+/* ---------- State ---------- */
+function blank(lang){
+  return {v:VERSION,lang:lang||detectLang(),pid:uid(),consent:false,updatedAt:0,name:"",leader:"",startedAt:0,view:"start",done:{},
+    diag:{},pitch:{reps:0,best:0,leaderOk:false},quiz:{},list:[],sent:{},talks:[],dup:{},fin:{},plan:{},stuck:{},pace:"turbo",multi:{size:100,rate:10,levels:6}};
+}
+function detectLang(){
+  var n=((navigator.language||"de")+"").slice(0,2).toLowerCase();
+  return LANGS.indexOf(n)>=0?n:"de";
+}
+var S=blank();
+function migrate(d){ if(!d.plan) d.plan={}; if(!d.stuck) d.stuck={}; if(!d.pace) d.pace="turbo"; if(!d.lang || LANGS.indexOf(d.lang)<0) d.lang="de"; if(d.multi && +d.multi.levels===4 && !d.multi.v2){ d.multi.levels=6; } if(d.multi) d.multi.v2=true; return d; }
+function load(){
+  try{ var raw=localStorage.getItem(KEY); if(raw){ var d=JSON.parse(raw); if(d && d.v===VERSION){ S=merge(blank(),migrate(d)); } } }catch(e){}
+}
+function merge(a,b){ for(var k in b){ if(Object.prototype.hasOwnProperty.call(b,k)) a[k]=b[k]; } return a; }
+var saveT=null;
+function save(){
+  S.updatedAt=Date.now();
+  clearTimeout(saveT); saveT=setTimeout(function(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} },150);
+  scheduleSync();
+}
+
+/* ---------- Controlling-Sync (Blatt „Turbo“ in der Controlling-Tabelle) ---------- */
+var CFG=window.TURBO_CONFIG||{};
+var SYNC=TEST?"":String(CFG.syncUrl||"").trim();
+var syncT=null, lastSync=0, lastSent=0, syncState="";
+function scheduleSync(){ if(!SYNC) return; clearTimeout(syncT); syncT=setTimeout(function(){ sync(false); },8000); }
+function stCount(code){ return S.list.filter(function(c){return c.status===code;}).length; }
+function payload(){
+  var done=ORDER.filter(function(id){return S.done[id];});
+  var diag=[]; for(var j=0;j<3;j++) diag.push(S.diag["q"+j]||"");
+  var t=I18N.de.types[S.diag.type];
+  /* Keine Kontaktnamen (DSGVO): nur Zählwerte der Liste/Pipeline */
+  return {app:"turbo",token:String(CFG.token||""),pid:S.pid,name:S.name,leader:S.leader,lang:S.lang,startedAt:S.startedAt,updatedAt:S.updatedAt,
+    view:I18N.de.mods[S.view]?I18N.de.mods[S.view][0]:S.view,doneModules:done.map(function(id){return I18N.de.mods[id][0];}),doneCount:done.length,total:ORDER.length,
+    pct:Math.round(done.length/ORDER.length*100),level:level(),diagDone:autoDone("start"),pitchReps:S.pitch.reps,leaderOk:!!S.pitch.leaderOk,quizOk:quizOk(),
+    list:S.list.length,top:tops().length,contacted:contacted().length,replies:S.list.filter(function(c){return c.reply;}).length,
+    st:{NEU:stCount("NEU"),TERMIN:stCount("TERMIN"),FU:stCount("FU"),ENT:stCount("ENT"),GO:stCount("GO"),NO:stCount("NO")},
+    talks:S.talks.length,nextSteps:nextSteps(),sent:sentAll(),type:t?t[0]:"",diag:diag,dupDone:dupCount(),review:!!S.fin.review};
+}
+function sync(beacon){
+  if(!SYNC || !S.consent || !S.startedAt) return;
+  if(S.updatedAt && S.updatedAt<=lastSent) return;
+  var body=JSON.stringify(payload()); lastSent=S.updatedAt||Date.now();
+  try{
+    if(beacon && navigator.sendBeacon){ navigator.sendBeacon(SYNC,new Blob([body],{type:"text/plain;charset=utf-8"})); return; }
+    syncState="wait"; updSync();
+    fetch(SYNC,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})
+      .then(function(){ lastSync=Date.now(); syncState="ok"; updSync(); },function(){ syncState="err"; lastSent=0; updSync(); });
+  }catch(e){ syncState="err"; lastSent=0; updSync(); }
+}
+function syncText(){
+  if(!SYNC || !S.consent) return "";
+  if(syncState==="err") return "⚠ "+L.ui.syncErr;
+  if(syncState==="wait") return "☁ "+L.ui.syncWait;
+  if(lastSync) return "☁ "+F(L.ui.syncOk,{t:fdate(lastSync,{hour:"2-digit",minute:"2-digit"})});
+  return "";
+}
+function updSync(){ var el=document.getElementById("syncinfo"); if(el) el.textContent=syncText(); }
+function flush(){ clearTimeout(saveT); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="hidden"){ flush(); sync(true); } });
+window.addEventListener("pagehide",flush);
+window.addEventListener("online",function(){ sync(false); });
+function setLang(l){
+  if(LANGS.indexOf(l)<0) l="de";
+  S.lang=l; applyPace(); L=I18N[l]; document.documentElement.lang=l;
+}
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function F(str,o){ return String(str).replace(/\{(\w+)\}/g,function(m,k){ return o && o[k]!=null?o[k]:m; }); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function setPath(p,val){ var parts=p.split("."), o=S; for(var i=0;i<parts.length-1;i++){ if(o[parts[i]]==null||typeof o[parts[i]]!=="object") o[parts[i]]={}; o=o[parts[i]]; } o[parts[parts.length-1]]=val; }
+function toast(msg){ var t=document.getElementById("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(function(){t.hidden=true;},1800); }
+function copyText(txt){
+  function fallback(){ var ta=document.createElement("textarea"); ta.value=txt; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,99999); var ok=false; try{ ok=document.execCommand("copy"); }catch(e){} document.body.removeChild(ta); toast(ok?L.ui.copied:L.ui.copyManual); }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){toast(L.ui.copied);},fallback); } else fallback();
+}
+function fmt(n){ return Number(n).toLocaleString(L.locale); }
+function fdate(ts,opt){ try{ return new Date(ts).toLocaleString(L.locale,opt); }catch(e){ return new Date(ts).toLocaleString(); } }
+
+/* ---------- Structure: 4 Phasen, 9 Schritte ---------- */
+var PHASES=[["start","system","plan"],["list","top"],["talkto","pipe","talk"],["dup","finish"]];
+var ORDER=[]; PHASES.forEach(function(p){ ORDER=ORDER.concat(p); });
+function MT(id){ return L.mods[id][0]; }
+var QUIZ_C=[1,0,0];
+var STATUSES=["","NEU","TERMIN","FU","ENT","GO","NO"];
+var SC_PRE={an:"a",vk:"v",fu:"f"};
+var SC_IDS={}; for(var gk in SC_PRE){ SC_IDS[gk]=[]; for(var si=1;si<=(I18N.de.scripts[gk]||[]).length;si++) SC_IDS[gk].push(SC_PRE[gk]+si); }
+function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||""}; }); }
+
+/* ---------- Derived ---------- */
+function tops(){ return S.list.filter(function(c){return c.top;}); }
+function first5(){ return S.list.filter(function(c){return c.first5;}); }
+function contacted(){ return S.list.filter(function(c){return !!c.status;}); }
+function scoreOf(c){ return (c.t||0)+(c.p||0)+(c.s||0); }
+function sentTotal(g){ var n=0; SC_IDS[g].forEach(function(id){ n+=S.sent[id]||0; }); return n; }
+/* Ansprachen gesamt: Einsteiger-Vorlagen + Vertriebskopf-Sequenz */
+function sentAll(){ return sentTotal("an")+sentTotal("vk"); }
+function quizOk(){ return QUIZ_C.every(function(c,i){ return S.quiz[i]===c; }); }
+function nextSteps(){ return S.list.filter(function(c){return c.next && c.date;}).length; }
+function dupCount(){ var n=0; for(var i=0;i<5;i++){ if(S.dup["d"+i]) n++; } return n; }
+function profileOk(){ for(var i=0;i<3;i++){ if(!(S.diag["q"+i]||"").trim()) return false; } return S.diag.type!=null && S.diag.type!==""; }
+function systemOk(){ return S.pitch.reps>=3 && quizOk() && !!S.pitch.leaderOk; }
+function autoDone(id){
+  switch(id){
+   case "start": return profileOk();
+   case "system": return systemOk();
+   case "plan": return !!S.plan.seen;
+   case "list": return S.list.length>=P().names;
+   case "top": return tops().length>=P().top && first5().length>=P().first;
+   case "talkto": return sentAll()>=P().sent;
+   case "pipe": return contacted().length>=P().cont && nextSteps()>=1;
+   case "talk": return S.talks.length>=1;
+   case "dup": return !!(S.dup.partner||"").trim() && !!S.dup.t0;
+   case "finish": return level()>=2 && !!S.fin.review && (!TEST || !!(S.fin.naSet||S.fin.naDone));
+  }
+  return false;
+}
+function doneCount(){ var n=0; ORDER.forEach(function(id){ if(S.done[id]) n++; }); return n; }
+function level(){
+  var understood=systemOk();
+  var active=understood && S.list.length>=P().names && tops().length>=P().top && contacted().length>=P().cont && S.talks.length>=1;
+  var dup=active && dupCount()>=5;
+  return dup?3:active?2:understood?1:0;
+}
+/* Tageschecks (Start + Abschluss): automatisch aus den Daten */
+function dayChecks(){
+  var p=P();
+  return [[profileOk(), S.pitch.reps>=3, quizOk()&&!!S.pitch.leaderOk, S.list.length>=p.names, tops().length>=p.top&&first5().length>=p.first],
+          [sentAll()>=p.sent, contacted().length>=p.cont, nextSteps()>=1, S.talks.length>=1, autoDone("dup")]];
+}
+function dayBlocks(){
+  var ch=dayChecks(), h='<div class="grid2">';
+  L.days.forEach(function(d,di){
+    var n=ch[di].filter(Boolean).length;
+    h+='<div class="card stack" style="border-top:3px solid var(--'+(di===0?"teal":"gold")+')"><div class="row" style="justify-content:space-between"><div><h2>'+d[0]+'</h2><p class="small muted">'+d[1]+'</p></div><span class="badge '+(n===d[2].length?"b-ok":"b-mut")+' tab">'+n+' / '+d[2].length+'</span></div><ul class="checks">';
+    d[2].forEach(function(t,ti){ var ok=ch[di][ti]; h+='<li class="'+(ok?"ok":"")+'"><span class="dot'+(ok?" done":"")+'">'+(ok?"✓":"")+'</span>'+t+'</li>'; });
+    h+='</ul></div>';
+  });
+  return h+'</div>';
+}
+
+/* ---------- Shell ---------- */
+var root=document.getElementById("root");
+function langButtons(){
+  if(LANGS.length<2) return "";
+  return '<div class="langs" role="group" aria-label="'+esc(L.ui.language)+'">'+LANGS.map(function(l){ return '<button data-act="lang" data-v="'+l+'" class="'+(S.lang===l?"on":"")+'" title="'+esc(I18N[l].label)+'">'+l.toUpperCase()+'</button>'; }).join("")+'</div>';
+}
+function langSelect(){
+  if(LANGS.length<2) return "";
+  return '<select class="langsel" data-act="langsel" aria-label="'+esc(L.ui.language)+'">'+LANGS.map(function(l){ return '<option value="'+l+'"'+(S.lang===l?" selected":"")+'>'+l.toUpperCase()+'</option>'; }).join("")+'</select>';
+}
+function brand(){ return '<div class="brand">Best<span class="p">Prime</span><span class="sep">|</span><span class="t">Turbo</span></div>'; }
+function render(){
+  if(!S.startedAt){ root.innerHTML=renderWelcome(); return; }
+  var pct=Math.round(doneCount()/ORDER.length*100), C=2*Math.PI*24;
+  var side='<aside class="side" id="side">'+brand()+
+   '<div class="me"><svg class="ring" viewBox="0 0 60 60"><circle class="bgc" cx="30" cy="30" r="24"/><circle class="fgc" cx="30" cy="30" r="24" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 30 30)"/><text x="30" y="34" text-anchor="middle">'+pct+'%</text></svg>'+
+   '<div style="min-width:0"><div style="font-weight:600">'+esc(S.name)+'</div><div class="small muted">'+F(L.ui.modulesOf,{a:doneCount(),b:ORDER.length})+' · '+sprintLabel()+'</div></div></div>'+langButtons();
+  PHASES.forEach(function(mods,pi){
+    var d=mods.filter(function(m){return S.done[m];}).length;
+    side+='<div class="phase"><div class="phase-h"><span>0'+(pi+1)+' · '+L.phases[pi]+'</span><span class="tab">'+d+'/'+mods.length+'</span></div>';
+    mods.forEach(function(m){
+      var cls=S.done[m]?"done":(autoDone(m)?"auto":"");
+      side+='<button class="nav'+(S.view===m?" on":"")+'" data-go="'+m+'"><span class="dot '+cls+'">'+(S.done[m]?"✓":(ORDER.indexOf(m)+1))+'</span><span>'+MT(m)+'</span></button>';
+    });
+    side+='</div>';
+  });
+  side+='<div class="side-foot"><div class="small muted" id="syncinfo">'+esc(syncText())+'</div><button class="btn sm ghost" data-act="backup">'+L.ui.backup+'</button></div></aside>';
+  var i=ORDER.indexOf(S.view);
+  root.innerHTML='<div class="app">'+side+'<div class="overlay" id="ov" data-act="closeside"></div><main class="main">'+
+   '<div class="topbar"><button class="btn sm" data-act="openside">☰ '+L.ui.menu+'</button><span class="small muted tab">'+(i+1)+' / '+ORDER.length+' · '+sprintLabel()+'</span>'+langSelect()+'</div>'+
+   '<div class="wrap">'+testBar()+consentBanner()+(R[S.view]?R[S.view]():"")+renderFoot(S.view)+'</div></main>'+
+   '<nav class="mobnav"><button class="btn" data-go="'+(ORDER[i-1]||"")+'" '+(i===0?"disabled":"")+'>'+L.ui.back+'</button><button class="btn pri" data-go="'+(ORDER[i+1]||"")+'" '+(i===ORDER.length-1?"disabled":"")+'>'+L.ui.next+'</button></nav></div>';
+}
+function hoursGone(){ return (Date.now()-S.startedAt)/3600000; }
+function sprintLabel(){ var h=hoursGone(), H=P().h; if(h>=H) return L.ui.sprintOver; return H>48?F(L.ui.sprintLeftD||L.ui.sprintLeft,{d:Math.ceil((H-h)/24),h:Math.ceil(H-h)}):F(L.ui.sprintLeft,{h:Math.ceil(H-h)}); }
+function phaseOf(id){ for(var i=0;i<PHASES.length;i++){ if(PHASES[i].indexOf(id)>=0) return i; } return 0; }
+function head(id,lead){
+  var p=phaseOf(id);
+  return '<header class="stack"><div class="eyebrow">'+L.ui.phase+' '+(p+1)+' · '+L.phases[p]+' · '+L.mods[id][1]+'</div><h1>'+MT(id)+'</h1>'+(lead?'<p class="lead">'+lead+'</p>':'')+'</header>';
+}
+/* Aufklapp-Leiste: immer mit Pfeil + „Antippen zum Öffnen“, damit Nutzer sehen, dass dahinter mehr steckt */
+function moreHint(open){ return '<span class="more-hint"><span class="h-o">'+L.ui.moreOpen+'</span><span class="h-c">'+L.ui.moreClose+'</span></span><span class="more-chev" aria-hidden="true">›</span>'; }
+function more(title,body,cls,open){ return '<details class="more'+(cls?" "+cls:"")+'"'+(open?" open":"")+'><summary><span class="more-t">'+title+'</span>'+moreHint()+'</summary><div class="more-b">'+body+'</div></details>'; }
+function task(label,txt){ return '<div class="task"><b>'+label+'</b>'+txt+'</div>'; }
+function quote(q,style){ return '<div class="card"><div class="quote"'+(style?' style="'+style+'"':'')+'>'+q[0]+(q[1]?'<small>'+q[1]+'</small>':'')+'</div></div>'; }
+function ul(items){ return '<ul class="clean small muted" style="margin-top:8px">'+items.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>'; }
+function renderFoot(id){
+  var i=ORDER.indexOf(id), a=autoDone(id), d=!!S.done[id];
+  return stuckBox(id)+'<div class="modfoot noprint"><div class="row">'+
+   (a?'<span class="badge b-ok">'+L.ui.critOk+'</span>':'<span class="badge b-warn">'+L.ui.critOpen+'</span>')+
+   '<button class="btn '+(d?"":"gold")+'" data-act="toggleDone" data-id="'+id+'">'+(d?L.ui.doneReset:L.ui.markDone)+'</button></div>'+
+   '<div class="row">'+(i>0?'<button class="btn" data-go="'+ORDER[i-1]+'">← '+MT(ORDER[i-1])+'</button>':'')+
+   (i<ORDER.length-1?'<button class="btn pri" data-go="'+ORDER[i+1]+'">'+MT(ORDER[i+1])+' →</button>':'')+'</div></div>';
+}
+
+/* ---------- Startvideo (config.js → videoUrl) ---------- */
+var VIDEO=String(CFG.videoUrl||"").trim();
+function videoSrc(){
+  var u=VIDEO, m;
+  if(!u) return null;
+  if((m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/))) return {type:"frame",prov:"YouTube",src:"https://www.youtube-nocookie.com/embed/"+m[1]+"?autoplay=1&rel=0&modestbranding=1&playsinline=1",thumb:"https://i.ytimg.com/vi/"+m[1]+"/hqdefault.jpg"};
+  if((m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]{6,}))?/))) return {type:"frame",prov:"Vimeo",src:"https://player.vimeo.com/video/"+m[1]+"?autoplay=1&dnt=1&title=0&byline=0&portrait=0"+(m[2]?"&h="+m[2]:"")+((u.match(/[?&]h=([0-9a-f]+)/)||[])[1]?"&h="+u.match(/[?&]h=([0-9a-f]+)/)[1]:"")};
+  return {type:"file",src:u};
+}
+function videoBlock(){
+  var v=videoSrc(); if(!v) return "";
+  var u=L.ui, inner, tall=String(CFG.videoFormat||"").replace(/\s/g,"")==="9:16", len=String(CFG.videoLength||"").trim();
+  if(v.type==="file") inner='<video src="'+esc(v.src)+'" controls playsinline preload="metadata"></video>';
+  else inner='<button class="vplay" data-act="playVideo"'+(v.thumb?' style="background-image:url('+esc(v.thumb)+')"':'')+'><span class="vbtn">▶</span><span class="vlbl">'+u.videoPlay+(len?' · '+esc(len):'')+'</span></button>';
+  return '<div class="card stack video noprint"><span class="label">'+u.videoT+'</span><div class="vbox'+(tall?' tall':'')+'" id="vbox">'+inner+'</div>'+(v.type==="frame"?'<p class="small muted">'+F(u.videoNote,{p:v.prov})+'</p>':'')+'</div>';
+}
+function playVideo(){
+  var v=videoSrc(), box=document.getElementById("vbox"); if(!v||!box) return;
+  box.innerHTML='<iframe src="'+esc(v.src)+'" title="'+esc(L.ui.videoT)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+}
+
+/* ---------- Welcome ---------- */
+var draftName="", draftLeader="", draftConsent=false;
+function renderWelcome(){
+  var u=L.ui;
+  return '<div class="welcome">'+testBar()+'<div class="row" style="justify-content:space-between">'+brand()+langButtons()+'</div>'+
+   '<div class="stack"><div class="eyebrow">'+u.kicker+'</div><h1 style="font-size:clamp(40px,8vw,68px)">'+u.hero+'</h1><p class="lead">'+u.heroLead+'</p></div>'+videoBlock()+
+   '<div class="steps4">'+u.steps.map(function(s){ return '<div><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join("")+'</div>'+
+   '<div class="grid3">'+u.metrics.map(function(s){ return '<div class="kpi"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'; }).join("")+'</div>'+
+   '<form class="card hi stack" id="startform"><h2>'+u.startTitle+'</h2>'+
+   '<div class="grid2"><label class="field"><span>'+u.yourName+'</span><input type="text" id="w_name" autocomplete="name" placeholder="'+esc(u.namePh)+'" value="'+esc(draftName)+'"></label>'+
+   '<label class="field"><span>'+u.leader+'</span><input type="text" id="w_leader" placeholder="'+esc(u.leaderPh)+'" value="'+esc(draftLeader)+'"></label></div>'+
+   (TEST?paceCards("w"):'')+
+   '<p class="small muted">'+u.localNote+'</p>'+
+   (SYNC?'<label class="opt" style="align-items:flex-start"><input type="checkbox" id="w_consent" style="margin-top:4px"'+(draftConsent?" checked":"")+'> <span class="small">'+u.consent+'</span></label>':'')+
+   '<div class="row"><button class="btn gold" type="submit">'+u.startBtn+'</button><button class="btn ghost" type="button" data-act="backup">'+u.loadBackup+'</button></div></form>'+
+   '<div id="backupbox"></div></div>';
+}
+function testBar(){ return TEST?'<div class="testbar noprint"><b>'+L.ui.testT+'</b> '+L.ui.test+'</div>':''; }
+function consentBanner(){
+  if(!SYNC || S.consent) return "";
+  return '<div class="card hi stack noprint"><h3>'+L.ui.consentTitle+'</h3><p class="small muted">'+L.ui.consent+'</p><div><button class="btn gold sm" data-act="consent">'+L.ui.consentBtn+'</button></div></div>';
+}
+
+var draftPace="turbo";
+function paceCards(where){
+  var cur=where==="w"?draftPace:S.pace;
+  return '<div class="stack"><span class="label">'+L.ui.paceT+'</span><div class="grid2">'+L.ui.paces.map(function(x){ var on=cur===x[0]; return '<button type="button" class="card pace'+(on?" on":"")+'" data-act="setPace" data-v="'+x[0]+'" data-w="'+where+'"><h3>'+(on?"✓ ":"")+x[1]+'</h3><p class="small muted">'+x[2]+'</p></button>'; }).join("")+'</div></div>';
+}
+/* „Woran hängt es?“ – nur Testversion, lokal gespeichert */
+function stuckBox(id){
+  if(!TEST || autoDone(id)) return "";
+  var u=L.ui, r=S.stuck[id];
+  var b='<div class="row">'+u.stuckR.map(function(x){ return '<button class="pill'+(r===x[0]?" on":"")+'" data-act="stuck" data-id="'+id+'" data-v="'+x[0]+'">'+x[1]+'</button>'; }).join("")+'</div>';
+  if(r){ var a=u.stuckA[r]||""; b+='<p class="small" style="margin-top:10px">'+F(a,{l:S.leader?esc(S.leader):u.yourLeader})+'</p>'; if(r==="time" && S.pace!=="easy") b+='<div style="margin-top:8px"><button class="btn sm gold" data-act="setPace" data-v="easy" data-w="s">'+u.toEasy+'</button></div>'; }
+  return more(u.stuckT,b,"",!!r);
+}
+
+/* ---------- Schritte ---------- */
+var R={};
+R.start=function(){
+  var m=L.m.start, h=hoursGone(), H=P().h, left=Math.max(0,H-h);
+  var out=head("start",m.lead)+videoBlock()+(TEST?'<div class="card stack">'+paceCards("s")+'</div>':'')+'<div class="grid4">';
+  m.cards.forEach(function(t,i){ out+='<div class="card'+(i===0?" hi":"")+'"><span class="label">'+L.ui.phase+' '+(i+1)+'</span><h3>'+L.phases[i]+'</h3><p class="small muted" style="margin-top:4px">'+t+'</p></div>'; });
+  out+='</div><div class="card"><div class="row" style="justify-content:space-between"><div><span class="label">'+m.sprint+'</span><div class="kpi"><b class="tab">'+(left>0?(H>48?Math.floor(left/24)+" T "+Math.floor(left%24)+" h":Math.floor(left)+" h "+Math.round((left%1)*60)+" min"):m.expired)+'</b><span>'+F(m.started,{d:fdate(S.startedAt,{dateStyle:"medium",timeStyle:"short"})})+'</span></div></div>'+
+   '<div style="flex:1;min-width:200px"><div class="bar"><i style="width:'+Math.min(100,h/H*100).toFixed(1)+'%"></i></div><div class="row small muted" style="justify-content:space-between;margin-top:6px">'+m.tl.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div></div></div></div>'+
+   dayBlocks()+
+   '<div class="card stack"><h2>'+m.profile+'</h2><div class="grid2"><label class="field"><span>'+L.ui.yourName+'</span><input type="text" id="s_name" data-bind="name" value="'+esc(S.name)+'"></label><label class="field"><span>'+L.ui.leader+'</span><input type="text" id="s_leader" data-bind="leader" value="'+esc(S.leader)+'"></label></div>';
+  L.diagQ.forEach(function(q,i){ out+='<label class="field"><span>'+(i+1)+'. '+q+'</span><textarea id="dq'+i+'" data-bind="diag.q'+i+'" rows="2">'+esc(S.diag["q"+i])+'</textarea></label>'; });
+  out+='</div><div class="stack"><h2>'+m.type+'</h2><div class="grid4">';
+  L.types.forEach(function(t,i){ var on=String(S.diag.type)===String(i); out+='<button class="card" style="text-align:left;cursor:pointer;'+(on?"border-color:var(--gold);":"")+'" data-act="setType" data-v="'+i+'"><h3 style="'+(on?"color:var(--gold)":"")+'">'+(on?"✓ ":"")+t[0]+'</h3><p class="small muted">'+t[1]+'</p></button>'; });
+  out+='</div></div>'+quote(m.quote);
+  return out+task(L.ui.lbl.first,m.task);
+};
+
+R.system=function(){
+  var m=L.m.system, h=head("system",m.lead)+'<div class="grid3">';
+  m.sys.forEach(function(s,i){ h+='<div class="card'+(i===0?" hi":"")+'"><span class="label">'+s[0]+'</span><h3>'+s[1]+'</h3><p class="small muted" style="margin-top:6px">'+s[2]+'</p></div>'; });
+  h+='</div><div class="grid2"><div class="card stack"><span class="label">'+m.coreL+'</span><p style="font-size:16px">'+m.core+'</p></div>'+
+   '<div class="card"><h3>'+m.youT+'</h3>'+ul(m.you)+'<p class="small" style="margin-top:12px;color:var(--gold)">'+m.munich+'</p></div></div>';
+  h+='<div class="card hi stack"><h2>'+m.tr+'</h2><p class="muted small">'+m.trHint+'</p>'+
+   '<div class="row" style="justify-content:space-between"><div class="timer tab" id="timer">60</div>'+
+   '<div class="row"><button class="btn pri" data-act="pitchStart" id="pitchBtn">'+m.start+'</button><button class="btn" data-act="pitchReset">'+m.reset+'</button></div></div>'+
+   '<div class="grid3"><div class="kpi"><b class="tab">'+S.pitch.reps+'</b><span>'+m.reps+'</span></div><div class="kpi"><b class="tab">'+(S.pitch.best?S.pitch.best+" s":"–")+'</b><span>'+m.best+'</span></div><div class="kpi"><b>'+(S.pitch.reps>=3?"✓":"–")+'</b><span>'+m.ready+'</span></div></div></div>';
+  h+='<div class="card stack"><h2>'+m.quizT+'</h2>';
+  L.quiz.forEach(function(q,i){
+    var ans=S.quiz[i], c=QUIZ_C[i];
+    h+='<div class="stack" style="gap:8px"><h3>'+(i+1)+'. '+q.q+'</h3><div class="grid2">';
+    q.a.forEach(function(a,j){
+      var cls="opt"; if(ans===j) cls+=(c===j?" right":" wrong");
+      h+='<button class="'+cls+'" data-act="quiz" data-q="'+i+'" data-a="'+j+'"><span class="dot'+(ans===j?" done":"")+'">'+(ans===j?"✓":"")+'</span>'+a+'</button>';
+    });
+    h+='</div>';
+    if(ans!=null) h+= ans===c?'<p class="small" style="color:var(--ok)">'+m.right+'</p>':'<p class="small" style="color:var(--bad)">'+m.wrong+'</p>';
+    h+='</div>';
+  });
+  h+='</div><div class="card" style="background:var(--panel2)"><span class="muted small">'+m.qrule+'</span></div>'+
+  '<div class="card hi stack"><h2>'+m.unlock+'</h2><p class="muted small">'+m.unlockHint+'</p>'+
+  '<label class="opt'+(S.pitch.leaderOk?" sel":"")+'"><input type="checkbox" id="leaderok" data-bind="pitch.leaderOk" '+(S.pitch.leaderOk?"checked":"")+'> '+F(m.leaderOk,{l:S.leader?" ("+esc(S.leader)+")":""})+'</label>'+
+  '<p class="small">'+(systemOk()?'<span class="badge b-ok">'+m.unlocked+'</span>':'<span class="badge b-warn">'+m.locked+'</span>')+'</p></div>';
+  return h+task(L.ui.lbl.task,m.task);
+};
+
+var addCat=0, listFilter="";
+function catName(c){ return (c===""||c==null)?"":(L.cats[c]||""); }
+/* Vergütungsplan: Bild jetzt, Erklärung / Szenarien / Rechner folgen (Platzhalter in de.js → m.plan.parts) */
+R.plan=function(){
+  if(!S.plan.seen){ S.plan.seen=true; save(); }
+  var m=L.m.plan, img="img/verguetungsplan.jpg";
+  var h=head("plan",m.lead)+
+   '<div class="card stack"><span class="label">'+m.imgL+'</span>'+
+   '<a class="planimg" href="'+img+'" target="_blank" rel="noopener" aria-label="'+esc(m.zoom)+'"><img src="'+img+'" alt="'+esc(m.alt)+'" loading="lazy"></a>'+
+   '<div class="row" style="justify-content:space-between"><span class="small muted">'+m.zoomHint+'</span><a class="btn sm" href="'+img+'" target="_blank" rel="noopener">'+m.zoom+'</a></div></div>'+
+   '<div class="card stack"><h2>'+m.goalT+'</h2><p class="muted small">'+m.goal+'</p>'+
+   (S.diag.q0?'<div class="quote" style="font-size:18px">„'+esc(S.diag.q0)+'“<small>'+m.yourWhy+'</small></div>':'<button class="btn sm" data-go="start">'+m.toProfile+'</button>')+'</div>'+
+   '<div class="grid3">'+m.parts.map(function(x){ return '<div class="card"><span class="badge b-mut">'+m.soon+'</span><h3 style="margin-top:8px">'+x[0]+'</h3><p class="small muted" style="margin-top:4px">'+x[1]+'</p></div>'; }).join("")+'</div>'+
+   '<div class="card" style="background:var(--panel2)"><span class="muted small">'+m.rule+'</span></div>';
+  return h+task(L.ui.lbl.task,m.task);
+};
+
+R.list=function(){
+  var m=L.m.list, n=S.list.length;
+  var h=head("list",m.lead);
+  h+='<div class="card stack"><div class="row" style="justify-content:space-between"><div class="kpi"><b class="tab">'+n+' / '+P().names+'</b><span>'+m.count+'</span></div><span class="badge '+(n>=P().names?"b-ok":"b-warn")+'">'+(n>=100?m.goal:n>=P().names?m.go100:m.min30)+'</span></div>'+
+   '<div class="bar"><i style="width:'+Math.min(100,n/P().names*100).toFixed(1)+'%"></i></div><p class="small muted">'+m.rules+'</p></div>';
+  h+='<div class="card hi row" style="justify-content:space-between"><div style="flex:1;min-width:220px"><span class="label">'+L.m.dup.multiL+'</span><h3>'+m.whyT+'</h3><p class="small muted" style="margin-top:4px">'+m.why+'</p></div><button class="btn gold sm" data-go="dup">'+m.whyBtn+'</button></div>';
+  h+='<div class="card"><h3>'+m.helpT+'</h3>'+ul(m.help)+'</div>';
+  h+='<form class="card stack" id="addform"><h3>'+m.add+'</h3><div class="grid2"><label class="field"><span>'+m.name+'</span><input type="text" id="add_name" placeholder="'+esc(m.namePh)+'" autocomplete="off"></label><label class="field"><span>'+m.ctx+'</span><input type="text" id="add_ctx" placeholder="'+esc(m.ctxPh)+'"></label></div>'+
+   '<div class="row" id="catpills">'+L.cats.map(function(c,i){ return '<button type="button" class="pill'+(addCat===i?" on":"")+'" data-act="addCat" data-v="'+i+'">'+c+'</button>'; }).join("")+'</div>'+
+   '<div class="row"><button class="btn pri" type="submit">'+m.addBtn+'</button><span class="small muted">'+m.tip+'</span></div>'+
+   more(m.bulk,'<div class="stack"><textarea id="bulk" placeholder="'+esc(m.bulkPh)+'"></textarea><button type="button" class="btn sm" data-act="bulkAdd">'+m.bulkBtn+'</button></div>')+'</form>';
+  h+='<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:6px"><h3>'+m.yours+'</h3>'+(n?'<input type="text" id="lfilter" placeholder="'+esc(m.search)+'" style="max-width:220px" value="'+esc(listFilter)+'">':'')+'</div>';
+  if(!n) h+='<p class="muted small">'+m.empty+'</p>';
+  var f=listFilter.toLowerCase();
+  S.list.forEach(function(c,i){
+    if(f && (c.name+" "+(c.ctx||"")+" "+catName(c.cat)).toLowerCase().indexOf(f)<0) return;
+    h+='<div class="listrow"><span class="n tab">'+(i+1)+'</span><input type="text" value="'+esc(c.name)+'" data-cbind="'+c.id+'.name" aria-label="'+esc(m.name)+'"><input class="ctx" type="text" value="'+esc(c.ctx||"")+'" placeholder="'+esc(m.ctxCol)+'" data-cbind="'+c.id+'.ctx" aria-label="'+esc(m.ctxCol)+'">'+
+     '<select class="cat" data-cbind="'+c.id+'.cat" aria-label="'+esc(m.cat)+'"><option value="">'+m.cat+'</option>'+L.cats.map(function(k,ki){return '<option value="'+ki+'"'+(String(c.cat)===String(ki)?" selected":"")+'>'+k+'</option>';}).join("")+'</select>'+
+     '<button class="iconbtn" data-act="delC" data-id="'+c.id+'" title="'+esc(m.remove)+'" aria-label="'+esc(m.remove)+'">×</button></div>';
+  });
+  h+='</div>';
+  return h+task(L.ui.lbl.today,m.task);
+};
+
+function stars(c,k){ var v=c[k]||0, s='<td><div class="stars">'; for(var i=1;i<=5;i++) s+='<button class="'+(i<=v?"on":"")+'" data-act="rate" data-id="'+c.id+'" data-k="'+k+'" data-v="'+i+'" aria-label="'+i+'">'+i+'</button>'; return s+'</div></td>'; }
+R.top=function(){
+  var m=L.m.top, h=head("top",m.lead)+'<div class="grid3">';
+  m.crit.forEach(function(c){ h+='<div class="card"><h3>'+c[0]+'</h3><p class="small muted">'+c[1]+'</p></div>'; });
+  h+='</div>';
+  if(!S.list.length) return h+'<div class="card"><p class="muted">'+m.empty+'</p><div style="margin-top:10px"><button class="btn pri" data-go="list">'+m.toList+'</button></div></div>'+task(L.ui.lbl.task,m.task);
+  var sorted=S.list.slice().sort(function(a,b){ return (b.top?1:0)-(a.top?1:0) || scoreOf(b)-scoreOf(a); });
+  var tc=tops().length;
+  h+='<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><h3>'+m.rate+'</h3><span class="badge '+(tc>=P().top?"b-ok":"b-warn")+' tab">'+F(m.of,{n:tc})+'</span></div><p class="small muted" style="margin-bottom:8px">'+m.hint+'</p><div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody>';
+  sorted.forEach(function(c){
+    h+='<tr><td><input type="checkbox" data-act="topToggle" data-id="'+c.id+'" '+(c.top?"checked":"")+' '+(!c.top&&tc>=P().top?"disabled":"")+' aria-label="TOP"></td><td style="min-width:140px"><b>'+esc(c.name)+'</b>'+(catName(c.cat)?'<div class="small muted">'+catName(c.cat)+'</div>':'')+'</td>'+
+      stars(c,"t")+stars(c,"p")+stars(c,"s")+'<td class="tab"><b>'+scoreOf(c)+'</b></td><td>'+(c.top?'<input type="checkbox" data-act="first5" data-id="'+c.id+'" '+(c.first5?"checked":"")+' aria-label="'+esc(m.cols[6])+'">':'')+'</td></tr>';
+  });
+  h+='</tbody></table></div></div>'+quote(m.quote);
+  return h+task(L.ui.lbl.task,m.task);
+};
+
+var pick={an:"",vk:"",fu:""}, scf="", vkOpen=false, pend={};
+function findC(id){ return S.list.filter(function(c){return c.id===id;})[0]; }
+function fill(x,who){ return who? x.split(L.ph).join(who.name.split(" ")[0]) : x; }
+function hl(s){ return s.replace(/\[[^\]]+\]/g,function(mm){return "<mark>"+mm+"</mark>";}); }
+function scriptBlock(g,title){
+  var sc=L.m.sc;
+  var opts='<option value="">'+esc(F(sc.manual,{ph:L.ph}))+'</option>'+S.list.slice().sort(function(a,b){return ((b.first5?2:0)+(b.top?1:0))-((a.first5?2:0)+(a.top?1:0));}).map(function(c){ return '<option value="'+c.id+'"'+(pick[g]===c.id?" selected":"")+'>'+(c.first5?"★★ ":c.top?"★ ":"")+esc(c.name)+(c.status?" · "+L.status[c.status]:"")+'</option>'; }).join("");
+  var who=findC(pick[g]);
+  var h='<div class="card stack"><div class="row" style="justify-content:space-between"><h2>'+title+'</h2><label class="field" style="min-width:220px;flex:0 1 280px"><span>'+sc.forWho+'</span><select id="pick_'+g+'" data-act="pick" data-g="'+g+'">'+opts+'</select></label></div><div class="grid2">';
+  var list=scripts(g);
+  if(list.some(function(s){return s.g;})){
+    var gs=[]; list.forEach(function(s){ if(s.g && gs.indexOf(s.g)<0) gs.push(s.g); });
+    h=h.replace(/<div class="grid2">$/,'<div class="chips">'+[""].concat(gs).map(function(k){ return '<button class="chip'+(scf===k?" on":"")+'" data-act="scf" data-v="'+k+'">'+(k?sc.groups[k]:sc.all)+'</button>'; }).join("")+'</div><div class="grid2">');
+    if(scf) list=list.filter(function(s){ return s.g===scf; });
+  }
+  list.forEach(function(s){
+    var txt=fill(s.x,who);
+    h+='<div class="script"><div class="t">'+s.t+'</div><p>'+hl(esc(txt))+'</p><div class="row"><button class="btn sm pri" data-act="copyScript" data-id="'+s.id+'" data-g="'+g+'">'+sc.copy+'</button>'+
+     '<a class="btn sm" href="https://wa.me/?text='+encodeURIComponent(txt)+'" target="_blank" rel="noopener" data-act="waScript" data-id="'+s.id+'" data-g="'+g+'">WhatsApp</a>'+
+     (TEST?'<button class="btn sm '+(pend[s.id]!=null?"gold pulse":"ghost")+'" data-act="sentScript" data-id="'+s.id+'" data-g="'+g+'">'+sc.sentBtn+'</button>':'')+
+     '<span class="small muted tab">'+(S.sent[s.id]?F(sc.used,{n:S.sent[s.id]}):"")+'</span></div></div>';
+  });
+  return h+'</div></div>';
+}
+
+R.talkto=function(){
+  var m=L.m.talkto, n=sentAll();
+  return head("talkto",m.lead)+
+   '<div class="card stack"><div class="row" style="justify-content:space-between"><div class="kpi"><b class="tab">'+n+' / '+P().sent+'</b><span>'+L.m.finish.k[2]+'</span></div><div style="flex:1;min-width:160px"><div class="bar"><i style="width:'+Math.min(100,n/P().sent*100)+'%"></i></div></div></div></div>'+
+   '<div class="card hi stack"><h3 style="color:var(--gold)">'+m.tonT+'</h3><p class="small">'+m.ton+'</p></div>'+
+   scriptBlock("an",L.m.sc.templates)+'<p class="small muted">'+m.note+(scf==="re"?' <b style="color:var(--gold)">'+m.reT+':</b> '+m.re:'')+'</p>'+
+   '<div class="card stack"><h2>'+m.rulesT+'</h2><ol class="small" style="margin-top:4px">'+m.rules.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ol></div>'+
+   '<div class="card stack"><h2>'+m.f4T+'</h2><div class="flow">'+m.f4.map(function(x,i){ return '<span>'+(i+1)+'. '+x[0]+'<br><small class="muted">'+x[1]+'</small></span>'; }).join("")+'</div></div>'+
+   '<div class="grid2"><div class="card"><h3 style="color:var(--ok)">'+m.doT+'</h3>'+ul(m.do)+'</div><div class="card"><h3 style="color:var(--bad)">'+m.dontT+'</h3>'+ul(m.dont)+'</div></div>'+
+   '<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkhint'+(vkOpen?' open':'')+'">'+moreHint()+'</span></button>'+
+   (vkOpen?'<p class="small muted">'+m.vkLead+'</p><p class="small" style="color:var(--gold)">'+m.vkPos+'</p>'+scriptBlock("vk",L.m.sc.vkSeq)+'<p class="small muted">'+m.vkWarn+'</p>':'')+'</div>'+
+   task(L.ui.lbl.task,m.task);
+};
+
+R.pipe=function(){
+  var m=L.m.pipe, st=L.status, h=head("pipe",m.lead)+'<div class="grid4">';
+  m.steps.forEach(function(s){ h+='<div class="card"><span class="label">'+s[0]+'</span><p class="small muted">'+s[1]+'</p></div>'; });
+  h+='</div>';
+  var counts={}; S.list.forEach(function(c){ if(c.status) counts[c.status]=(counts[c.status]||0)+1; });
+  h+='<div class="card stack"><div class="row">'+STATUSES.slice(1).map(function(s){ return '<span class="badge b-mut">'+st[s]+' <b class="tab" style="color:var(--fg)">'+(counts[s]||0)+'</b></span>'; }).join("")+'</div>';
+  var rows=S.list.filter(function(c){ return c.top || c.status; });
+  if(!rows.length) h+='<p class="muted small">'+m.empty+'</p>';
+  else{
+    var today=new Date().toISOString().slice(0,10);
+    h+='<div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody>';
+    rows.sort(function(a,b){ return (a.date||"9999").localeCompare(b.date||"9999"); }).forEach(function(c){
+      var overdue=c.date && c.date<today && c.status!=="GO" && c.status!=="NO";
+      h+='<tr><td style="min-width:130px"><b>'+esc(c.name)+'</b>'+(c.top?' <span class="small" style="color:var(--gold)">★</span>':'')+'</td>'+
+       '<td><select data-cbind="'+c.id+'.status" data-rr="1" style="min-width:150px" aria-label="Status">'+STATUSES.map(function(s){return '<option value="'+s+'"'+((c.status||"")===s?" selected":"")+'>'+(s?st[s]:st.open)+'</option>';}).join("")+'</select></td>'+
+       '<td><input type="text" style="min-width:170px" value="'+esc(c.next||"")+'" placeholder="'+esc(m.nextPh)+'" data-cbind="'+c.id+'.next"></td>'+
+       '<td><input type="date" value="'+esc(c.date||"")+'" data-cbind="'+c.id+'.date" style="'+(overdue?"border-color:var(--bad)":"")+'"></td>'+
+       '<td><input type="checkbox" data-cbind="'+c.id+'.reply" '+(c.reply?"checked":"")+' aria-label="'+esc(m.cols[4])+'"></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>'+scriptBlock("fu",L.m.sc.fu);
+  return h+task(L.ui.lbl.task,m.task);
+};
+
+R.talk=function(){
+  var m=L.m.talk;
+  var h=head("talk",m.lead)+'<div class="grid2"><div class="card"><h3>'+m.qT+'</h3><ol class="small" style="margin-top:8px">'+m.pq.map(function(q){return '<li>'+q+'</li>';}).join("")+'</ol></div>'+
+   '<div class="card hi"><h3>'+m.tipT+'</h3><p class="small muted" style="margin-top:8px">'+m.tip+'</p></div></div>'+
+   '<div class="flow">'+m.flow.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>'+quote(m.quote)+
+   (m.honestT?'<div class="card" style="border-color:rgba(217,180,92,.45)"><h3 style="color:var(--gold)">'+m.honestT+'</h3><p class="small muted" style="margin-top:6px">'+m.honest+'</p></div>':'');
+  var ids=["t_who","t_lever","t_q","t_next"];
+  h+='<form class="card stack" id="talkform"><h2>'+m.prot+'</h2><div class="grid2">'+m.f.map(function(l,i){ return '<label class="field"><span>'+l+'</span><input type="text" id="'+ids[i]+'"'+(i===0?' list="contacts" required':'')+'></label>'; }).join("")+'</div>'+
+   '<datalist id="contacts">'+S.list.map(function(c){return '<option value="'+esc(c.name)+'">';}).join("")+'</datalist><div><button class="btn pri" type="submit">'+m.save+'</button></div></form>';
+  if(S.talks.length){
+    h+='<div class="card"><div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'<th></th></tr></thead><tbody>';
+    S.talks.forEach(function(t,i){ h+='<tr><td class="tab small">'+fdate(t.at,{dateStyle:"short"})+'</td><td><b>'+esc(t.who)+'</b></td><td>'+esc(t.lever)+'</td><td>'+esc(t.q)+'</td><td>'+esc(t.next)+'</td><td><button class="iconbtn" data-act="delTalk" data-i="'+i+'" aria-label="'+esc(m.del)+'">×</button></td></tr>'; });
+    h+='</tbody></table></div></div>';
+  }
+  return h+task(L.ui.lbl.task,m.task);
+};
+
+function multiRows(){
+  var m=S.multi, size=Math.max(1,+m.size||100), r=Math.max(0,+m.rate||0)/100, Lv=Math.min(8,Math.max(1,+m.levels||6)), act=1, out="";
+  for(var i=1;i<=Lv;i++){ var lst=act*size, nw=Math.round(lst*r); out+='<tr><td><b>'+L.m.dup.lv+i+'</b></td><td class="tab">'+fmt(act)+'</td><td class="tab">'+fmt(lst)+'</td><td class="tab" style="color:var(--teal)"><b>'+fmt(nw)+'</b></td></tr>'; act=nw; if(!act) break; }
+  return out;
+}
+function multiBlock(){
+  var m=L.m.dup, mm=S.multi;
+  return '<div class="card hi stack"><span class="label">'+m.multiL+'</span><h2>'+m.multiT+'</h2><p class="muted">'+m.multiIdea+'</p>'+
+   '<div class="grid3"><label class="field"><span>'+m.size+'</span><input type="number" id="m_size" min="10" max="500" step="10" data-mbind="size" value="'+esc(mm.size)+'"></label><label class="field"><span>'+m.rate+'</span><input type="number" id="m_rate" min="1" max="50" step="1" data-mbind="rate" value="'+esc(mm.rate)+'"></label><label class="field"><span>'+m.levels+'</span><input type="number" id="m_lv" min="1" max="8" step="1" data-mbind="levels" value="'+esc(mm.levels)+'"></label></div>'+
+   '<div class="tablewrap"><table><thead><tr>'+m.cols.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody id="multibody">'+multiRows()+'</tbody></table></div>'+
+   '<div class="grid2"><div class="card"><h3>'+m.learnT+'</h3><p class="muted small" style="margin-top:6px">'+m.learn+'</p></div>'+
+   '<div class="card" style="border-color:var(--warn)"><h3>'+m.notT+'</h3><p class="muted small" style="margin-top:6px">'+m.not+'</p></div></div></div>';
+}
+R.dup=function(){
+  var m=L.m.dup, mm=S.multi;
+  var h=head("dup",m.lead)+multiBlock()+'<div class="flow">'+m.flow.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>'+
+   '<div class="grid2"><div class="card"><h3>'+m.noT+'</h3>'+ul(m.no)+'</div><div class="card hi"><h3>'+m.yesT+'</h3>'+ul(m.yes)+'</div></div>'+
+   '<div class="card stack"><h2>'+m.title+'</h2><label class="field"><span>'+m.partner+'</span><input type="text" id="dupname" data-bind="dup.partner" value="'+esc(S.dup.partner||"")+'"></label><div class="tablewrap"><table><thead><tr>'+m.cols2.map(function(c){return '<th>'+c+'</th>';}).join("")+'</tr></thead><tbody>';
+  L.dupSteps.forEach(function(s,i){ h+='<tr><td>'+s+'</td><td><input type="date" id="dt'+i+'" data-bind="dup.t'+i+'" value="'+esc(S.dup["t"+i]||"")+'"></td><td><input type="checkbox" id="dd'+i+'" data-bind="dup.d'+i+'" '+(S.dup["d"+i]?"checked":"")+' aria-label="'+esc(m.cols2[2])+'"></td></tr>'; });
+  h+='</tbody></table></div><div class="row"><button class="btn sm" data-act="copyLink">'+m.link+'</button><span class="small muted">'+m.linkHint+'</span></div></div>';
+  return h+task(L.ui.lbl.mantra,m.task);
+};
+
+R.finish=function(){
+  var m=L.m.finish, lv=level();
+  var vals=[S.list.length,tops().length,contacted().length,S.list.filter(function(c){return c.reply;}).length,S.talks.length,nextSteps()];
+  var h=head("finish",m.lead)+'<div class="card hi stack"><h2>'+m.sc+'</h2><p class="small muted">'+m.scHint+'</p><div class="grid3">'+vals.map(function(v,i){ return '<div class="kpi"><b class="tab">'+v+'</b><span>'+m.k[i]+'</span></div>'; }).join("")+'</div></div>'+
+   dayBlocks()+'<div class="grid3">';
+  m.lv.forEach(function(x,i){ h+='<div class="card'+(lv>i?" hi":"")+'"><span class="label">'+(lv>i?"✓ ":"")+x[0]+'</span><h3>'+x[1]+'</h3><p class="small muted">'+x[2]+'</p></div>'; });
+  h+='</div><div class="card stack"><h2>'+m.reviewT+'</h2>'+
+   '<label class="opt'+(S.fin.review?" sel":"")+'"><input type="checkbox" id="review" data-bind="fin.review" '+(S.fin.review?"checked":"")+'> '+F(m.review,{l:S.leader?" ("+esc(S.leader)+")":""})+'</label>'+
+   '<div class="grid2"><label class="field"><span>'+L.ui.leader+'</span><input type="text" id="f_leader" data-bind="leader" value="'+esc(S.leader)+'"></label><label class="field"><span>'+m.date+'</span><input type="date" id="f_date" data-bind="fin.date" value="'+esc(S.fin.date||"")+'"></label></div></div>';
+  if(TEST) h+=nextActionCard();
+  var names=[m.none,m.lv[0][0],m.lv[1][0],m.lv[2][0]];
+  h+='<div class="cert">'+brand()+'<div class="eyebrow" style="color:var(--gold)">'+(m.eyebrow||"Turbo-Onboarding · 48 h")+'</div>'+
+   '<h1>'+esc(S.name||m.yourName)+'</h1><p class="muted">'+m.did+'</p>'+
+   '<div class="lv">'+m.lv.map(function(x,i){ return '<span class="'+(lv>i?"on":"")+'">'+(lv>i?"✓ ":"")+x[0]+'</span>'; }).join("")+'</div>'+
+   '<p class="small muted">'+m.status+': <b style="color:var(--gold)">'+names[lv]+'</b>'+(S.leader?' · Leader: '+esc(S.leader):'')+(S.fin.date?' · '+fdate(S.fin.date+"T12:00:00",{dateStyle:"medium"}):'')+'</p>'+
+   (inFrame?'':'<button class="btn sm noprint" data-act="print">'+m.print+'</button>')+'</div>';
+  h+='<div class="grid2"><div class="card"><h3>'+m.rulesT+'</h3>'+ul(m.rules)+'</div><div class="card hi"><h3>'+m.munichT+'</h3><p class="small muted" style="margin-top:8px">'+m.munich+'</p></div></div>'+quote([m.chain],"text-align:center");
+  return h+task(L.ui.lbl.next,m.task);
+};
+
+function nextActionCard(){
+  var m=L.m.finish, f=S.fin;
+  var h='<div class="card hi stack nextact"><span class="label">'+m.naL+'</span><h2>'+m.naT+'</h2>';
+  if(f.naSet){
+    h+='<div class="na-sum"><div><span class="small muted">'+m.naWhatL+'</span><b>'+esc(f.naWhat)+'</b></div><div><span class="small muted">'+m.naWhenL+'</span><b>'+esc(fdate(f.naWhen,{weekday:"long",day:"2-digit",month:"long",hour:"2-digit",minute:"2-digit"}))+'</b></div>'+(f.naNeed?'<div><span class="small muted">'+m.naNeedL+'</span><b>'+esc(f.naNeed)+'</b></div>':'')+'</div>'+
+     '<p class="small" style="color:var(--gold)">'+m.naPrepared+'</p>'+
+     '<p class="small muted">'+F(m.naHelp,{l:S.leader?esc(S.leader):L.ui.yourLeader})+'</p>'+
+     '<div class="row"><button class="btn gold" data-act="naDone">'+m.naDoneBtn+'</button></div>';
+  } else {
+    h+='<p class="small muted">'+F(m.naLead,{n:f.naDone||0})+'</p>'+
+     '<label class="field"><span>'+m.naWhatL+'</span><input type="text" id="na_what" data-bind="fin.naWhat" placeholder="'+esc(m.naWhatPh)+'" value="'+esc(f.naWhat||"")+'"></label>'+
+     '<div class="grid2"><label class="field"><span>'+m.naWhenL+'</span><input type="datetime-local" id="na_when" data-bind="fin.naWhen" value="'+esc(f.naWhen||"")+'"></label>'+
+     '<label class="field"><span>'+m.naNeedL+'</span><input type="text" id="na_need" data-bind="fin.naNeed" placeholder="'+esc(m.naNeedPh)+'" value="'+esc(f.naNeed||"")+'"></label></div>'+
+     '<p class="small muted">'+F(m.naHelp,{l:S.leader?esc(S.leader):L.ui.yourLeader})+'</p>'+
+     '<div class="row"><button class="btn gold" data-act="naSet">'+m.naBtn+'</button>'+(f.naDone?'<span class="badge b-ok">'+F(m.naCount,{n:f.naDone})+'</span>':'')+'</div>';
+  }
+  return h+'</div>';
+}
+
+/* ---------- Backup ---------- */
+var inFrame=(function(){ try{ return window.self!==window.top; }catch(e){ return true; } })();
+function backupHTML(){
+  var b=L.m.bk;
+  return '<div class="card stack" id="backupcard"><div class="row" style="justify-content:space-between"><h2>'+b.title+'</h2><button class="btn sm ghost" data-act="closeBackup">'+b.close+'</button></div>'+
+   '<p class="small muted">'+b.hint+'</p>'+
+   '<div class="row"><button class="btn pri" data-act="exportFile">'+b.file+'</button><button class="btn" data-act="exportCopy">'+b.copy+'</button></div>'+
+   '<label class="field"><span>'+b.loadL+'</span><input type="file" id="impfile" accept=".json,application/json"></label>'+
+   '<textarea id="impcode" placeholder="'+esc(b.codePh)+'"></textarea><div class="row"><button class="btn gold" data-act="importCode">'+b.load+'</button></div>'+
+   more(b.resetSum,'<div class="row"><button class="btn sm" style="border-color:var(--bad);color:var(--bad)" data-act="resetAll">'+b.resetBtn+'</button></div>',"danger")+'</div>';
+}
+function showBackup(){
+  var box=document.getElementById("backupbox");
+  if(box){ box.innerHTML=backupHTML(); box.scrollIntoView({behavior:"smooth"}); return; }
+  var w=document.querySelector(".wrap"), d=document.createElement("div"); d.id="backupbox"; d.innerHTML=backupHTML(); w.insertBefore(d,w.firstChild); closeSide(); window.scrollTo(0,0);
+}
+function importData(txt){
+  try{ var d=JSON.parse(txt); if(!d || d.v!==VERSION || !Array.isArray(d.list) || !d.multi || !d.fin) throw 0; S=merge(blank(),migrate(d)); setLang(S.lang); save(); render(); toast(L.m.bk.loaded); }
+  catch(e){ toast(L.m.bk.invalid); }
+}
+function exportFile(){
+  var name="turbo-"+(S.name||"partner").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+new Date().toISOString().slice(0,10)+".json";
+  var data=JSON.stringify(S,null,1);
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([data],{type:"application/json"})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.parentNode.removeChild(a); },500);
+}
+
+/* ---------- Events ---------- */
+function go(id){ if(!id||!L.mods[id]) return; S.view=id; save(); render(); window.scrollTo(0,0); try{ history.replaceState(null,"","#"+id); }catch(e){} }
+function closeSide(){ var s=document.getElementById("side"), o=document.getElementById("ov"); if(s) s.classList.remove("open"); if(o) o.classList.remove("open"); }
+function markContacted(g){ var c=findC(pick[g]); if(c && !c.status) c.status="NEU"; }
+function switchLang(l){
+  var n=document.getElementById("w_name"), ld=document.getElementById("w_leader"), cs=document.getElementById("w_consent");
+  if(n) draftName=n.value; if(ld) draftLeader=ld.value; if(cs) draftConsent=cs.checked;
+  setLang(l); save(); render();
+}
+
+document.addEventListener("click",function(e){
+  var g=e.target.closest("[data-go]"); if(g && !g.disabled){ go(g.getAttribute("data-go")); return; }
+  var el=e.target.closest("[data-act]"); if(!el) return;
+  var a=el.getAttribute("data-act"), id=el.getAttribute("data-id");
+  switch(a){
+   case "lang": switchLang(el.getAttribute("data-v")); break;
+   case "consent": S.consent=true; save(); render(); sync(false); break;
+   case "openside": document.getElementById("side").classList.add("open"); document.getElementById("ov").classList.add("open"); break;
+   case "closeside": closeSide(); break;
+   case "toggleDone": S.done[id]=!S.done[id]; save(); render(); if(S.done[id]) toast(L.ui.toastDone); break;
+   case "setPace": var pv=el.getAttribute("data-v"); if(el.getAttribute("data-w")==="w"){ var nn=document.getElementById("w_name"), ll=document.getElementById("w_leader"); if(nn) draftName=nn.value; if(ll) draftLeader=ll.value; draftPace=pv; } else { S.pace=pv; save(); toast(L.ui.paceSet); } applyPace(); L=I18N[S.lang]||I18N.de; render(); break;
+   case "stuck": S.stuck[id]=el.getAttribute("data-v"); save(); render(); break;
+   case "sentScript": S.sent[id]=(S.sent[id]||0)+1; var pc=findC(pend[id]!=null?pend[id]:pick[el.getAttribute("data-g")]); if(pc && !pc.status) pc.status="NEU"; delete pend[id]; save(); render(); toast(L.ui.sentOk); break;
+   case "naSet": if(!(S.fin.naWhat||"").trim()||!S.fin.naWhen){ toast(L.m.finish.naNeed); break; } S.fin.naSet=Date.now(); save(); render(); toast(L.m.finish.naPrepared); break;
+   case "naDone": S.fin.naDone=(S.fin.naDone||0)+1; S.fin.naSet=0; S.fin.naWhat=""; S.fin.naWhen=""; S.fin.naNeed=""; save(); render(); toast(L.m.finish.naDoneT); break;
+   case "setType": S.diag.type=+el.getAttribute("data-v"); save(); render(); break;
+   case "quiz": S.quiz[+el.getAttribute("data-q")]=+el.getAttribute("data-a"); save(); render(); break;
+   case "pitchStart": pitchToggle(); break;
+   case "pitchReset": pitchStop(false); S.pitch={reps:0,best:0,leaderOk:S.pitch.leaderOk}; save(); render(); break;
+   case "addCat": addCat=+el.getAttribute("data-v"); [].forEach.call(document.querySelectorAll("#catpills .pill"),function(p){p.classList.toggle("on",p===el);}); break;
+   case "bulkAdd": var lines=document.getElementById("bulk").value.split(/\n+/).map(function(s){return s.trim();}).filter(Boolean); lines.forEach(function(n){ S.list.push({id:uid(),name:n,ctx:"",cat:addCat}); }); save(); render(); toast(F(L.m.list.bulkToast,{n:lines.length})); break;
+   case "delC": S.list=S.list.filter(function(c){return c.id!==id;}); save(); render(); break;
+   case "rate": var c=findC(id); c[el.getAttribute("data-k")]=+el.getAttribute("data-v"); save(); render(); break;
+   case "copyScript": var grp=el.getAttribute("data-g"), sc=scripts(grp).filter(function(s){return s.id===id;})[0]; copyText(fill(sc.x,findC(pick[grp])));
+     if(TEST){ pend[id]=pick[grp]||""; setTimeout(function(){ render(); toast(L.ui.copiedSend); },60); break; }
+     S.sent[id]=(S.sent[id]||0)+1; markContacted(grp); save(); setTimeout(render,50); break;
+   case "waScript": if(TEST){ pend[id]=pick[el.getAttribute("data-g")]||""; setTimeout(render,300); break; } S.sent[id]=(S.sent[id]||0)+1; markContacted(el.getAttribute("data-g")); save(); setTimeout(render,300); break;
+   case "scf": scf=el.getAttribute("data-v")||""; render(); break;
+   case "vk": vkOpen=!vkOpen; render(); break;
+   case "delTalk": S.talks.splice(+el.getAttribute("data-i"),1); save(); render(); break;
+   case "copyLink": copyText(location.href.split("#")[0]); break;
+   case "print": window.print(); break;
+   case "playVideo": playVideo(); break;
+   case "backup": showBackup(); break;
+   case "closeBackup": var b=document.getElementById("backupbox"); if(b){ if(S.startedAt) b.parentNode.removeChild(b); else b.innerHTML=""; } break;
+   case "exportFile": exportFile(); break;
+   case "exportCopy": copyText(JSON.stringify(S)); break;
+   case "importCode": var v=document.getElementById("impcode").value.trim(); if(v) importData(v); else toast(L.m.bk.need); break;
+   case "resetAll": try{ localStorage.removeItem(KEY); }catch(err){} S=blank(S.lang); lastSent=0; lastSync=0; render(); toast(L.m.bk.reset); break;
+  }
+});
+document.addEventListener("change",function(e){
+  var el=e.target, act=el.getAttribute("data-act");
+  if(el.id==="impfile" && el.files && el.files[0]){ var r=new FileReader(); r.onload=function(){ importData(String(r.result)); }; r.readAsText(el.files[0]); return; }
+  if(act==="langsel"){ switchLang(el.value); return; }
+  if(act==="topToggle"){ var c=findC(el.getAttribute("data-id")); c.top=el.checked; if(!c.top) c.first5=false; save(); render(); return; }
+  if(act==="first5"){ var c2=findC(el.getAttribute("data-id")); if(el.checked && first5().length>=P().first){ el.checked=false; toast(L.m.top.max5); return; } c2.first5=el.checked; save(); return; }
+  if(act==="pick"){ pick[el.getAttribute("data-g")]=el.value; render(); return; }
+  if(el.hasAttribute("data-cbind") && (el.tagName==="SELECT"||el.type==="checkbox"||el.type==="date")){ cbind(el); if(el.hasAttribute("data-rr")) render(); return; }
+  if(el.hasAttribute("data-bind") && el.type==="checkbox"){ setPath(el.getAttribute("data-bind"),el.checked); save(); render(); return; }
+  if(el.hasAttribute("data-bind") && el.type==="date"){ setPath(el.getAttribute("data-bind"),el.value); save(); render(); return; }
+});
+document.addEventListener("input",function(e){
+  var el=e.target;
+  if(el.hasAttribute("data-bind") && el.type!=="checkbox" && el.type!=="date"){ setPath(el.getAttribute("data-bind"),el.value); save(); return; }
+  if(el.hasAttribute("data-cbind") && el.type==="text"){ cbind(el); return; }
+  if(el.hasAttribute("data-mbind")){ S.multi[el.getAttribute("data-mbind")]=el.value; save(); document.getElementById("multibody").innerHTML=multiRows(); return; }
+  if(el.id==="lfilter"){ listFilter=el.value; var pos=el.selectionStart; render(); var f=document.getElementById("lfilter"); if(f){ f.focus(); try{f.setSelectionRange(pos,pos);}catch(x){} } }
+});
+function cbind(el){
+  var p=el.getAttribute("data-cbind").split("."), c=findC(p[0]); if(!c) return;
+  var v= el.type==="checkbox"?el.checked:el.value;
+  if(p[1]==="cat" && v!=="") v=+v;
+  c[p[1]]=v; save();
+}
+document.addEventListener("submit",function(e){
+  e.preventDefault();
+  var f=e.target;
+  if(f.id==="startform"){
+    var n=document.getElementById("w_name").value.trim(); if(!n){ toast(L.ui.needName); return; }
+    var cb=document.getElementById("w_consent"); if(SYNC && cb && !cb.checked){ toast(L.ui.consentNeed); return; }
+    S.name=n; S.leader=document.getElementById("w_leader").value.trim(); S.consent=!!(cb&&cb.checked); if(TEST){ S.pace=draftPace; applyPace(); L=I18N[S.lang]||I18N.de; } S.startedAt=Date.now(); S.view="start"; save(); render(); sync(false); return; }
+  if(f.id==="addform"){ var inp=document.getElementById("add_name"), nm=inp.value.trim(); if(!nm){ inp.focus(); return; } S.list.push({id:uid(),name:nm,ctx:document.getElementById("add_ctx").value.trim(),cat:addCat}); save(); render(); var ni=document.getElementById("add_name"); if(ni) ni.focus(); if(S.list.length===P().names) toast(L.m.list.t30); if(S.list.length===100) toast(L.m.list.t100); return; }
+  if(f.id==="talkform"){ var w=document.getElementById("t_who").value.trim(); if(!w) return; S.talks.unshift({at:Date.now(),who:w,lever:document.getElementById("t_lever").value,q:document.getElementById("t_q").value,next:document.getElementById("t_next").value}); var c=S.list.filter(function(x){return x.name===w;})[0]; if(c && (!c.status||c.status==="NEU")) c.status="TERMIN"; save(); render(); toast(L.m.talk.saved); return; }
+});
+
+/* ---------- 60-Sekunden-Timer ---------- */
+var pT=null, pStart=0;
+function pitchToggle(){ if(pT){ pitchStop(true); } else { pStart=Date.now(); document.getElementById("pitchBtn").textContent=L.m.system.stop; pT=setInterval(tick,200); tick(); } }
+function tick(){ var el=document.getElementById("timer"); if(!el){ clearInterval(pT); pT=null; return; } var s=(Date.now()-pStart)/1000, left=Math.ceil(60-s); el.textContent=left>0?left:"+"+Math.floor(s-60); el.className="timer tab "+(left>0?"run":"over"); }
+function pitchStop(count){
+  if(!pT) return; clearInterval(pT); pT=null;
+  var s=Math.round((Date.now()-pStart)/1000), m=L.m.system;
+  if(count){
+    if(s<15) toast(m.short);
+    else if(s<=60){ S.pitch.reps++; if(!S.pitch.best||s<S.pitch.best) S.pitch.best=s; save(); toast(F(m.valid,{s:s})); }
+    else toast(F(m.long,{s:s}));
+  }
+  render();
+}
+
+/* ---------- Boot ---------- */
+var hadSaved=false;
+try{ hadSaved=!!localStorage.getItem(KEY); }catch(e){}
+load();
+var hash=(location.hash||"").replace("#","").toLowerCase();
+if(LANGS.indexOf(hash)>=0 && (!hadSaved || !S.startedAt)) S.lang=hash;
+setLang(S.lang);
+if(hash && L.mods[hash] && S.startedAt) S.view=hash;
+if(!L.mods[S.view]) S.view="start";
+try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+render();
+if(S.startedAt) setTimeout(function(){ if(!S.updatedAt) S.updatedAt=Date.now(); sync(false); },1500);
+})();
+
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+</body>
+</html>

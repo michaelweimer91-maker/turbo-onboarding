@@ -157,3 +157,69 @@ bk:{title:"Fortschritt sichern / laden",close:"Schließen",hint:"Dein Fortschrit
  file:"Als Datei speichern",copy:"Code kopieren",loadL:"Sicherung laden: Datei wählen oder Code einfügen",codePh:"Sicherungscode hier einfügen",load:"Sicherung laden",
  resetSum:"Alles zurücksetzen",resetBtn:"Ja, alle Daten auf diesem Gerät löschen",loaded:"Sicherung geladen",invalid:"Das ist keine gültige Turbo-Sicherung",need:"Bitte Code einfügen oder Datei wählen",saved:"Gespeichert",canceled:"Speichern abgebrochen",reset:"Zurückgesetzt"}
 }};
+/* ===== TESTVERSION (test.html) – wird nur mit window.TURBO_TEST angewendet. Live-App bleibt unverändert. =====
+   over      = ersetzt/ergänzt Texte (Arrays werden komplett ersetzt)
+   scriptsAdd= hängt Vorlagen hinten an (IDs bleiben stabil)
+   easy      = zusätzliche Überschreibungen im Einsteiger-Tempo (7 Tage · 10/5/3) */
+I18N.de.test={
+over:{
+ ui:{
+  testT:"TESTVERSION",test:"Neue Funktionen zum Ausprobieren. Daten bleiben nur auf diesem Gerät, nichts geht ins Controlling.",
+  startBtn:"Jetzt starten",
+  paceT:"Dein Tempo",paces:[["turbo","Turbo · 48 Stunden","30 Namen · TOP 10 · 5 Ansprachen. Für alle, die jetzt richtig Gas geben wollen."],["easy","Einsteiger · 7 Tage","10 Namen · TOP 5 · 3 Ansprachen. Gleicher Weg, kleinere Schritte – wenn du wenig Zeit hast."]],
+  paceSet:"Tempo geändert",toEasy:"Zum Einsteiger-Tempo wechseln",
+  sprintLeftD:"Start: noch {d} Tage",
+  copiedSend:"Kopiert. Nach dem Senden auf „Gesendet“ tippen.",sentOk:"Gesendet ✓ – in der Pipeline als NEU eingetragen",
+  yourLeader:"deinem Leader",
+  stuckT:"Woran hängt es gerade?",
+  stuckR:[["understand","Nicht verstanden"],["time","Keine Zeit"],["unsure","Unsicher bei der Ansprache"],["help","Brauche Hilfe"]],
+  stuckA:{understand:"Kein Problem – schau dir das Video im 48h-Fahrplan noch einmal an und lies die drei Karten im Schritt „System in 60 Sekunden“. Was dann noch offen ist, klärst du in 10 Minuten mit {l}.",
+   time:"Dann mach es kleiner statt gar nicht: Das Einsteiger-Tempo gibt dir 7 Tage und kleinere Ziele. Gleicher Weg, nur in deinem Rhythmus.",
+   unsure:"Ganz normal am Anfang. Nimm die lockere Vorlage, lies sie einmal laut und schreib sie in deinen Worten. Oder führe die ersten Ansprachen gemeinsam mit {l} – im 2er-Team lernst du am schnellsten.",
+   help:"Melde dich jetzt bei {l} – eine kurze Nachricht reicht: „Ich hänge bei [Schritt], hast du heute 10 Minuten?“"}
+ },
+ m:{
+  sc:{used:"{n}× gesendet",sentBtn:"✓ Gesendet"},
+  talkto:{note:"So zählt es: Vorlage kopieren oder in WhatsApp öffnen, anpassen, absenden – und erst dann auf „✓ Gesendet“ tippen. Dann wird der Kontakt in der Pipeline auf „NEU“ gesetzt. Nur kopieren zählt nicht als Ansprache."},
+  system:{
+   sys:[["Best Prime","Vertrieb & Wachstum","Die internationale Vertriebs- und Community-Organisation. Sie strukturiert Recruiting, Onboarding, Duplikation, Führung und Marktausbau."],["ePOINT","Plattform & Ökosystem","Die Technologieplattform und zentrale Marke des Ökosystems. Verbraucher, Unternehmen und Partner werden in einer gemeinsamen Infrastruktur verbunden."],["ePAY","Payment-Ebene","Die geplante Payment- und Transaktionsebene des Ökosystems. Mit dem Start von ePAY wird der Nutzen direkt beim Bezahlen im Alltag verankert. Verfügbarkeit und Starttermin nur gemäß offiziellem Produktstatus."]],
+   core:"Best Prime baut die Vertriebs- und Wachstumsstruktur. ePOINT ist die Technologieplattform, die Verbraucher, Unternehmen und Partner in einem gemeinsamen Ökosystem verbindet. Mit ePAY kommt die Zahlungs- und Transaktionsebene dazu. Meine Aufgabe als Partner: Menschen gewinnen, die diesen Aufbau mit mir gemeinsam duplizieren."},
+  talk:{honestT:"Ehrliche Grenze",honest:"Nicht alles ist für jeden interessant – und das ist okay. Lass dein Gegenüber Kosten, Aufwand und persönliche Passung selbst prüfen. Ein ehrliches Nein ist mehr wert als ein überredetes Ja: Es schützt deinen Ruf und deine Beziehung."},
+  finish:{
+   naL:"Nächste Aktion",naT:"Dein nächster Schritt – mit Datum",naLead:"Ohne festen Termin passiert meist nichts. Leg genau eine machbare Handlung fest.",
+   naWhatL:"Das mache ich als Nächstes",naWhatPh:"z. B. Kontakt Nr. 6 aus meiner TOP 10 anschreiben",
+   naWhenL:"Ich mache es am",naNeedL:"Dafür brauche ich (optional)",naNeedPh:"z. B. 15 Minuten, Handy, Vorlage",
+   naHelp:"Wenn du hängen bleibst: kurze Nachricht an {l}.",
+   naBtn:"Als nächsten Schritt festhalten",naNeed:"Bitte Handlung und Termin eintragen",
+   naPrepared:"Du hast den nächsten Schritt vorbereitet.",naDoneBtn:"✓ Erledigt – nächsten Schritt festlegen",naDoneT:"Erledigt. Was ist dein nächster sinnvoller Schritt?",
+   naCount:"{n} Schritte erledigt"}
+ }
+},
+scriptsAdd:{
+ fu:[["Einwand · „Ist das ein Schneeballsystem?“ (sachlich)","Berechtigte Frage – die solltest du auch stellen. Entscheidend ist, ob es echte Produkte und Kundenleistungen gibt und welche Aktivitäten tatsächlich vergütet werden. Lass uns das anhand der offiziellen Unterlagen gemeinsam anschauen. Ich möchte, dass du dir selbst ein fundiertes Urteil bildest."],
+  ["Einwand · „Was ist das genau?“ (mit Unterlagen)","Gern kurz und direkt: Es geht um Best Prime und ePOINT – ein Ökosystem mit Nutzen für Kunden und Partner. Funktionsweise, Kosten und Vergütung zeige ich dir anhand der offiziellen Unterlagen. Was ist für dich zuerst wichtig?"]]
+},
+easy:{
+ ui:{sprintOver:"7 Tage vorbei"},
+ mods:{start:["Dein 7-Tage-Fahrplan","Startprofil"],finish:["7-Tage-Check","Abschluss mit deinem Leader"]},
+ days:[["Tag 1–2","Verstehen · Fokus",["Startprofil ausgefüllt","60-Sekunden-Erklärung sitzt (3×)","Leader-Check bestanden","Mindestens 10 Namen","TOP 5 + erste 3 gewählt"]],["Tag 3–7","Aktivität · Duplizieren",["3 Ansprachen gesendet","3 Kontakte mit Status","Follow-up mit Datum gesetzt","Erstes Gespräch geführt","Duplikation geplant"]]],
+ dupSteps:["Startprofil","60-Sekunden-Erklärung","Namensliste + TOP 5","Erste 3 Ansprachen","7-Tage-Review"],
+ m:{
+  start:{lead:"Das Einsteiger-Tempo ist dein Arbeitsplan für die ersten 7 Tage: gleicher Weg wie der Turbo, nur mit kleineren Schritten. Jeder Schritt endet mit einer konkreten Handlung – alles wird automatisch gespeichert.",
+   sprint:"Deine 7 Tage",tl:["Start","Tag 1–2: Verstehen + Fokus","Tag 3–7: Aktivität","7 Tage"],
+   task:"Beantworte die drei Fragen und wähle deinen Starttyp. Dein Sponsor / Leader richtet daran deine 7 Tage aus. Ein goldener Kreis im Menü heißt: Kriterium erfüllt – markiere den Schritt dann als erledigt."},
+  list:{min30:"Mindestens 10",go100:"Ziel erreicht – gern weiter",t30:"10 Namen – Ziel geschafft",
+   task:"Schreibe mindestens 10 Namen auf – ohne zu bewerten. Mehr geht immer, aber 10 reichen für deinen Start."},
+  top:{of:"{n} / 5 TOP-Kontakte",hint:"Vergib 1–5 Punkte. Die Liste sortiert sich nach Gesamtpunkten. Markiere 5 als TOP und davon 3, die du in den nächsten Tagen ansprichst.",
+   cols:["TOP","Name","Vertrauen","Potenzial","Tempo","Σ","Erste 3"],max5:"Maximal 3 – das ist der Fokus",
+   task:"Wähle deine TOP 5 und markiere davon die ersten 3, die du in den nächsten Tagen ansprichst."},
+  talkto:{task:"Sende in deinen 7 Tagen 3 Ansprachen – an deine „Erste 3“ aus den TOP 5. Ziel jeder Nachricht ist nur ein 10-Minuten-Termin."},
+  talk:{task:"Führe in deinen 7 Tagen mindestens ein Gespräch mit echter Bedarfsanalyse – gern als 2er-Gespräch mit deinem Leader."},
+  dup:{flow:["1. Startprofil","2. System","3. Liste + TOP 5","4. Ansprache","5. 7 Tage Aktion"]},
+  finish:{lead:"Nach 7 Tagen setzt du dich mit deinem Leader zusammen: Zahlen anschauen, nächste Schritte festlegen. Abschluss = Wissen + echte Aktivität.",
+   sc:"Dein 7-Tage-Scoreboard",eyebrow:"Einsteiger-Start · 7 Tage",
+   lv:[["Verstanden","System sitzt","60-Sekunden-Erklärung, Mini-Check und Leader-Bestätigung."],["Aktiv","Aktivität nachweisbar","10+ Namen, TOP 5, 3 Kontakte angesprochen, erstes Gespräch geführt."],["Dupliziert","Prozess weitergegeben","Dein erster eigener Partner hat den Start mit dir durchlaufen."]],
+   review:"7-Tage-Review mit meinem Leader{l} ist erledigt",did:"hat den 7-Tage-Start durchlaufen · Stufe"}
+ }
+}
+};

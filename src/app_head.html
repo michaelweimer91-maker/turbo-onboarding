@@ -163,6 +163,16 @@ td input,td select{padding:6px 8px}
 .vkhint{display:flex;align-items:center;gap:8px;flex:none;border:1px solid rgba(217,180,92,.5);border-radius:999px;padding:5px 12px}
 .vkhint .more-hint{color:var(--gold)}
 @media (max-width:860px){.more-hint{font-size:11px}.vktoggle{flex-direction:column;align-items:flex-start}.vkhint{padding:4px 10px}}
+.testbar{border:1px dashed var(--gold);background:rgba(217,180,92,.1);color:var(--fg);border-radius:10px;padding:9px 14px;font-size:13px}
+.testbar b{color:var(--gold);letter-spacing:.1em;margin-right:6px}
+.pace{text-align:left;cursor:pointer}
+.pace.on{border-color:var(--gold);background:linear-gradient(160deg,#2a2614,#11252e)}
+.pace.on h3{color:var(--gold)}
+.pulse{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,180,92,.55)}50%{box-shadow:0 0 0 6px rgba(217,180,92,0)}}
+.na-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.na-sum>div{display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+input[type=datetime-local]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;color:inherit}
 .modfoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:9px 16px;border-radius:9px;font-weight:600;font-size:14px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 
