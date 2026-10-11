@@ -185,6 +185,9 @@ function head(id,lead){
   var p=phaseOf(id);
   return '<header class="stack"><div class="eyebrow">'+L.ui.phase+' '+(p+1)+' · '+L.phases[p]+' · '+L.mods[id][1]+'</div><h1>'+MT(id)+'</h1>'+(lead?'<p class="lead">'+lead+'</p>':'')+'</header>';
 }
+/* Aufklapp-Leiste: immer mit Pfeil + „Antippen zum Öffnen“, damit Nutzer sehen, dass dahinter mehr steckt */
+function moreHint(open){ return '<span class="more-hint"><span class="h-o">'+L.ui.moreOpen+'</span><span class="h-c">'+L.ui.moreClose+'</span></span><span class="more-chev" aria-hidden="true">›</span>'; }
+function more(title,body,cls){ return '<details class="more'+(cls?" "+cls:"")+'"><summary><span class="more-t">'+title+'</span>'+moreHint()+'</summary><div class="more-b">'+body+'</div></details>'; }
 function task(label,txt){ return '<div class="task"><b>'+label+'</b>'+txt+'</div>'; }
 function quote(q,style){ return '<div class="card"><div class="quote"'+(style?' style="'+style+'"':'')+'>'+q[0]+(q[1]?'<small>'+q[1]+'</small>':'')+'</div></div>'; }
 function ul(items){ return '<ul class="clean small muted" style="margin-top:8px">'+items.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>'; }
@@ -311,7 +314,7 @@ R.list=function(){
   h+='<form class="card stack" id="addform"><h3>'+m.add+'</h3><div class="grid2"><label class="field"><span>'+m.name+'</span><input type="text" id="add_name" placeholder="'+esc(m.namePh)+'" autocomplete="off"></label><label class="field"><span>'+m.ctx+'</span><input type="text" id="add_ctx" placeholder="'+esc(m.ctxPh)+'"></label></div>'+
    '<div class="row" id="catpills">'+L.cats.map(function(c,i){ return '<button type="button" class="pill'+(addCat===i?" on":"")+'" data-act="addCat" data-v="'+i+'">'+c+'</button>'; }).join("")+'</div>'+
    '<div class="row"><button class="btn pri" type="submit">'+m.addBtn+'</button><span class="small muted">'+m.tip+'</span></div>'+
-   '<details><summary class="small" style="cursor:pointer;color:var(--teal)">'+m.bulk+'</summary><div class="stack" style="margin-top:8px"><textarea id="bulk" placeholder="'+esc(m.bulkPh)+'"></textarea><button type="button" class="btn sm" data-act="bulkAdd">'+m.bulkBtn+'</button></div></details></form>';
+   more(m.bulk,'<div class="stack"><textarea id="bulk" placeholder="'+esc(m.bulkPh)+'"></textarea><button type="button" class="btn sm" data-act="bulkAdd">'+m.bulkBtn+'</button></div>')+'</form>';
   h+='<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:6px"><h3>'+m.yours+'</h3>'+(n?'<input type="text" id="lfilter" placeholder="'+esc(m.search)+'" style="max-width:220px" value="'+esc(listFilter)+'">':'')+'</div>';
   if(!n) h+='<p class="muted small">'+m.empty+'</p>';
   var f=listFilter.toLowerCase();
@@ -375,7 +378,7 @@ R.talkto=function(){
    '<div class="card stack"><h2>'+m.rulesT+'</h2><ol class="small" style="margin-top:4px">'+m.rules.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ol></div>'+
    '<div class="card stack"><h2>'+m.f4T+'</h2><div class="flow">'+m.f4.map(function(x,i){ return '<span>'+(i+1)+'. '+x[0]+'<br><small class="muted">'+x[1]+'</small></span>'; }).join("")+'</div></div>'+
    '<div class="grid2"><div class="card"><h3 style="color:var(--ok)">'+m.doT+'</h3>'+ul(m.do)+'</div><div class="card"><h3 style="color:var(--bad)">'+m.dontT+'</h3>'+ul(m.dont)+'</div></div>'+
-   '<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkarrow">'+(vkOpen?"−":"+")+'</span></button>'+
+   '<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkhint'+(vkOpen?' open':'')+'">'+moreHint()+'</span></button>'+
    (vkOpen?'<p class="small muted">'+m.vkLead+'</p><p class="small" style="color:var(--gold)">'+m.vkPos+'</p>'+scriptBlock("vk",L.m.sc.vkSeq)+'<p class="small muted">'+m.vkWarn+'</p>':'')+'</div>'+
    task(L.ui.lbl.task,m.task);
 };
@@ -472,7 +475,7 @@ function backupHTML(){
    '<div class="row"><button class="btn pri" data-act="exportFile">'+b.file+'</button><button class="btn" data-act="exportCopy">'+b.copy+'</button></div>'+
    '<label class="field"><span>'+b.loadL+'</span><input type="file" id="impfile" accept=".json,application/json"></label>'+
    '<textarea id="impcode" placeholder="'+esc(b.codePh)+'"></textarea><div class="row"><button class="btn gold" data-act="importCode">'+b.load+'</button></div>'+
-   '<details><summary class="small" style="cursor:pointer;color:var(--bad)">'+b.resetSum+'</summary><div class="row" style="margin-top:8px"><button class="btn sm" style="border-color:var(--bad);color:var(--bad)" data-act="resetAll">'+b.resetBtn+'</button></div></details></div>';
+   more(b.resetSum,'<div class="row"><button class="btn sm" style="border-color:var(--bad);color:var(--bad)" data-act="resetAll">'+b.resetBtn+'</button></div>',"danger")+'</div>';
 }
 function showBackup(){
   var box=document.getElementById("backupbox");

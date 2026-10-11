@@ -27,4 +27,5 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - localStorage-Key `bp_turbo_v1` nicht ändern (Fortschritt der Partner). Strukturänderungen über `migrate()` in app.js.
 - Gesendete Felder (`payload()` in app.js) und Spalten (`TURBO_HEAD`/`turboRow_` in gas/Turbo.gs) immer gemeinsam ändern.
 - Payload trägt `app:"turbo"` – daran erkennt doPost in Code.gs die Turbo-Meldungen.
+- Aufklappbare Bereiche immer über `more(titel, inhalt)` in app.js bauen (Plus-Kreis, Pfeil, „Antippen zum Öffnen“). Nie ein nacktes `<details>` – Nutzer erkennen sonst nicht, dass dahinter mehr steckt.
 - Design: dunkles Navy, Teal/Gold-Akzente, Anton + Poppins, Premium-Fintech-Look.

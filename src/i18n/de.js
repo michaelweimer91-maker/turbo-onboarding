@@ -13,7 +13,7 @@ ui:{
  modulesOf:"{a} von {b} Schritten",sprintLeft:"Turbo: noch {h} h",sprintOver:"48 h vorbei",
  backup:"Fortschritt sichern / laden",menu:"Schritte",back:"Zurück",next:"Weiter",phase:"Phase",
  critOk:"Kriterium erfüllt",critOpen:"Kriterium offen",markDone:"Als erledigt markieren",doneReset:"✓ Erledigt – zurücksetzen",toastDone:"Schritt erledigt",
- copied:"Kopiert",copyManual:"Bitte Text markieren und kopieren",language:"Sprache",
+ moreOpen:"Antippen zum Öffnen",moreClose:"Zuklappen",copied:"Kopiert",copyManual:"Bitte Text markieren und kopieren",language:"Sprache",
  lbl:{task:"Aufgabe",first:"Dein erster Schritt",today:"Aufgabe heute",rule:"Regel",mantra:"Merksatz",next:"Dein nächster Schritt"},
  consent:"Ich bin einverstanden, dass mein Onboarding-Fortschritt (Schritte, Kennzahlen, Startprofil) an mein Leader-Team übermittelt wird, damit es mich gezielt unterstützen kann. Namen meiner Kontakte werden nicht übertragen.",
  consentNeed:"Bitte der Übermittlung an dein Leader-Team zustimmen",consentBtn:"Zustimmen",consentTitle:"Fortschritt mit deinem Leader-Team teilen",
