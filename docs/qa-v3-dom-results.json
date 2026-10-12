@@ -1,7 +1,7 @@
 {
   "date": "2026-10-12",
   "method": "Chromium (iframe je App-Instanz) statt JSDOM – gleiche Prüfungen wie tests/commission-qa.cjs; kein Layout-, Geräte- oder Nutzertest",
-  "passed": 56,
+  "passed": 65,
   "failed": 0,
   "results": [
     {
@@ -181,11 +181,47 @@
       "status": "passed"
     },
     {
-      "name": "Keine Abschlussrechnung ohne bestätigte Bedingungen",
+      "name": "Abschluss: TB schreibt Premium selbst ein = 3 × 40 = 120 €",
       "status": "passed"
     },
     {
-      "name": "150-Euro-Abschlussziel wird nach Quellenfreigabe als 160 Euro dargestellt",
+      "name": "Abschluss: AM über direktem TB erhält nur Differenz 3 × 2 = 6 €",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: TB über CB erhält Differenz 3 × 30 = 90 €",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: gleiche Stufe Gen. 1 = Team-Abschluss 3 × 20 = 60 €, keine Differenz",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: gleiche Stufe Gen. 2/3 = 18 € / 12 €",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: direkter Partner mit höherem Rang ergibt 0 €",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: CB nur Generation 1",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: Voucher 1 CP, 5 Stück als TB = 200 €",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: ungültige Anzahl ohne Ergebnis",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: Tiefen-Tabelle für AM zeigt Differenz zu TB und Team-Generationen",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss: Hinweis keine Einkommensgarantie",
       "status": "passed"
     },
     {

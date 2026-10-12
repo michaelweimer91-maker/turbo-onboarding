@@ -77,12 +77,18 @@ check('Payload enthält keine Kontakt-/Nachrichtentexte oder eigene Erklärung',
 check('Pflichtabschluss zählt keine optionalen Teamaufgaben',()=>{const p=q.payload();assert.equal(p.total,8);assert(!p.requiredIds.includes('dup'));});
 check('Alle zehn Ansichten rendern fehlerfrei',()=>{for(const id of ['start','system','plan','list','top','talkto','pipe','talk','dup','finish'])q.go(id);assert.deepEqual(a.errors,[]);});
 check('Jede Ansprache hat eine Sie-Fassung',()=>{for(const g of ['an','vk','fu'])for(const tpl of w.I18N.de.scripts[g])assert(tpl[3]&&tpl[3].trim().length>10);});
-check('Keine Abschlussrechnung ohne bestätigte Bedingungen',()=>{s.commission.closureGoal=150;s.commission.closureRank='TB';q.go('plan');assert(w.document.getElementById('commission-closure-results').textContent.includes('keine Anzahl'));});
-check('150-Euro-Abschlussziel wird nach Quellenfreigabe als 160 Euro dargestellt',()=>{
- const facts=w.TURBO_PRODUCT_FACTS.facts;for(const id of ['commission','costs','payout','plan'])facts[id]={confirmed:true,text:'QA-Testdaten: bestätigter Anlass und Voraussetzungen',source:'Fiktive QA-Quelle (nur Test)',checkedAt:'2026-10-12'};
- q.go('plan');assert(w.document.getElementById('commission-closure-results').textContent.includes('4 qualifizierte Abschlüsse × 40 € = 160,00'));
- for(const id of ['commission','costs','payout','plan'])facts[id]={confirmed:false};
-});
+const clTxt=(cl)=>{s.commission.cl=cl;q.go('plan');return w.document.getElementById('commission-closure-results').textContent;};
+check('Abschluss: TB schreibt Premium selbst ein = 3 × 40 = 120 €',()=>assert(clTxt({pkg:'premium',n:1,me:'TB',who:'self'}).includes('120,00 €')));
+check('Abschluss: AM über direktem TB erhält nur Differenz 3 × 2 = 6 €',()=>{const t=clTxt({pkg:'premium',n:1,me:'AM',who:'g1',partner:'TB'});assert(t.includes('Differenzprovision')&&t.includes('6,00 €'));});
+check('Abschluss: TB über CB erhält Differenz 3 × 30 = 90 €',()=>assert(clTxt({pkg:'premium',n:1,me:'TB',who:'g1',partner:'CB'}).includes('90,00 €')));
+check('Abschluss: gleiche Stufe Gen. 1 = Team-Abschluss 3 × 20 = 60 €, keine Differenz',()=>{const t=clTxt({pkg:'premium',n:1,me:'TB',who:'g1',partner:'TB'});assert(t.includes('Team-Abschlussprovision Gen. 1')&&t.includes('60,00 €'));});
+check('Abschluss: gleiche Stufe Gen. 2/3 = 18 € / 12 €',()=>{assert(clTxt({pkg:'premium',n:1,me:'AM',who:'g2'}).includes('18,00 €'));assert(clTxt({pkg:'premium',n:1,me:'AM',who:'g3'}).includes('12,00 €'));});
+check('Abschluss: direkter Partner mit höherem Rang ergibt 0 €',()=>assert(clTxt({pkg:'premium',n:1,me:'TB',who:'g1',partner:'AM'}).includes('0,00 €')));
+check('Abschluss: CB nur Generation 1',()=>assert(clTxt({pkg:'premium',n:1,me:'CB',who:'g2'}).includes('0,00 €')));
+check('Abschluss: Voucher 1 CP, 5 Stück als TB = 200 €',()=>assert(clTxt({pkg:'voucher',n:5,me:'TB',who:'self'}).includes('200,00 €')));
+check('Abschluss: ungültige Anzahl ohne Ergebnis',()=>assert(clTxt({pkg:'premium',n:-3,me:'TB',who:'self'}).includes('mindestens 1')));
+check('Abschluss: Tiefen-Tabelle für AM zeigt Differenz zu TB und Team-Generationen',()=>{clTxt({pkg:'premium',n:1,me:'AM',who:'self'});const d=w.document.getElementById('commission-closure-depth').textContent;assert(d.includes('126,00 €')&&d.includes('6,00 €')&&d.includes('60,00 €')&&d.includes('12,00 €'));});
+check('Abschluss: Hinweis keine Einkommensgarantie',()=>assert(w.document.getElementById('commission-closure-box').textContent.includes('Keine Einkommensgarantie')));
 check('Druckzusammenfassung enthält nächsten Schritt',()=>{s.fin.naWhat='Kundenablauf mit Ansprechpartner klären';s.fin.naWhen='2026-10-13T10:00';q.go('finish');assert(w.document.querySelector('.print-summary').textContent.includes(s.fin.naWhat));});
 const old={v:1,pid:'legacy123',name:'Altpartner',lang:'de',startedAt:1,view:'start',done:{plan:true},list:[{id:'oldc',name:'Altkontakt',status:'TERMIN'}],pitch:{reps:3,leaderOk:true},quiz:{},talks:[{who:'Altkontakt',lever:'alter Eintrag'}],diag:{q0:'privates Motiv'},sent:{a1:30},dup:{},fin:{},plan:{ok:true},multi:{size:100,rate:10,levels:6}};
 let oldApp=boot('test.html',old);

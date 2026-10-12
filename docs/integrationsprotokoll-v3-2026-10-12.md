@@ -25,3 +25,15 @@ Abgedeckt laut V3-PDF: Einstieg (Vorname + Ziel, keine Tempo-/Wege-Kacheln, 7 Ta
 - Produktfakten 0 / 7 bestätigt (`product-facts.js`); Abschlussrechner bleibt gesperrt.
 - Händlerweg in der Testversion mit Michael klären (Live-Regel: Händler-Thema draußen).
 - Kein Test mit echten Neulingen, keine echten iOS-/Android-/PWA-Geräte.
+
+## Nachtrag: Abschlussprovision (12.10.2026, abends)
+Regeln laut Michael Weimer (Chat, 12.10.2026):
+- Premium-Paket = 3 CP (gültig ab 15.09.2026), Gutschein/Voucher = 1 CP; beides kann ein Partner erwerben.
+- Wer selbst einschreibt: Abschluss-Satz seines Rangs × CP (P 5 · CB 10 · TB 40 · AM 42 · RD 44 · SD 46 · CM 48 · IBM 50 €/CP).
+- Darüber: nur die Differenz zum Satz der ersten Linie (AM über TB: 3 × 2 € = 6 €).
+- Direkter Partner auf gleicher Stufe: keine Differenz, sondern Team-Abschlussprovision Gen. 1/2/3 = 20/6/4 €.
+- **Annahme (zu bestätigen):** 20/6/4 € gelten wie in der Grafik **je CP** (Premium Gen. 1 = 60 €). CB nur Generation 1.
+
+Umsetzung: `src/test/closure.js` – Rechner (Paket, Anzahl, eigener Rang, wer schreibt ein, Rang des direkten Partners), Tabelle „Was du je Paket erhältst“ für den eigenen Rang, Kettenbeispiel TB → AM → RD, Beispiel 3 × 40 € = 120 € im Kasten „Einmalig oder laufend?“. Der Rechner ist freigeschaltet (Freigabe Michael); Kosten, Qualifikation (50-/30-%-Regel), Anspruch und Auszahlung bleiben als unbestätigt gekennzeichnet. Live unverändert.
+
+Prüfung: Logik/DOM 65/65 (11 neue Abschlussprüfungen), Browser 90/90, Abnahme 131/131, Bedientest Abschlussrechner 18/18 (390 + 1440 px, Speichern nach Neuladen), Live-Smoke ohne Fehler.
