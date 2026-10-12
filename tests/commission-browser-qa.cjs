@@ -15,7 +15,7 @@ async function main(){
  const base='http://127.0.0.1:'+server.address().port;
  const options={headless:true};if(process.env.CHROMIUM_PATH){options.executablePath=process.env.CHROMIUM_PATH;options.args=['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--no-zygote'];}
  browser=await chromium.launch(options);
- const ctx=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block'});
+ const ctx=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block',locale:'de-DE'});
  await ctx.route('https://**/*',r=>r.abort());
  const p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+'/test.html');
  await check('Startseite ohne Countdown',async()=>assert(await p.getByRole('heading',{name:'Wie möchtest du starten?',exact:true}).isVisible()));

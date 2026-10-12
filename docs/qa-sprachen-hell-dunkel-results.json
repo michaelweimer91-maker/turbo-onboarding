@@ -1,0 +1,426 @@
+{
+ "passed": 84,
+ "failed": 0,
+ "results": [
+  {
+   "r": "PASS",
+   "case": "test.html en: Startseite übersetzt",
+   "detail": "Your start at BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html en: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html en: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html en: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium package → Direct commission: 3 CP × 40 € = 120.00 €\n\nOne-off per package, not Airtime and not a monthly income. No income guarantee – the official d"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html en: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html en: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: Startseite übersetzt",
+   "detail": "Il tuo inizio con BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Pacchetto Premium → Provvigione diretta: 3 CP × 40 € = 120,00 €\n\nUna tantum per pacchetto, non Airtime e non un reddito mensile. Nessuna garanzia di guadagn"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html it: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: Startseite übersetzt",
+   "detail": "Tvoj početak u BestPrimeu"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium paket → Izravna provizija: 3 CP × 40 € = 120,00 €\n\nJednokratno po paketu, nije Airtime ni mjesečna zarada. Bez jamstva zarade – obvezujuća je službe"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html hr: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: Startseite übersetzt",
+   "detail": "Twój start w BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Pakiet Premium → Prowizja bezpośrednia: 3 CP × 40 € = 120,00 €\n\nJednorazowo za pakiet, to nie Airtime ani miesięczny dochód. Brak gwarancji dochodu – wiążąc"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html pl: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: Startseite übersetzt",
+   "detail": "BestPrime'da başlangıcın"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium paket → Doğrudan komisyon: 3 CP × 40 € = 120,00 €\n\nPaket başına tek seferlik, Airtime değil ve aylık gelir değil. Gelir garantisi yok – resmi belgel"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html tr: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: Startseite übersetzt",
+   "detail": "Dein Start bei BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium-Paket → Direktprovision: 3 CP × 40 € = 120,00 €\n\nEinmalig je Paket, keine Airtime und kein Monatseinkommen. Keine Einkommensgarantie – verbindlich s"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html de: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: helles System → heller Modus",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: Umschalter → dunkel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: Wahl bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: dunkler Hintergrund",
+   "detail": "rgb(11, 26, 34)"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: heller Hintergrund",
+   "detail": "#f5f1e8"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: Startseite übersetzt",
+   "detail": "Your start at BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium package → Direct commission: 3 CP × 40 € = 120.00 €\n\nOne-off per package, not Airtime and not a monthly income. No income guarantee – the official d"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html en: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: Startseite übersetzt",
+   "detail": "Il tuo inizio con BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Pacchetto Premium → Provvigione diretta: 3 CP × 40 € = 120,00 €\n\nUna tantum per pacchetto, non Airtime e non un reddito mensile. Nessuna garanzia di guadagn"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html it: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: Startseite übersetzt",
+   "detail": "Tvoj početak u BestPrimeu"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium paket → Izravna provizija: 3 CP × 40 € = 120,00 €\n\nJednokratno po paketu, nije Airtime ni mjesečna zarada. Bez jamstva zarade – obvezujuća je službe"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html hr: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: Startseite übersetzt",
+   "detail": "Twój start w BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Pakiet Premium → Prowizja bezpośrednia: 3 CP × 40 € = 120,00 €\n\nJednorazowo za pakiet, to nie Airtime ani miesięczny dochód. Brak gwarancji dochodu – wiążąc"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html pl: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: Startseite übersetzt",
+   "detail": "BestPrime'da başlangıcın"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium paket → Doğrudan komisyon: 3 CP × 40 € = 120,00 €\n\nPaket başına tek seferlik, Airtime değil ve aylık gelir değil. Gelir garantisi yok – resmi belgel"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html tr: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: Startseite übersetzt",
+   "detail": "Dein Start bei BestPrime"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: Vorname bleibt nach Sprachwechsel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: html lang",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: Abschlussrechner 120 € im Landesformat",
+   "detail": "1 × Premium-Paket → Direktprovision: 3 CP × 40 € = 120,00 €\n\nEinmalig je Paket, keine Airtime und kein Monatseinkommen. Keine Einkommensgarantie – verbindlich s"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: Sprache bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html de: keine JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html: helles System → heller Modus",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html: Umschalter → dunkel",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html: Wahl bleibt nach Neuladen",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html: dunkler Hintergrund",
+   "detail": "rgb(11, 26, 34)"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html: heller Hintergrund",
+   "detail": "#f5f1e8"
+  },
+  {
+   "r": "PASS",
+   "case": "Live: bleibt Deutsch, ohne Sprachwahl",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Live: kein Hell/Dunkel-Schalter",
+   "detail": ""
+  }
+ ]
+}

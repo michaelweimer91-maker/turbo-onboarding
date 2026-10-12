@@ -2,6 +2,26 @@
    Wird von build.py NUR in test.html an der Stelle @@TEST_EXT@@ (innerhalb der App-Closure) eingefügt.
    Ersetzt Darstellung und Fortschrittslogik; Live-App (index.html) bleibt unverändert. */
 if(ONBOARD){
+/* ---------- Sprachen (nur Test/Vorschau): fest eingebaute Texte laufen über tr(deutscherText) ----------
+   Übersetzungen: I18N.<sprache>.str[deutscherText] (erzeugt von build.py aus src/test/i18n/*.json).
+   Fehlt eine Übersetzung, bleibt der deutsche Text stehen. Sprachwechsel lädt die Seite neu,
+   damit auch beim Start erzeugte Texte (Vergütungsmodell) in der neuen Sprache erscheinen. */
+var TRL=(function(){ try{ var d=JSON.parse(localStorage.getItem(KEY)||"null"); if(d && d.lang && I18N[d.lang]) return d.lang; }catch(e){} var h=(location.hash||"").replace("#","").toLowerCase(); return I18N[h]?h:detectLang(); })();
+function tr(s){ var d=I18N[TRL] && I18N[TRL].str; return d && d[s]!=null ? d[s] : s; }
+var _setLangT=setLang;
+setLang=function(l){ _setLangT(l); TRL=S.lang; };
+switchLang=function(l){
+  if(l===S.lang) return;
+  keepDraft(); try{ sessionStorage.setItem("bp_turbo_draft",JSON.stringify(draft)); }catch(e){}
+  setLang(l); save(); flush(); location.reload();
+};
+/* ---------- Hell / Dunkel (Gerätevorgabe, eigener Schlüssel – nicht Teil des Partner-Fortschritts) ---------- */
+var THEME_KEY="bp_turbo_theme";
+function themeGet(){ try{ var t=localStorage.getItem(THEME_KEY); if(t==="light"||t==="dark") return t; }catch(e){} return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark"; }
+function themeApply(t){ document.documentElement.setAttribute("data-theme",t); var m=document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute("content",t==="light"?"#f5f1e8":"#0b1a22"); }
+function themeBtn(compact){ var t=themeGet(); return '<button type="button" class="themebtn noprint" data-act="theme" data-compact="'+(compact?1:0)+'" aria-label="'+esc(tr("Hell- oder Dunkelmodus"))+'" title="'+esc(tr("Hell- oder Dunkelmodus"))+'">'+(t==="light"?"☾":"☀")+(compact?"":" "+(t==="light"?tr("Dunkel"):tr("Hell")))+'</button>'; }
+themeApply(themeGet());
+document.addEventListener("click",function(e){ var b=e.target.closest && e.target.closest('[data-act="theme"]'); if(!b) return; var t=themeGet()==="light"?"dark":"light"; try{ localStorage.setItem(THEME_KEY,t); }catch(err){} themeApply(t); Array.prototype.forEach.call(document.querySelectorAll('[data-act="theme"]'),function(x){ x.outerHTML=themeBtn(x.getAttribute("data-compact")==="1"); }); });
 var TX=function(){ return L.tx; };
 var PATHS=["side","cust","merch","net","team","unsure"];
 function pth(){ return S.path||"unsure"; }
@@ -80,12 +100,12 @@ hoursGone=function(){ return S.planAt?(Date.now()-S.planAt)/3600000:0; };
 sprintLabel=function(){
   if(!S.planAt) return TX().noPlan;
   var h=hoursGone(), H=P().h; if(h>=H) return L.ui.sprintOver;
-  return H>48? Math.ceil((H-h)/24)+" Tage übrig" : Math.ceil(H-h)+" h übrig";
+  return H>48? Math.ceil((H-h)/24)+tr(" Tage übrig") : Math.ceil(H-h)+tr(" h übrig");
 };
 /* Platzhalter für Tempo und Ziele des Wegs */
 tok=function(h){
   var e=S.pace==="easy", q=Q();
-  return String(h).replace(/\{SPAN\}/g,e?"7 Tage":"48 Stunden").replace(/\{SPANS\}/g,e?"7-Tage":"48h")
+  return String(h).replace(/\{SPAN\}/g,e?tr("7 Tage"):tr("48 Stunden")).replace(/\{SPANS\}/g,e?tr("7-Tage"):"48h")
    .replace(/\{NAMES\}/g,q.names).replace(/\{TOP\}/g,q.top).replace(/\{FIRST\}/g,q.first).replace(/\{SENT\}/g,q.sent).replace(/\{BIG\}/g,P().names);
 };
 
@@ -111,6 +131,7 @@ function sysIntro(){
 
 /* ---------- Startseite: Ziel vor Tempo, kein Countdown vor dem Start ---------- */
 var draft={name:"",leader:"",path:"",pace:""};
+try{ var _dr=JSON.parse(sessionStorage.getItem("bp_turbo_draft")||"null"); if(_dr){ draft=_dr; sessionStorage.removeItem("bp_turbo_draft"); } }catch(e){}
 function keepDraft(){ var n=document.getElementById("w_name"), l=document.getElementById("w_leader"); if(n) draft.name=n.value; if(l) draft.leader=l.value; }
 renderWelcome=function(){
   var t=TX();
@@ -307,13 +328,13 @@ R.talkto=function(){
   var t=TX(), m=L.m.talkto, q=Q(), n=firstIds().length, ch=first5();
   if(scf===null) scf=DEF_GROUP[pth()];
   var h=head("talkto",t.talktoLead)+
-   ((!autoDone("system")||!autoDone("plan"))?'<div class="card hi stack"><h3>Vor deiner ersten Einladung</h3><p class="small">Verstehe Kundennutzen und Vergütung zuerst. Du kannst deine Nachricht hier vorbereiten; bestätige keine Konditionen, die noch ungeklärt sind.</p><div class="row"><button class="btn sm" data-go="system">System verstehen</button><button class="btn sm" data-go="plan">Vergütung verstehen</button></div></div>':'')+
+   ((!autoDone("system")||!autoDone("plan"))?tr('<div class="card hi stack"><h3>Vor deiner ersten Einladung</h3><p class="small">Verstehe Kundennutzen und Vergütung zuerst. Du kannst deine Nachricht hier vorbereiten; bestätige keine Konditionen, die noch ungeklärt sind.</p><div class="row"><button class="btn sm" data-go="system">System verstehen</button><button class="btn sm" data-go="plan">Vergütung verstehen</button></div></div>'):'')+
    '<div class="card stack"><div class="grid3">'+[n,fuCount(),okTalks().length].map(function(v,i){ return '<div class="kpi"><b class="tab">'+v+(i===0?' / '+q.sent:'')+'</b><span>'+t.cnt[i]+'</span></div>'; }).join("")+'</div></div>';
   if(ch.length) h+='<div class="card stack"><h3>'+t.chosenT+'</h3><div class="row">'+ch.map(function(c){ return '<button class="pill'+(pick.an===c.id?" on":"")+'" data-act="tPickC" data-v="'+c.id+'">'+esc(c.name)+(c.status?" · "+L.status[c.status]:"")+'</button>'; }).join("")+'</div></div>';
   h+='<div class="card hi stack"><h3 style="color:var(--gold)">'+m.tonT+'</h3><p class="small">'+m.ton+'</p></div>'+
    scriptBlock2("an",L.m.sc.templates,true)+(scf==="re"?'<p class="small muted"><b style="color:var(--gold)">'+m.reT+':</b> '+m.re+'</p>':'')+
    more(m.rulesT,'<ol class="small">'+m.rules.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ol><div class="grid2" style="margin-top:10px"><div class="card"><h3 style="color:var(--ok)">'+m.doT+'</h3>'+ul(m.do)+'</div><div class="card"><h3 style="color:var(--bad)">'+m.dontT+'</h3>'+ul(m.dont)+'</div></div>');
-  if(isTeam()||pth()==="net") h+='<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+'"><span><span class="label">Level up</span><h2>'+m.vkT+'</h2></span><span class="vkhint'+(vkOpen?' open':'')+'">'+moreHint()+'</span></button>'+
+  if(isTeam()||pth()==="net") h+='<div class="card stack vkbox"><button class="vktoggle" data-act="vk" aria-expanded="'+vkOpen+tr('"><span><span class="label">Level up</span><h2>')+m.vkT+'</h2></span><span class="vkhint'+(vkOpen?' open':'')+'">'+moreHint()+'</span></button>'+
    (vkOpen?'<p class="small muted">'+m.vkLead+'</p>'+scriptBlock2("vk",L.m.sc.vkSeq,true)+'<p class="small muted">'+m.vkWarn+'</p>':'')+'</div>';
   return h+task(L.ui.lbl.task,t.talktoTask);
 };
@@ -403,7 +424,7 @@ R.finish=function(){
   var miss=activeMissing();
   h+='<div class="card stack"><p><b>'+t.status+':</b> '+t.why[lv]+'</p>'+(lv>=1&&lv<2&&miss.length?'<p class="small muted">'+F(t.missing,{x:miss.join(", ")})+'</p>':'')+'</div>';
   h+=nextActionCard();
-  h+='<div class="card print-summary"><h3>Mein nächster Schritt</h3><p>'+esc(S.fin.naWhat||"Noch nicht festgelegt")+'</p><p>'+(S.fin.naWhen?esc(fdate(S.fin.naWhen,{dateStyle:"medium",timeStyle:"short"})):"")+'</p><p class="small muted">'+esc(S.fin.naNeed||"")+'</p></div>';
+  h+=tr('<div class="card print-summary"><h3>Mein nächster Schritt</h3><p>')+esc(S.fin.naWhat||tr("Noch nicht festgelegt"))+'</p><p>'+(S.fin.naWhen?esc(fdate(S.fin.naWhen,{dateStyle:"medium",timeStyle:"short"})):"")+'</p><p class="small muted">'+esc(S.fin.naNeed||"")+'</p></div>';
   h+=more(t.reviewT,'<label class="opt'+(S.fin.review?" sel":"")+'"><input type="checkbox" data-bind="fin.review" '+(S.fin.review?"checked":"")+'> '+F(t.review,{l:lname()})+'</label><label class="field" style="margin-top:8px"><span>'+t.reviewDate+'</span><input type="date" data-bind="fin.date" value="'+esc(S.fin.date||"")+'"></label>');
   var names=[t.none,t.lv[0][0],t.lv[1][0],t.lv[2][0]];
   h+='<div class="cert">'+brand()+'<div class="eyebrow" style="color:var(--gold)">'+t.certEye+'</div><h1>'+esc(S.name||m.yourName)+'</h1><p class="muted">'+t.certDid+'</p>'+

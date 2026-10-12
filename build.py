@@ -9,6 +9,7 @@ order=["de","en","it","hr","pl","tr"]
 langs=[l for l in order if os.path.exists(f"{R}/src/i18n/{l}.js")]
 i18n="var I18N={};\n"+"\n".join(rd(f"src/i18n/{l}.js") for l in langs)
 app=rd("src/app.js"); MARK="/*@@TEST_EXT@@*/"
+ti18n="\n".join(rd(f"src/test/i18n/{l}.js") for l in order[1:] if os.path.exists(f"{R}/src/test/i18n/{l}.js"))  # Sprachen nur Test/Vorschau
 ext=rd("src/test/ext.js").replace("/*@@COMMISSION@@*/",rd("src/test/commission.js")+"\n"+rd("src/test/simple.js")+"\n"+rd("src/test/closure.js"))
 assert MARK in app, "Marker fehlt in app.js"
 head=rd("src/app_head.html")
@@ -25,16 +26,21 @@ def page(js_i18n,js_app,test,preview=False):
         +('<script>window.TURBO_TEST=true;</script>\n' if test else '')
         +('<script>window.TURBO_ONBOARDING_V2=true;window.TURBO_PREVIEW=true;</script>\n' if preview else '')
         +'<script>\n'+js_i18n+"\n"+js_app+"\n</script>\n"+swreg+"</body>\n</html>\n")
+import re as _re
+head_live=_re.sub(r"/\*@@THEME_START@@\*/.*?/\*@@THEME_END@@\*/\n?","",head,flags=_re.S)  # Hell/Dunkel nur Test/Vorschau
+_h=head; head=head_live
 live=page(i18n,app.replace(MARK,""),False)
+head=_h
 assert '<div id="root">' in live
+assert "data-theme" not in live and "src/test/i18n" not in live and "I18N.en=" not in live
 assert "TURBO_TEST=true" not in live and "I18N.de.test={" not in live and "TESTVERSION – Nutzerführung" not in live
 open(f"{R}/index.html","w",encoding="utf8").write(live)
 print("index.html gebaut:",len(live),"Bytes · Sprachen:",", ".join(langs))
-test=page(i18n+"\n"+rd("src/test/texts.js"),app.replace(MARK,ext),True)
+test=page(i18n+"\n"+rd("src/test/texts.js")+"\n"+ti18n,app.replace(MARK,ext),True)
 assert '<div id="root">' in test and "TURBO_TEST=true" in test
 open(f"{R}/test.html","w",encoding="utf8").write(test)
 print("test.html gebaut:",len(test),"Bytes")
 if "--preview" in sys.argv:
-    preview=page(i18n+"\n"+rd("src/test/texts.js"),app.replace(MARK,ext),False,True)
+    preview=page(i18n+"\n"+rd("src/test/texts.js")+"\n"+ti18n,app.replace(MARK,ext),False,True)
     open(f"{R}/onboarding-preview.html","w",encoding="utf8").write(preview)
     print("onboarding-preview.html gebaut: eigener Speicher, kein Sync, Live-Build nicht ersetzt")

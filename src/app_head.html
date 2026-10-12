@@ -236,6 +236,32 @@ table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pi
   .mobnav .btn{flex:1}
   .timer{font-size:56px}
 }
+/*@@THEME_START@@*/
+/* Heller Modus (nur Testversion/Vorschau setzt data-theme): Elfenbein + Navy + Gold, gleiche Markenlogik wie dunkel */
+:root[data-theme="light"]{
+  --bg:#f5f1e8; --panel:#ffffff; --panel2:#efe9dc; --line:#dcd3c1;
+  --fg:#0b1a22; --muted:#55666d; --teal:#17808c; --teal-d:#126c77; --gold:#b08526;
+  --ok:#23885a; --warn:#a96a12; --bad:#b9443a;
+  color-scheme:light;
+}
+:root[data-theme="light"] body{background:radial-gradient(1200px 500px at 85% -10%,rgba(176,133,38,.10),transparent 60%),var(--bg)}
+:root[data-theme="light"] .side{background:#0b1a22;color:#e9f2f4;border-right:0;--fg:#e9f2f4;--muted:#9fb4bb;--panel2:#17313c;--line:#2a4a56;--teal:#48bdc8;--gold:#d9b45c}
+:root[data-theme="light"] .side .nav{color:#e9f2f4}
+:root[data-theme="light"] .card{box-shadow:0 1px 2px rgba(11,26,34,.05),0 6px 18px rgba(11,26,34,.05)}
+:root[data-theme="light"] .card.hi{background:linear-gradient(160deg,#ffffff,#f3ecdb);border-color:var(--gold)}
+:root[data-theme="light"] .task{background:#fbf6ea}
+:root[data-theme="light"] .pace.on{background:linear-gradient(160deg,#fbf3df,#ffffff)}
+:root[data-theme="light"] .btn.pri,:root[data-theme="light"] .pill.on,:root[data-theme="light"] .langs button.on,:root[data-theme="light"] .more>summary:before{color:#ffffff}
+:root[data-theme="light"] .btn.gold,:root[data-theme="light"] .toast,:root[data-theme="light"] .vbtn{color:#1a1405;background:#d9b45c;border-color:#c9a245}
+:root[data-theme="light"] .dot.done{color:#ffffff}
+:root[data-theme="light"] .topbar{background:#0b1a22;color:#e9f2f4;--fg:#e9f2f4;--muted:#9fb4bb;--line:#2a4a56;--panel:#11252e}
+:root[data-theme="light"] input,:root[data-theme="light"] select,:root[data-theme="light"] textarea{background:#ffffff}
+:root[data-theme="light"] .testbar{background:rgba(176,133,38,.10)}
+:root[data-theme="light"] .topbar .btn,:root[data-theme="light"] .topbar select,:root[data-theme="light"] .side .btn,:root[data-theme="light"] .side select{background:#17313c;color:#e9f2f4;border-color:#2a4a56}
+.themebtn{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer;color:inherit;white-space:nowrap}
+.themebtn:hover{border-color:var(--gold)}
+.welcome .themebtn{align-self:flex-end}
+/*@@THEME_END@@*/
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{
  :root{--bg:#fff;--panel:#fff;--panel2:#fff;--fg:#111;--muted:#444;--line:#aaa;--teal:#145c66;--gold:#765700;color-scheme:light}

@@ -8,7 +8,7 @@ def ok(case,cond,detail=""): RES.append({"r":"PASS" if cond else "FAIL","case":c
 async def st(pg,key): return await pg.evaluate("JSON.parse(localStorage.getItem('%s')||'{}')"%key)
 async def goto(pg,step): await pg.evaluate("location.hash='%s'"%step); await pg.reload(); await pg.wait_for_timeout(150)
 async def fresh(b,page,w):
-    pg=await b.new_page(viewport={"width":w,"height":900}); pg.on("pageerror",lambda e: ERR.append(page+": "+str(e)))
+    pg=await b.new_page(locale="de-DE",viewport={"width":w,"height":900}); pg.on("pageerror",lambda e: ERR.append(page+": "+str(e)))
     await pg.goto(BASE+page); await pg.evaluate("localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(150); return pg
 async def overflow(pg): return await pg.evaluate("document.documentElement.scrollWidth-document.documentElement.clientWidth")
 
@@ -106,7 +106,7 @@ async def main():
         for page,key in [("test.html","bp_turbo_test_v1"),("onboarding-preview.html","bp_turbo_preview_v2")]:
             for w in (390,1440): await run(b,page,key,w)
         # Live unverändert
-        pg=await b.new_page(); pg.on("pageerror",lambda e: ERR.append("index: "+str(e)))
+        pg=await b.new_page(locale="de-DE"); pg.on("pageerror",lambda e: ERR.append("index: "+str(e)))
         await pg.goto(BASE+"index.html"); await pg.wait_for_timeout(200)
         ok("Live: kein V3-Einstieg (#simple-path fehlt)", await pg.locator("#simple-path").count()==0)
         ok("Live: kein Testbanner", "TESTVERSION" not in await pg.inner_text("body"))

@@ -44,7 +44,7 @@ async function main(){
   res.writeHead(404);res.end();});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const opt={headless:true};if(process.env.CHROMIUM_PATH){opt.executablePath=process.env.CHROMIUM_PATH;opt.args=['--no-sandbox','--disable-gpu','--disable-dev-shm-usage'];}
- const browser=await chromium.launch(opt);const ctx=await browser.newContext({serviceWorkers:'block'});await ctx.route('https://**/*',r=>r.abort());
+ const browser=await chromium.launch(opt);const ctx=await browser.newContext({serviceWorkers:'block',locale:'de-DE'});await ctx.route('https://**/*',r=>r.abort());
  const page=await ctx.newPage();await page.goto('http://127.0.0.1:'+server.address().port+'/runner.html');
  const pageErr=[];page.on('pageerror',e=>pageErr.push(e.message));
  const out=await page.evaluate(()=>window.__done);
