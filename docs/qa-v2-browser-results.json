@@ -1,0 +1,360 @@
+{
+  "date": "2026-10-12",
+  "method": "Lokaler Chromium-/Playwright-Test, 320/390/1440 px, externe Ressourcen gesperrt (Fallback-Schrift); kein echter iOS-/Android- oder Nutzertest",
+  "passed": 88,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Startseite ohne Countdown",
+      "status": "passed"
+    },
+    {
+      "name": "Anfänger startet ohne Leader",
+      "status": "passed"
+    },
+    {
+      "name": "Zeitraum startet nach Arbeitsplan",
+      "status": "passed"
+    },
+    {
+      "name": "Plan ist nativ integriert",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / start ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / system ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / plan ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / list ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / top ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / talkto ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / pipe ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / talk ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / dup ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 320 / finish ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 1 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 2 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 3 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 4 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 5 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 6 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 7 bei 320 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / start ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / system ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / plan ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / list ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / top ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / talkto ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / pipe ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / talk ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / dup ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 390 / finish ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 1 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 2 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 3 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 4 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 5 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 6 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 7 bei 390 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / start ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / system ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / plan ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / list ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / top ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / talkto ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / pipe ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / talk ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / dup ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Breite 1440 / finish ohne Seitenüberlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 1 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 2 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 3 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 4 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 5 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 6 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Lernkarte 7 bei 1440 px ohne Überlauf",
+      "status": "passed"
+    },
+    {
+      "name": "Beide Grundlagen gelesen gespeichert",
+      "status": "passed"
+    },
+    {
+      "name": "Falsche Antwort erklärt Grund",
+      "status": "passed"
+    },
+    {
+      "name": "Grundlagenabschluss aktualisiert sich",
+      "status": "passed"
+    },
+    {
+      "name": "TB-Beispiel ergibt 200 Euro",
+      "status": "passed"
+    },
+    {
+      "name": "Negative Eingabe zeigt Fehler statt Provision",
+      "status": "passed"
+    },
+    {
+      "name": "CP-Umschalter hält Rechner geöffnet",
+      "status": "passed"
+    },
+    {
+      "name": "Preset starter per Klick bedienbar",
+      "status": "passed"
+    },
+    {
+      "name": "Preset build per Klick bedienbar",
+      "status": "passed"
+    },
+    {
+      "name": "Preset lead per Klick bedienbar",
+      "status": "passed"
+    },
+    {
+      "name": "Preset high per Klick bedienbar",
+      "status": "passed"
+    },
+    {
+      "name": "IBM / 7 korrekt formatiert",
+      "status": "passed"
+    },
+    {
+      "name": "Team-CP beeinflussen Weltvolumen nicht",
+      "status": "passed"
+    },
+    {
+      "name": "IBM / 0 wird abgefangen",
+      "status": "passed"
+    },
+    {
+      "name": "Sie-Anrede im Kundenweg",
+      "status": "passed"
+    },
+    {
+      "name": "Kopieren zählt nicht als Versand",
+      "status": "passed"
+    },
+    {
+      "name": "Bestätigung erfasst genau eine Person",
+      "status": "passed"
+    },
+    {
+      "name": "Neuladen erhält Vergütungsgrundlagen und Versand",
+      "status": "passed"
+    },
+    {
+      "name": "Nächster Schritt bleibt im Druck sichtbar",
+      "status": "passed"
+    },
+    {
+      "name": "Abschluss-PDF wird erzeugt",
+      "status": "passed"
+    },
+    {
+      "name": "Kein JavaScript-Fehler im neuen Ablauf",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Build behält bisherige Texte",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Build enthält keine neuen Lernkarten",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: start lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: system lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: plan lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: list lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: top lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: talkto lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: pipe lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: talk lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: dup lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Regression: finish lädt ohne Fehler",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Build bootet ohne JavaScriptfehler",
+      "status": "passed"
+    }
+  ]
+}

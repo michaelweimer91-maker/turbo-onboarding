@@ -3,11 +3,14 @@
 var KEY="bp_turbo_v1", VERSION=1;
 /* TESTVERSION (test.html setzt window.TURBO_TEST): eigener Speicher, kein Controlling, Text-Overlay aus I18N.de.test */
 var TEST=!!window.TURBO_TEST;
+var ONBOARD=TEST||!!window.TURBO_ONBOARDING_V2;
+var PREVIEW=!!window.TURBO_PREVIEW;
 if(TEST) KEY="bp_turbo_test_v1";
+if(PREVIEW) KEY="bp_turbo_preview_v2";
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function dmerge(a,b){ for(var k in b){ if(!Object.prototype.hasOwnProperty.call(b,k)) continue; if(b[k] && typeof b[k]==="object" && !Array.isArray(b[k]) && a[k] && typeof a[k]==="object" && !Array.isArray(a[k])) dmerge(a[k],b[k]); else a[k]=b[k]; } return a; }
 var EASY=null, BASE_DE=null;
-if(TEST && I18N.de.test){
+if(ONBOARD && I18N.de.test){
   var TT=I18N.de.test;
   if(TT.scriptsAdd) for(var tg in TT.scriptsAdd) I18N.de.scripts[tg]=I18N.de.scripts[tg].concat(TT.scriptsAdd[tg]);
   if(TT.scriptsSet) for(var sg in TT.scriptsSet) for(var si2 in TT.scriptsSet[sg]) I18N.de.scripts[sg][+si2]=TT.scriptsSet[sg][si2];
@@ -17,8 +20,8 @@ if(TEST && I18N.de.test){
 var LANGS=Object.keys(I18N);
 var L=I18N.de;
 /* Tempo: Turbo (48 h · 30/10/5) oder Einsteiger (7 Tage · 10/5/3) – nur in der Testversion wählbar */
-function P(){ return (TEST && S.pace==="easy")?{h:168,names:10,top:5,first:3,sent:3,cont:3}:{h:48,names:30,top:10,first:5,sent:5,cont:5}; }
-function applyPace(){ if(!TEST||!BASE_DE) return; var b=clone(BASE_DE); I18N.de=(S.pace==="easy"&&EASY)?dmerge(b,clone(EASY)):b; }
+function P(){ return (ONBOARD && S.pace==="easy")?{h:168,names:10,top:5,first:3,sent:3,cont:3}:{h:48,names:30,top:10,first:5,sent:5,cont:5}; }
+function applyPace(){ if(!ONBOARD||!BASE_DE) return; var b=clone(BASE_DE); I18N.de=(S.pace==="easy"&&EASY)?dmerge(b,clone(EASY)):b; }
 
 /* ---------- State ---------- */
 function blank(lang){
@@ -44,7 +47,7 @@ function save(){
 
 /* ---------- Controlling-Sync (Blatt „Turbo“ in der Controlling-Tabelle) ---------- */
 var CFG=window.TURBO_CONFIG||{};
-var SYNC=TEST?"":String(CFG.syncUrl||"").trim();
+var SYNC=(TEST||PREVIEW)?"":String(CFG.syncUrl||"").trim();
 var syncT=null, lastSync=0, lastSent=0, syncState="";
 function scheduleSync(){ if(!SYNC) return; clearTimeout(syncT); syncT=setTimeout(function(){ sync(false); },8000); }
 function stCount(code){ return S.list.filter(function(c){return c.status===code;}).length; }

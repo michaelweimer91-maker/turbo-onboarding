@@ -19,9 +19,13 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - Stand 12.10.2026: Nutzerführung nach Anpassungsauftrag „Psychologisches Onboarding“ – Ziel vor Tempo (6 Wege), Zeitraum startet erst mit bestätigtem Arbeitsplan, Selbstcheck statt Leader-Sperre, Vergütung mit „noch zu klären“, transparente Vorlagen (du/Sie), Versand zählt nur per Bestätigung je Kontakt+Vorlage (`S.ev`), Fortschritt nur aus Pflichtschritten des Wegs (`REQ` in ext.js), Duplikation nur im Teamweg.
 - Prüfprotokoll + offene Produktfragen + Schritte zur Live-Übernahme: `docs/pruefprotokoll-testversion-2026-10-12.md`.
 - Vorlagen in der Testversion per `scriptsSet` an derselben Position ersetzen (IDs bleiben stabil); 4. Feld = Sie-Variante.
+- **V2 (12.10.2026):** Vergütungsschritt `plan` = `src/test/commission.js` (wird an `/*@@COMMISSION@@*/` in ext.js eingesetzt): 7 Lernkarten, getrennte Rechner, Quiz, eigene Erklärung. Modellwerte in `CC` (commission.js). Produktfakten nur über `product-facts.js` (confirmed + Quelle + Prüfdatum) – nichts erfinden.
+- `python3 build.py --preview` baut zusätzlich `onboarding-preview.html` (Live-Migrationsvorschau, Key `bp_turbo_preview_v2`, kein Sync, noindex). Schalter `ONBOARD`/`TURBO_ONBOARDING_V2` in app.js für spätere Live-Aktivierung.
+- Tests: `tests/commission-qa.cjs` (JSDOM) bzw. `tests/commission-qa.chromium.cjs` (gleiche Prüfungen in Chromium, ohne jsdom), `tests/commission-browser-qa.cjs` (Playwright). Ergebnisse in `docs/qa-v2-*.json`, Integration: `docs/integrationsprotokoll-v2-2026-10-12.md`.
 
 ## Vergütungsplan
-- Schritt 3 „Dein Weg“ (`plan`) zwischen System und Namensliste: Warum → Was → Wohin → Mit wem. Bild: `img/verguetungsplan.jpg` (austauschen = Datei ersetzen). Erklärung, Szenarien und Rechner sind Platzhalter (`m.plan.parts` in de.js) und werden nachgereicht.
+- Live: Schritt 3 „Dein Weg“ (`plan`) zwischen System und Namensliste: Warum → Was → Wohin → Mit wem. Bild: `img/verguetungsplan.jpg` (austauschen = Datei ersetzen). Erklärung, Szenarien und Rechner sind dort noch Platzhalter (`m.plan.parts` in de.js).
+- Testversion/Vorschau: vollständiger Vergütungsschritt „So verdienst du mit BestPrime“ (V2, siehe oben). Keine Gesamtsummen über dieselben CP bilden, solange Kumulierung nicht bestätigt ist.
 - Immer mit Hinweis „keine Einkommensgarantie, verbindlich sind die offiziellen Unterlagen“.
 
 ## Inhaltliche Regeln

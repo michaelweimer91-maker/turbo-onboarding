@@ -1,0 +1,14 @@
+{
+  "name": "bestprime-turbo-onboarding",
+  "private": true,
+  "scripts": {
+    "build": "python3 build.py",
+    "build:preview": "python3 build.py --preview",
+    "test:logic": "node tests/commission-qa.cjs",
+    "test:browser": "node tests/commission-browser-qa.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.2",
+    "playwright": "1.62.1"
+  }
+}

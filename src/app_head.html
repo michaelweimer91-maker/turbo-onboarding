@@ -184,6 +184,17 @@ table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pi
 .nav.opt{opacity:.62}
 .field small{font-size:12px}
 .modfoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+.c-lesson,.c-calculator{min-width:0}
+.c-controls .btn,.c-controls .pill{min-height:44px}
+.c-lesson .opt{min-height:44px}
+.c-calculator .kpi b{font-size:clamp(22px,4vw,34px);overflow-wrap:anywhere}
+.c-source{border-left:3px solid var(--teal)}
+.c-presets button{text-align:left;color:var(--fg);font:inherit}
+.print-summary{display:none}
+@media print{
+ .print-summary{display:block!important}
+ .c-lesson,.c-calculator,.cert,.print-summary{break-inside:avoid}
+}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:9px 16px;border-radius:9px;font-weight:600;font-size:14px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 
 .listrow{display:grid;grid-template-columns:34px minmax(0,1.2fr) minmax(0,1.4fr) 140px 34px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
@@ -226,7 +237,13 @@ table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pi
   .timer{font-size:56px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-@media print{.side,.topbar,.mobnav,.modfoot,.noprint{display:none!important}.app{display:block}body{background:#fff;color:#000}}
+@media print{
+ :root{--bg:#fff;--panel:#fff;--panel2:#fff;--fg:#111;--muted:#444;--line:#aaa;--teal:#145c66;--gold:#765700;color-scheme:light}
+ .side,.topbar,.mobnav,.modfoot,.noprint,.nextact,.toast{display:none!important}
+ .app{display:block}body{background:#fff;color:#000}
+ .card,.cert{box-shadow:none;background:#fff!important}
+ .main{padding:0;max-width:none}button,input,select,textarea{display:none!important}
+}
 </style>
 
 <div id="root"></div>

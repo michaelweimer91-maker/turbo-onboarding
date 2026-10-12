@@ -1,7 +1,7 @@
 /* ===== TESTVERSION – Nutzerführung nach Anpassungsauftrag 12.10.2026 =====
    Wird von build.py NUR in test.html an der Stelle @@TEST_EXT@@ (innerhalb der App-Closure) eingefügt.
    Ersetzt Darstellung und Fortschrittslogik; Live-App (index.html) bleibt unverändert. */
-if(TEST){
+if(ONBOARD){
 var TX=function(){ return L.tx; };
 var PATHS=["side","cust","merch","net","team","unsure"];
 function pth(){ return S.path||"unsure"; }
@@ -16,7 +16,7 @@ var DEF_GROUP={side:"cu",cust:"cu",merch:"me",net:"co",team:"pa",unsure:"cu"};
 
 /* ---------- Zustand ergänzen (sichere Standards, alte Sicherungen bleiben ladbar) ---------- */
 var _migrate=migrate;
-migrate=function(d){ d=_migrate(d); if(!d.prof) d.prof={}; if(!Array.isArray(d.ev)) d.ev=[]; if(!d.qz) d.qz={}; if(d.path==null) d.path=""; if(d.planAt==null) d.planAt=0; if(d.sie==null) d.sie=false; return d; };
+migrate=function(d){ var hadFlow=!!(d.prof && d.path); d=_migrate(d); if(!d.prof) d.prof={}; if(!Array.isArray(d.ev)) d.ev=[]; if(!d.qz) d.qz={}; if(d.path==null) d.path=""; if(d.planAt==null) d.planAt=0; if(d.sie==null) d.sie=false; if(!hadFlow){d.pace="";d.planAt=0;d.plan.ok=false;} return d; };
 var _blank=blank;
 blank=function(lang){ var b=_blank(lang); b.prof={}; b.ev=[]; b.qz={}; b.path=""; b.planAt=0; b.sie=false; b.pace=""; return b; };
 S=blank(); /* neu aufbauen, damit Testfelder existieren */
@@ -38,7 +38,7 @@ autoDone=function(id){
   switch(id){
    case "start": return profOk() && !!S.planAt;
    case "system": return quiz2Ok();
-   case "plan": return !!S.plan.ok;
+   case "plan": return !!S.plan.ok && commissionComplete();
    case "list": return S.list.length>=Q().names;
    case "top": return topOk();
    case "talkto": return firstIds().length>=Q().sent;
@@ -68,10 +68,10 @@ isOpt=function(m){ return req().indexOf(m)<0; };
 isDone=function(m){ return autoDone(m); };
 totalReq=function(){ return req().length; };
 navCls=function(m){ return autoDone(m)?"done":(partial(m)?"auto":""); };
-var ACT=["list","top","talkto","pipe","talk"];
+var ACT=["start","plan","list","top","talkto","pipe","talk"];
 function activeMissing(){ var out=[]; ACT.forEach(function(m){ if(req().indexOf(m)>=0 && !autoDone(m)) out.push(MT(m)); }); return out; }
 level=function(){
-  var u=quiz2Ok(), a=u && activeMissing().length===0, d=a && isTeam() && !!S.dup.acc;
+  var u=quiz2Ok(), a=u && activeMissing().length===0, d=a && isTeam() && !!S.dup.acc && !!(S.dup.partner||"").trim();
   return d?3:a?2:u?1:0;
 };
 
@@ -307,6 +307,7 @@ R.talkto=function(){
   var t=TX(), m=L.m.talkto, q=Q(), n=firstIds().length, ch=first5();
   if(scf===null) scf=DEF_GROUP[pth()];
   var h=head("talkto",t.talktoLead)+
+   ((!autoDone("system")||!autoDone("plan"))?'<div class="card hi stack"><h3>Vor deiner ersten Einladung</h3><p class="small">Verstehe Kundennutzen und Vergütung zuerst. Du kannst deine Nachricht hier vorbereiten; bestätige keine Konditionen, die noch ungeklärt sind.</p><div class="row"><button class="btn sm" data-go="system">System verstehen</button><button class="btn sm" data-go="plan">Vergütung verstehen</button></div></div>':'')+
    '<div class="card stack"><div class="grid3">'+[n,fuCount(),okTalks().length].map(function(v,i){ return '<div class="kpi"><b class="tab">'+v+(i===0?' / '+q.sent:'')+'</b><span>'+t.cnt[i]+'</span></div>'; }).join("")+'</div></div>';
   if(ch.length) h+='<div class="card stack"><h3>'+t.chosenT+'</h3><div class="row">'+ch.map(function(c){ return '<button class="pill'+(pick.an===c.id?" on":"")+'" data-act="tPickC" data-v="'+c.id+'">'+esc(c.name)+(c.status?" · "+L.status[c.status]:"")+'</button>'; }).join("")+'</div></div>';
   h+='<div class="card hi stack"><h3 style="color:var(--gold)">'+m.tonT+'</h3><p class="small">'+m.ton+'</p></div>'+
@@ -402,6 +403,7 @@ R.finish=function(){
   var miss=activeMissing();
   h+='<div class="card stack"><p><b>'+t.status+':</b> '+t.why[lv]+'</p>'+(lv>=1&&lv<2&&miss.length?'<p class="small muted">'+F(t.missing,{x:miss.join(", ")})+'</p>':'')+'</div>';
   h+=nextActionCard();
+  h+='<div class="card print-summary"><h3>Mein nächster Schritt</h3><p>'+esc(S.fin.naWhat||"Noch nicht festgelegt")+'</p><p>'+(S.fin.naWhen?esc(fdate(S.fin.naWhen,{dateStyle:"medium",timeStyle:"short"})):"")+'</p><p class="small muted">'+esc(S.fin.naNeed||"")+'</p></div>';
   h+=more(t.reviewT,'<label class="opt'+(S.fin.review?" sel":"")+'"><input type="checkbox" data-bind="fin.review" '+(S.fin.review?"checked":"")+'> '+F(t.review,{l:lname()})+'</label><label class="field" style="margin-top:8px"><span>'+t.reviewDate+'</span><input type="date" data-bind="fin.date" value="'+esc(S.fin.date||"")+'"></label>');
   var names=[t.none,t.lv[0][0],t.lv[1][0],t.lv[2][0]];
   h+='<div class="cert">'+brand()+'<div class="eyebrow" style="color:var(--gold)">'+t.certEye+'</div><h1>'+esc(S.name||m.yourName)+'</h1><p class="muted">'+t.certDid+'</p>'+
@@ -470,4 +472,5 @@ document.addEventListener("submit",function(e){
     save(); render(); toast(t.pSaved); return; }
 });
 scf=null;
+/*@@COMMISSION@@*/
 }

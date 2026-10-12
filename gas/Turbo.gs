@@ -22,6 +22,11 @@ var TURBO_HEAD = ['Partner-ID','Name','Leader','Sprache','Start','Letzte Aktivit
   'Status NEU','Status TERMIN','Status FOLLOW-UP','Status ENTSCHEIDUNG','Status GESTARTET','Kein Interesse',
   'Gespräche','Nächste Schritte','Ansprachen gesendet','Starttyp','Warum','Zeit pro Woche','Braucht Unterstützung bei',
   'Duplikation (von 5)','48h-Review','Erledigte Schritte'];
+/* Spalten nur ANHÄNGEN: alte Daten und vorhandene Spaltenpositionen bleiben erhalten. */
+var TURBO_V2_HEAD=['Schema-Version','Einstiegsweg','Tempo','Plan bestätigt','Plan-Zeitraum h',
+ 'Vergütung verstanden','Bestätigte Erstansprachen','Nachfassnachrichten','Ziel Namen','Ziel TOP','Ziel Erstansprachen',
+ 'Gespräch Pflicht','Erster Arbeitsblock','Nächste Aktion am','Pflicht-IDs','Erledigte IDs','Profil fertig'];
+TURBO_HEAD=TURBO_HEAD.concat(TURBO_V2_HEAD);
 
 var TURBO_LEVELS = ['Offen','Verstanden','Aktiv','Dupliziert'];
 function tcol_(name) { return TURBO_HEAD.indexOf(name); }   // 0-basiert
@@ -30,6 +35,7 @@ function tcol_(name) { return TURBO_HEAD.indexOf(name); }   // 0-basiert
 function setupTurbo() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(SHEET_TURBO) || ss.insertSheet(SHEET_TURBO);
+  turboEnsureColumns_(sh);
   sh.getRange(1, 1, 1, TURBO_HEAD.length).setValues([TURBO_HEAD]).setFontWeight('bold').setBackground('#5a4a1f').setFontColor('#ffffff').setWrap(true);
   sh.setFrozenRows(1); sh.setFrozenColumns(3);
   sh.setColumnWidth(1, 90); sh.setColumnWidths(2, 2, 150); sh.setColumnWidth(8, 320); sh.setColumnWidths(31, 3, 240);
@@ -51,6 +57,7 @@ function setupTurbo() {
 
 /* ---------- Bewertung: Ampel + wo der Leader ansetzen soll (48h-Logik) ---------- */
 function turboAssess_(p, now) {
+  if (Number(p.schemaVersion) >= 2) return turboAssessV2_(p, now);
   var hInactive = p.updatedAt ? (now - p.updatedAt) / 3600000 : 999;
   var h = p.startedAt ? (now - p.startedAt) / 3600000 : 0;
 
@@ -75,6 +82,38 @@ function turboAssess_(p, now) {
   return { ampel: ampel, lever: lever, left: Math.max(0, Math.round(TURBO_HOURS - h)) };
 }
 
+/* Neue Wege: nicht jeden Nebenverdienst-/Kundenpartner an 30/10/5 und einem Leader-Haken messen. */
+function turboAssessV2_(p, now) {
+  var span = p.pace === 'easy' ? 168 : 48;
+  var elapsed = p.planAt ? Math.max(0, (now - p.planAt) / 3600000) : 0;
+  var required = p.requiredIds || [], done = p.doneIds || [];
+  if (!required.length) return {ampel:'GELB',lever:'Pflichtschritte fehlen – neue Payload-/Spaltenzuordnung prüfen',left:Math.max(0,Math.ceil(span-elapsed))};
+  var labels = {start:'Arbeitsplan bestätigen',system:'Kundennutzen gemeinsam erklären',
+    plan:'CP, Airtime und Bedingungen klären',list:'Passende Namen sammeln',top:'Einen passenden Kontakt auswählen',
+    talkto:'Echte erste Ansprache begleiten',pipe:'Nächsten Schritt mit Datum festhalten',
+    talk:'Ein Gespräch gemeinsam vorbereiten',dup:'Nächste Partnereinladung planen',finish:'Nächste Aktion festlegen'};
+  var missing = required.filter(function (id) { return done.indexOf(id) < 0; });
+  var lever = missing.length ? (labels[missing[0]] || missing[0]) : 'Arbeitsplan erledigt – nächsten machbaren Schritt prüfen';
+  var ampel = 'GELB';
+  if (!p.planAt) lever = 'Noch kein bestätigter Arbeitsplan – Startzeit gemeinsam planen';
+  else if (missing.length === 0) ampel = 'GRÜN';
+  else if (p.nextActionAt && !p.nextActionDone && now > new Date(p.nextActionAt).getTime()) {
+    ampel = 'ROT'; lever = 'Vereinbarten Termin prüfen oder neu planen · ' + lever;
+  } else if (elapsed >= span) {
+    ampel = 'ROT'; lever = 'Zeitraum vorbei – Rückblick und neuen Arbeitsblock planen · ' + lever;
+  } else if (p.level >= 2) ampel = 'GRÜN';
+  return {ampel:ampel, lever:lever, left:Math.max(0, Math.ceil(span - elapsed))};
+}
+
+function turboEnsureColumns_(sh) {
+  if (sh.getMaxColumns() < TURBO_HEAD.length) sh.insertColumnsAfter(sh.getMaxColumns(), TURBO_HEAD.length - sh.getMaxColumns());
+  var current = sh.getRange(1, 1, 1, TURBO_HEAD.length).getValues()[0];
+  for (var i = 0; i < current.length; i++) {
+    if (current[i] && current[i] !== TURBO_HEAD[i]) throw new Error('Turbo-Spalten weichen ab: ' + (i + 1) + '. Zuerst Zuordnung prüfen.');
+  }
+  sh.getRange(1,1,1,TURBO_HEAD.length).setValues([TURBO_HEAD]);
+}
+
 function turboRow_(p, now) {
   var a = turboAssess_(p, now);
   var d = p.diag || [], st = p.st || {};
@@ -84,7 +123,11 @@ function turboRow_(p, now) {
     p.pitchReps, p.leaderOk ? 'ja' : 'nein', p.quizOk ? 'ja' : 'nein', p.list, p.top, p.contacted, p.replies,
     st.NEU || 0, st.TERMIN || 0, st.FU || 0, st.ENT || 0, st.GO || 0, st.NO || 0,
     p.talks, p.nextSteps, p.sent, p.type, d[0] || '', d[1] || '', d[2] || '',
-    p.dupDone, p.review ? 'ja' : 'nein', (p.doneModules || []).join(', ')];
+    p.dupDone, p.review ? 'ja' : 'nein', (p.doneModules || []).join(', ')].concat([
+      Number(p.schemaVersion)||1,p.path||'',p.pace||'',dt(p.planAt),p.planDuration||48,
+      p.planOk?'ja':'nein',p.firstSent||0,p.followUps||0,p.goalNames||0,p.goalTop||0,p.goalSent||0,
+      p.talkRequired?'ja':'nein',p.firstBlock||'',p.nextActionAt||'',
+      (p.requiredIds||[]).join(','),(p.doneIds||[]).join(','),p.diagDone?'ja':'nein']);
 }
 
 /* ---------- Aufruf aus doPost (Code.gs) – läuft dort bereits im Lock ---------- */
@@ -92,6 +135,7 @@ function turboPost_(p) {
   if (!p.pid || !p.name) return out_('invalid');
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(SHEET_TURBO) || setupTurbo();
+  turboEnsureColumns_(sh);
   var row = turboRow_(p, Date.now());
   var last = sh.getLastRow(), at = -1;
   if (last > 1) {
@@ -107,6 +151,7 @@ function turboPost_(p) {
 function refreshTurbo() {
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_TURBO);
   if (!sh || sh.getLastRow() < 2) return;
+  turboEnsureColumns_(sh);
   var n = sh.getLastRow() - 1, now = Date.now();
   var data = sh.getRange(2, 1, n, TURBO_HEAD.length).getValues();
   function v(r, name) { return r[tcol_(name)]; }
@@ -118,7 +163,12 @@ function refreshTurbo() {
       contacted: Number(v(r, 'Kontaktiert')) || 0, top: Number(v(r, 'TOP 10')) || 0,
       diagDone: !!(v(r, 'Starttyp') && v(r, 'Warum') && v(r, 'Zeit pro Woche') && v(r, 'Braucht Unterstützung bei')),
       pitchReps: Number(v(r, '60s-Durchgänge')) || 0, leaderOk: v(r, '60s-Freigabe Leader') === 'ja',
-      review: v(r, '48h-Review') === 'ja', dupDone: Number(v(r, 'Duplikation (von 5)')) || 0 };
+      review: v(r, '48h-Review') === 'ja', dupDone: Number(v(r, 'Duplikation (von 5)')) || 0,
+      schemaVersion:Number(v(r,'Schema-Version'))||1,path:v(r,'Einstiegsweg'),pace:v(r,'Tempo'),
+      planAt:ms(v(r,'Plan bestätigt')),planOk:v(r,'Vergütung verstanden')==='ja',
+      nextActionAt:v(r,'Nächste Aktion am'),
+      requiredIds:String(v(r,'Pflicht-IDs')||'').split(',').filter(Boolean),
+      doneIds:String(v(r,'Erledigte IDs')||'').split(',').filter(Boolean) };
     var a = turboAssess_(p, now);
     outVals.push([a.ampel, a.lever]); left.push([a.left]);
   });
