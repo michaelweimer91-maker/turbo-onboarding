@@ -235,7 +235,7 @@ document.addEventListener('input',function(e){
  if(key&&el.tagName!=='SELECT'){S.commission.calc[key]=el.value;save();var out=document.getElementById('commission-results');if(out)out.innerHTML=cResultHTML();}
  if(el.getAttribute('data-bind')==='commission.closureGoal'){var one=document.getElementById('commission-closure-results');if(one)one.innerHTML=cClosureResult();}
  if(el.getAttribute('data-bind')==='commission.ownWords'){
-  var out2=document.getElementById('commission-check');if(out2)out2.textContent=autoDone('plan')?'Grundlagen erledigt. Deine Erklärung bleibt eine Selbstauskunft.':'Noch offen: Karten, Check, eigene Erklärung und Bestätigung.';
+  var out2=document.getElementById('commission-check');if(out2)out2.textContent=autoDone('plan')?'Grundlagen erledigt. Deine Erklärung bleibt eine Selbstauskunft.':'Beantworte die drei kurzen Fragen und bestätige dein Verständnis.';
   clearTimeout(cRenderTimer);cRenderTimer=setTimeout(function(){if(document.activeElement!==el)render();},500);
  }
 });

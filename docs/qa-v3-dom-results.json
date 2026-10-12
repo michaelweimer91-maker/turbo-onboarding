@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-12",
+  "method": "Chromium (iframe je App-Instanz) statt JSDOM – gleiche Prüfungen wie tests/commission-qa.cjs; kein Layout-, Geräte- oder Nutzertest",
+  "passed": 56,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Testversion bootet ohne Scriptfehler",
+      "status": "passed"
+    },
+    {
+      "name": "Natives Vergütungsmodul integriert",
+      "status": "passed"
+    },
+    {
+      "name": "Alle sieben Lernkarten vorhanden",
+      "status": "passed"
+    },
+    {
+      "name": "Kompakte Grundlagen; Vertiefungen optional",
+      "status": "passed"
+    },
+    {
+      "name": "Unbekannte Produktangaben bleiben offen",
+      "status": "passed"
+    },
+    {
+      "name": "Reiner Plan-Haken ist kein Vergütungsverständnis",
+      "status": "passed"
+    },
+    {
+      "name": "TB 100 / 0,05 CP",
+      "status": "passed"
+    },
+    {
+      "name": "TB 100 / 0,10 CP",
+      "status": "passed"
+    },
+    {
+      "name": "TB → CB 200 Kunden",
+      "status": "passed"
+    },
+    {
+      "name": "5 CB unter TB",
+      "status": "passed"
+    },
+    {
+      "name": "AM mit 10 direkten TB",
+      "status": "passed"
+    },
+    {
+      "name": "CM mit 50 direkten TB",
+      "status": "passed"
+    },
+    {
+      "name": "CM → TB Differenz separat",
+      "status": "passed"
+    },
+    {
+      "name": "IBM 1",
+      "status": "passed"
+    },
+    {
+      "name": "IBM 5",
+      "status": "passed"
+    },
+    {
+      "name": "IBM 7",
+      "status": "passed"
+    },
+    {
+      "name": "IBM 10",
+      "status": "passed"
+    },
+    {
+      "name": "Gleicher Rang: keine Differenz",
+      "status": "passed"
+    },
+    {
+      "name": "G4: kein hinterlegter Team-Satz",
+      "status": "passed"
+    },
+    {
+      "name": "G2 unabhängig vom Rang",
+      "status": "passed"
+    },
+    {
+      "name": "G3 unabhängig vom Rang",
+      "status": "passed"
+    },
+    {
+      "name": "Eigene Team-CP verändern Welttopf nicht",
+      "status": "passed"
+    },
+    {
+      "name": "Keine automatische Addition Team + Differenz",
+      "status": "passed"
+    },
+    {
+      "name": "IBM null wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "IBM Dezimal wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Negative Kunden wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Leere Kunden wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Dezimale Kunden wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Ungültige Differenz wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Unendliche CP wird nicht als Ergebnis ausgegeben",
+      "status": "passed"
+    },
+    {
+      "name": "Keine Pflichtklicks durch sieben Karten",
+      "status": "passed"
+    },
+    {
+      "name": "Falsche Vergütungsantwort bleibt offen",
+      "status": "passed"
+    },
+    {
+      "name": "Drei Antworten schließen den Selbstcheck ab; Erklärung bleibt optional",
+      "status": "passed"
+    },
+    {
+      "name": "Fortgeschrittenen-Quiz blockiert Einsteiger nicht",
+      "status": "passed"
+    },
+    {
+      "name": "High-Performance-Preset zeigt getrennte Beträge",
+      "status": "passed"
+    },
+    {
+      "name": "Aktiv ohne bestätigten Arbeitsplan bleibt gesperrt",
+      "status": "passed"
+    },
+    {
+      "name": "Aktiv ohne Vergütungsgrundlagen bleibt gesperrt",
+      "status": "passed"
+    },
+    {
+      "name": "Aktiv im Nebenverdienstweg ohne eigenen Partner möglich",
+      "status": "passed"
+    },
+    {
+      "name": "Versand-Doppelbestätigung erhöht Zähler nicht",
+      "status": "passed"
+    },
+    {
+      "name": "Zweite Vorlage ist keine zweite Person",
+      "status": "passed"
+    },
+    {
+      "name": "Payload enthält keine Kontakt-/Nachrichtentexte oder eigene Erklärung",
+      "status": "passed"
+    },
+    {
+      "name": "Pflichtabschluss zählt keine optionalen Teamaufgaben",
+      "status": "passed"
+    },
+    {
+      "name": "Alle zehn Ansichten rendern fehlerfrei",
+      "status": "passed"
+    },
+    {
+      "name": "Jede Ansprache hat eine Sie-Fassung",
+      "status": "passed"
+    },
+    {
+      "name": "Keine Abschlussrechnung ohne bestätigte Bedingungen",
+      "status": "passed"
+    },
+    {
+      "name": "150-Euro-Abschlussziel wird nach Quellenfreigabe als 160 Euro dargestellt",
+      "status": "passed"
+    },
+    {
+      "name": "Druckzusammenfassung enthält nächsten Schritt",
+      "status": "passed"
+    },
+    {
+      "name": "Alte Identität und Kontakte bleiben erhalten",
+      "status": "passed"
+    },
+    {
+      "name": "Altzähler sind keine neuen bestätigten Ereignisse",
+      "status": "passed"
+    },
+    {
+      "name": "Altpartner muss Weg und Tempo bewusst wählen",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Migrationsvorschau bleibt isoliert",
+      "status": "passed"
+    },
+    {
+      "name": "Controlling erhält erste 36 Altspalten",
+      "status": "passed"
+    },
+    {
+      "name": "7-Tage-Kundenweg ohne Leader-Haken wird passend bewertet",
+      "status": "passed"
+    },
+    {
+      "name": "Kein bestätigter Arbeitsplan löst keinen falschen 48h-Verzug aus",
+      "status": "passed"
+    },
+    {
+      "name": "Controlling-Zeile passt zu Spaltenzahl",
+      "status": "passed"
+    },
+    {
+      "name": "Live-Start bleibt bestehender Turbo",
+      "status": "passed"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ order=["de","en","it","hr","pl","tr"]
 langs=[l for l in order if os.path.exists(f"{R}/src/i18n/{l}.js")]
 i18n="var I18N={};\n"+"\n".join(rd(f"src/i18n/{l}.js") for l in langs)
 app=rd("src/app.js"); MARK="/*@@TEST_EXT@@*/"
-ext=rd("src/test/ext.js").replace("/*@@COMMISSION@@*/",rd("src/test/commission.js"))
+ext=rd("src/test/ext.js").replace("/*@@COMMISSION@@*/",rd("src/test/commission.js")+"\n"+rd("src/test/simple.js"))
 assert MARK in app, "Marker fehlt in app.js"
 head=rd("src/app_head.html")
 swreg='<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>\n'

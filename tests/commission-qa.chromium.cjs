@@ -2,7 +2,7 @@
    Die Prüfungen aus commission-qa.cjs werden unverändert übernommen und in Chromium ausgeführt:
    jede boot()-Instanz läuft in einem eigenen iframe (document.open/write), statt in einem JSDOM-Fenster.
    Aufruf: NODE_PATH=<node_modules mit playwright> CHROMIUM_PATH=<chrome> node tests/commission-qa.chromium.cjs
-   Ergebnis: docs/qa-v2-dom-results.json (Methode wird als „Chromium-iframe statt JSDOM“ ausgewiesen). */
+   Ergebnis: docs/qa-v3-dom-results.json (Methode wird als „Chromium-iframe statt JSDOM“ ausgewiesen). */
 const fs=require('fs'),path=require('path'),http=require('http');
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'..');
@@ -50,9 +50,9 @@ async function main(){
  const out=await page.evaluate(()=>window.__done);
  if(!out){console.error('Runner nicht gestartet: '+pageErr.join(' | '));process.exitCode=1;await browser.close();server.close();return;}await browser.close();server.close();
  if(out.__fatal){console.error(out.__fatal);process.exitCode=1;return;}
- const key=Object.keys(out).find(k=>k.endsWith('qa-v2-dom-results.json'));
+ const key=Object.keys(out).find(k=>k.endsWith('qa-v3-dom-results.json'));
  const report=JSON.parse(out[key]);report.method='Chromium (iframe je App-Instanz) statt JSDOM – gleiche Prüfungen wie tests/commission-qa.cjs; kein Layout-, Geräte- oder Nutzertest';
- fs.writeFileSync(path.join(ROOT,'docs/qa-v2-dom-results.json'),JSON.stringify(report,null,2));
+ fs.writeFileSync(path.join(ROOT,'docs/qa-v3-dom-results.json'),JSON.stringify(report,null,2));
  if(out.__err)process.stderr.write(out.__err);
  console.log(JSON.stringify({passed:report.passed,failed:report.failed}));if(report.failed)process.exitCode=1;
 }

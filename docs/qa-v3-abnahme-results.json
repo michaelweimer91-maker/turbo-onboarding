@@ -1,0 +1,682 @@
+{
+ "date": "2026-10-12",
+ "results": [
+  {
+   "r": "PASS",
+   "case": "test.html@390 Einstieg: Vorname + Ziel-Auswahl",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Einstieg: keine Tempo-/Wege-Kacheln",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Start gespeichert (Name/Weg/7 Tage)",
+   "detail": "Anna/merch/easy"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 4 Hauptbereiche",
+   "detail": [
+    "1\nStart",
+    "2\nSystem verstehen",
+    "3\nGeld verdienen",
+    "4\nAktiv werden"
+   ]
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 keine mobile Bottom-Nav",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 kein horizontaler Überlauf (Start)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Start zeigt 'Dein nächster Schritt'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Menü schließt nach 'System verstehen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Bereich 'System verstehen' öffnet",
+   "detail": "SO FUNKTIONIERT ES"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Menü schließt nach 'Geld verdienen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Bereich 'Geld verdienen' öffnet",
+   "detail": "SO VERDIENST DU GELD"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Menü schließt nach 'Aktiv werden'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Bereich 'Aktiv werden' öffnet",
+   "detail": "DEINE NAMEN"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Menü schließt nach 'Start'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Bereich 'Start' öffnet",
+   "detail": "DEIN START"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Plan: drei Verdienstwege + Beispiel 200 €",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Plan: Hinweis keine Einkommensgarantie",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Plan: Händlerweg-Hinweis",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Quiz: nur eine Frage sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Quiz: falsche Antwort bleibt bei Frage 1 mit Erklärung",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Quiz: 3 von 3",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Vergütung erledigt ohne Pflicht-Freitext",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Rechner TB 100×0,10 = 200,00 €",
+   "detail": "100 Aktive Kunden im Beispiel 10 Modellhafte CP im Zeitraum 200,00 € Modellhafte"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Rechner: negative Eingabe ergibt kein negatives Ergebnis",
+   "detail": "Bitte gültige, nichtnegative Werte eingeben. Kunden und Part"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 kein Überlauf (Plan)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Nachrichten: genau eine Vorlage sichtbar",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Händlerweg: Vorlagenfilter auf eine passende Vorlage",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Bestätigen-Knopf nach Kopieren sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Versand per Bestätigung gezählt (S.ev)",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Fortschritt nach Reload erhalten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Fortschrittsanzeige > 0 %",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@390 Kundenweg: 1 Vorlage sichtbar, weitere eingeklappt",
+   "detail": 2
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Einstieg: Vorname + Ziel-Auswahl",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Einstieg: keine Tempo-/Wege-Kacheln",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Start gespeichert (Name/Weg/7 Tage)",
+   "detail": "Anna/merch/easy"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 4 Hauptbereiche",
+   "detail": [
+    "1\nStart",
+    "2\nSystem verstehen",
+    "3\nGeld verdienen",
+    "4\nAktiv werden"
+   ]
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 keine mobile Bottom-Nav",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 kein horizontaler Überlauf (Start)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Start zeigt 'Dein nächster Schritt'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Menü schließt nach 'System verstehen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Bereich 'System verstehen' öffnet",
+   "detail": "SO FUNKTIONIERT ES"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Menü schließt nach 'Geld verdienen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Bereich 'Geld verdienen' öffnet",
+   "detail": "SO VERDIENST DU GELD"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Menü schließt nach 'Aktiv werden'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Bereich 'Aktiv werden' öffnet",
+   "detail": "DEINE NAMEN"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Menü schließt nach 'Start'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Bereich 'Start' öffnet",
+   "detail": "DEIN START"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Plan: drei Verdienstwege + Beispiel 200 €",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Plan: Hinweis keine Einkommensgarantie",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Plan: Händlerweg-Hinweis",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Quiz: nur eine Frage sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Quiz: falsche Antwort bleibt bei Frage 1 mit Erklärung",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Quiz: 3 von 3",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Vergütung erledigt ohne Pflicht-Freitext",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Rechner TB 100×0,10 = 200,00 €",
+   "detail": "100 Aktive Kunden im Beispiel 10 Modellhafte CP im Zeitraum 200,00 € Modellhafte"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Rechner: negative Eingabe ergibt kein negatives Ergebnis",
+   "detail": "Bitte gültige, nichtnegative Werte eingeben. Kunden und Part"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 kein Überlauf (Plan)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Nachrichten: genau eine Vorlage sichtbar",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Händlerweg: Vorlagenfilter auf eine passende Vorlage",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Bestätigen-Knopf nach Kopieren sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Versand per Bestätigung gezählt (S.ev)",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Fortschritt nach Reload erhalten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Fortschrittsanzeige > 0 %",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "test.html@1440 Kundenweg: 1 Vorlage sichtbar, weitere eingeklappt",
+   "detail": 2
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Einstieg: Vorname + Ziel-Auswahl",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Einstieg: keine Tempo-/Wege-Kacheln",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Start gespeichert (Name/Weg/7 Tage)",
+   "detail": "Anna/merch/easy"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 4 Hauptbereiche",
+   "detail": [
+    "1\nStart",
+    "2\nSystem verstehen",
+    "3\nGeld verdienen",
+    "4\nAktiv werden"
+   ]
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 keine mobile Bottom-Nav",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 kein horizontaler Überlauf (Start)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Start zeigt 'Dein nächster Schritt'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Menü schließt nach 'System verstehen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Bereich 'System verstehen' öffnet",
+   "detail": "SO FUNKTIONIERT ES"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Menü schließt nach 'Geld verdienen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Bereich 'Geld verdienen' öffnet",
+   "detail": "SO VERDIENST DU GELD"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Menü schließt nach 'Aktiv werden'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Bereich 'Aktiv werden' öffnet",
+   "detail": "DEINE NAMEN"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Menü schließt nach 'Start'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Bereich 'Start' öffnet",
+   "detail": "DEIN START"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Plan: drei Verdienstwege + Beispiel 200 €",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Plan: Hinweis keine Einkommensgarantie",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Plan: Händlerweg-Hinweis",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Quiz: nur eine Frage sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Quiz: falsche Antwort bleibt bei Frage 1 mit Erklärung",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Quiz: 3 von 3",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Vergütung erledigt ohne Pflicht-Freitext",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Rechner TB 100×0,10 = 200,00 €",
+   "detail": "100 Aktive Kunden im Beispiel 10 Modellhafte CP im Zeitraum 200,00 € Modellhafte"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Rechner: negative Eingabe ergibt kein negatives Ergebnis",
+   "detail": "Bitte gültige, nichtnegative Werte eingeben. Kunden und Part"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 kein Überlauf (Plan)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Nachrichten: genau eine Vorlage sichtbar",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Händlerweg: Vorlagenfilter auf eine passende Vorlage",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Bestätigen-Knopf nach Kopieren sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Versand per Bestätigung gezählt (S.ev)",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Fortschritt nach Reload erhalten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Fortschrittsanzeige > 0 %",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@390 Kundenweg: 1 Vorlage sichtbar, weitere eingeklappt",
+   "detail": 2
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Einstieg: Vorname + Ziel-Auswahl",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Einstieg: keine Tempo-/Wege-Kacheln",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Start gespeichert (Name/Weg/7 Tage)",
+   "detail": "Anna/merch/easy"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 4 Hauptbereiche",
+   "detail": [
+    "1\nStart",
+    "2\nSystem verstehen",
+    "3\nGeld verdienen",
+    "4\nAktiv werden"
+   ]
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 keine mobile Bottom-Nav",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 kein horizontaler Überlauf (Start)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Start zeigt 'Dein nächster Schritt'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Menü schließt nach 'System verstehen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Bereich 'System verstehen' öffnet",
+   "detail": "SO FUNKTIONIERT ES"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Menü schließt nach 'Geld verdienen'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Bereich 'Geld verdienen' öffnet",
+   "detail": "SO VERDIENST DU GELD"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Menü schließt nach 'Aktiv werden'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Bereich 'Aktiv werden' öffnet",
+   "detail": "DEINE NAMEN"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Menü schließt nach 'Start'",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Bereich 'Start' öffnet",
+   "detail": "DEIN START"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Plan: drei Verdienstwege + Beispiel 200 €",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Plan: Hinweis keine Einkommensgarantie",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Plan: Händlerweg-Hinweis",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Quiz: nur eine Frage sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Quiz: falsche Antwort bleibt bei Frage 1 mit Erklärung",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Quiz: 3 von 3",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Vergütung erledigt ohne Pflicht-Freitext",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Rechner TB 100×0,10 = 200,00 €",
+   "detail": "100 Aktive Kunden im Beispiel 10 Modellhafte CP im Zeitraum 200,00 € Modellhafte"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Rechner: negative Eingabe ergibt kein negatives Ergebnis",
+   "detail": "Bitte gültige, nichtnegative Werte eingeben. Kunden und Part"
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 kein Überlauf (Plan)",
+   "detail": 0
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Nachrichten: genau eine Vorlage sichtbar",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Händlerweg: Vorlagenfilter auf eine passende Vorlage",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Bestätigen-Knopf nach Kopieren sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Versand per Bestätigung gezählt (S.ev)",
+   "detail": 1
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Fortschritt nach Reload erhalten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Fortschrittsanzeige > 0 %",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "onboarding-preview.html@1440 Kundenweg: 1 Vorlage sichtbar, weitere eingeklappt",
+   "detail": 2
+  },
+  {
+   "r": "PASS",
+   "case": "Live: kein V3-Einstieg (#simple-path fehlt)",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Live: kein Testbanner",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Keine JS-Fehler",
+   "detail": []
+  }
+ ],
+ "passed": 131,
+ "failed": 0
+}

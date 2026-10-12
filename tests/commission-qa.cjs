@@ -21,9 +21,9 @@ let a=boot(),w=a.w,q=a.q;
 check('Testversion bootet ohne Scriptfehler',()=>{assert(q);assert.deepEqual(a.errors,[]);assert(w.document.body.textContent.includes('Dein Start bei'));});
 function active(){const s=q.state();s.name='Test GPT';s.startedAt=Date.now();s.path='side';s.pace='easy';s.view='plan';q.go('plan');return s;}
 let s=active();
-check('Natives Vergütungsmodul integriert',()=>assert(w.document.body.textContent.includes('Wofür du Vergütung erhältst')));
+check('Natives Vergütungsmodul integriert',()=>assert(w.document.body.textContent.includes('So verdienst du Geld')));
 check('Alle sieben Lernkarten vorhanden',()=>assert.equal(q.config.cards.length,7));
-check('Zwei Grundlagen reichen; Vertiefungen optional',()=>{assert(w.document.body.textContent.includes('Grundlagen 1 / 2'));assert(w.document.body.textContent.includes('optional'));});
+check('Kompakte Grundlagen; Vertiefungen optional',()=>{assert(w.document.body.textContent.includes('Drei Wege.')); assert(w.document.body.textContent.includes('optional'));});
 check('Unbekannte Produktangaben bleiben offen',()=>assert(w.document.body.textContent.includes('7 offen')));
 check('Reiner Plan-Haken ist kein Vergütungsverständnis',()=>{s.plan.ok=true;assert.equal(q.done('plan'),false);});
 const cases=[
@@ -56,14 +56,15 @@ for(const [name,args] of [
  ['Unendliche CP', {mode:'own',rank:'TB',customers:100,cp:Infinity}]
 ])check(name+' wird nicht als Ergebnis ausgegeben',()=>assert.equal(q.calc(args).ok,false));
 function click(selector){const el=w.document.querySelector(selector);assert(el,selector);el.click();}
-check('Lernkarten interaktiv',()=>{click('[data-act="cRead"][data-v="0"]');assert.equal(s.commission.card,1);click('[data-act="cRead"][data-v="1"]');assert(s.commission.seen.includes(0)&&s.commission.seen.includes(1));});
+check('Keine Pflichtklicks durch sieben Karten',()=>assert.equal(w.document.querySelectorAll('[data-act="cRead"]').length,0));
 check('Falsche Vergütungsantwort bleibt offen',()=>{click('[data-act="cQuiz"][data-q="0"][data-a="0"][data-advanced="0"]');assert.equal(q.done('plan'),false);assert(w.document.body.textContent.includes('verschiedene Dinge'));});
-check('Richtige Antworten plus kurze eigene Erklärung schließen Plan ab',()=>{
+check('Drei Antworten schließen den Selbstcheck ab; Erklärung bleibt optional',()=>{
  click('[data-act="cQuiz"][data-q="0"][data-a="1"][data-advanced="0"]');click('[data-act="cQuiz"][data-q="1"][data-a="0"][data-advanced="0"]');click('[data-act="cQuiz"][data-q="2"][data-a="1"][data-advanced="0"]');
+ assert.equal(q.done('plan'),true);
  const text=w.document.querySelector('[data-bind="commission.ownWords"]');text.value='Aus vergütungsfähiger Nutzung entstehen CP; CP mal berechtigter Satz ergibt modellhafte Airtime.';text.dispatchEvent(new w.Event('input',{bubbles:true}));s.plan.ok=true;assert.equal(q.done('plan'),true);
 });
 check('Fortgeschrittenen-Quiz blockiert Einsteiger nicht',()=>assert.equal(q.done('plan'),true));
-check('High-Performance-Preset zeigt getrennte Beträge',()=>{click('[data-act="cCard"][data-v="4"]');click('[data-act="cPreset"][data-v="high"]');const text=w.document.getElementById('commission-results').textContent;assert(text.includes('25.000,00'));assert(text.includes('50.000,00'));assert(!text.includes('75.000,00'));});
+check('High-Performance-Preset zeigt getrennte Beträge',()=>{click('[data-act="cPreset"][data-v="high"]');const text=w.document.getElementById('commission-results').textContent;assert(text.includes('25.000,00'));assert(text.includes('50.000,00'));assert(!text.includes('75.000,00'));});
 check('Aktiv ohne bestätigten Arbeitsplan bleibt gesperrt',()=>{
  s.qz={0:0,1:1,2:2,3:1};s.prof={time:'30',skill:'write',block:'2026-10-13T10:00'};s.planAt=0;
  s.list=[{id:'1',name:'Anna',first5:true,status:'NO'},{id:'2',name:'Ben'},{id:'3',name:'Clara'}];s.ev=[{c:'1',t:'a1',k:'first',at:Date.now()}];assert(q.level()<2);
@@ -96,8 +97,8 @@ check('7-Tage-Kundenweg ohne Leader-Haken wird passend bewertet',()=>{const p=q.
 check('Kein bestätigter Arbeitsplan löst keinen falschen 48h-Verzug aus',()=>{const r=gas.turboAssess_({schemaVersion:2,pace:'easy',planAt:0,requiredIds:['start'],doneIds:[]},Date.now());assert.equal(r.ampel,'GELB');});
 check('Controlling-Zeile passt zu Spaltenzahl',()=>assert.equal(gas.turboRow_(q.payload(),Date.now()).length,gas.TURBO_HEAD.length));
 let live=boot('index.html');
-check('Live-Start bleibt bestehender Turbo',()=>{assert(live.w.document.body.textContent.includes('Turbo-Start'));assert(!live.w.document.body.textContent.includes('Wofür du Vergütung erhältst'));assert.deepEqual(live.errors,[]);});
+check('Live-Start bleibt bestehender Turbo',()=>{assert(live.w.document.body.textContent.includes('Turbo-Start'));assert(!live.w.document.body.textContent.includes('So verdienst du Geld'));assert.deepEqual(live.errors,[]);});
 for(const x of [a,oldApp,preview,live])x.dom.window.close();
 const report={date:'2026-10-12',method:'Node + JSDOM: DOM-/Zustands- und Rechenlogik; kein Layout-, Geräte- oder echter Nutzertest',passed:results.filter(r=>r.status==='passed').length,failed:results.filter(r=>r.status==='failed').length,results};
-fs.mkdirSync(path.join(ROOT,'docs'),{recursive:true});fs.writeFileSync(path.join(ROOT,'docs/qa-v2-dom-results.json'),JSON.stringify(report,null,2));
+fs.mkdirSync(path.join(ROOT,'docs'),{recursive:true});fs.writeFileSync(path.join(ROOT,'docs/qa-v3-dom-results.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify({passed:report.passed,failed:report.failed}));if(report.failed)process.exit(1);
