@@ -245,7 +245,7 @@ table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pi
   color-scheme:light;
 }
 :root[data-theme="light"] body{background:radial-gradient(1200px 500px at 85% -10%,rgba(176,133,38,.10),transparent 60%),var(--bg)}
-:root[data-theme="light"] .side{background:#0b1a22;color:#e9f2f4;border-right:0;--fg:#e9f2f4;--muted:#9fb4bb;--panel2:#17313c;--line:#2a4a56;--teal:#48bdc8;--gold:#d9b45c}
+:root[data-theme="light"] .side{background:#0b1a22;color:#e9f2f4;border-right:0;--panel:#11252e;--fg:#e9f2f4;--muted:#9fb4bb;--panel2:#17313c;--line:#2a4a56;--teal:#48bdc8;--gold:#d9b45c}
 :root[data-theme="light"] .side .nav{color:#e9f2f4}
 :root[data-theme="light"] .card{box-shadow:0 1px 2px rgba(11,26,34,.05),0 6px 18px rgba(11,26,34,.05)}
 :root[data-theme="light"] .card.hi{background:linear-gradient(160deg,#ffffff,#f3ecdb);border-color:var(--gold)}
@@ -261,6 +261,16 @@ table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pi
 .themebtn{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer;color:inherit;white-space:nowrap}
 .themebtn:hover{border-color:var(--gold)}
 .welcome .themebtn{align-self:flex-end}
+.setbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--gold);border-radius:12px;background:rgba(217,180,92,.08)}
+.setlang{display:flex;align-items:center;gap:8px;flex:1 1 170px;min-width:0;font-weight:600;font-size:14px}
+.seticon{font-size:18px}.setlang select{flex:1;min-width:0;min-height:40px;font-weight:600;padding:6px 10px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px;background:var(--panel)}
+.seg button{border:0;background:none;color:inherit;border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:38px;white-space:nowrap}
+.seg button.on{background:var(--gold);color:#1a1405}
+.side .setbar{margin:0}.side .setlang{flex-basis:100%}.side .seg{width:100%}.side .seg button{flex:1}
+.side .langs,.topbar .langsel,.side-foot .themebtn{display:none!important}
+.setbtn{border:1.5px solid var(--gold);background:rgba(217,180,92,.14);color:inherit;border-radius:999px;padding:7px 12px;font:inherit;font-weight:700;font-size:13px;white-space:nowrap;cursor:pointer}
+.setpop{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
 /*@@THEME_END@@*/
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{

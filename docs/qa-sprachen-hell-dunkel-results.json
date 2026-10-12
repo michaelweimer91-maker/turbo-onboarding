@@ -1,5 +1,5 @@
 {
- "passed": 84,
+ "passed": 92,
  "failed": 0,
  "results": [
   {
@@ -189,6 +189,11 @@
   },
   {
    "r": "PASS",
+   "case": "test.html: Einstellungsleiste sichtbar oben",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
    "case": "test.html: Umschalter → dunkel",
    "detail": ""
   },
@@ -201,6 +206,11 @@
    "r": "PASS",
    "case": "test.html: dunkler Hintergrund",
    "detail": "rgb(11, 26, 34)"
+  },
+  {
+   "r": "PASS",
+   "case": "test.html: Dunkel-Knopf markiert",
+   "detail": ""
   },
   {
    "r": "PASS",
@@ -394,6 +404,11 @@
   },
   {
    "r": "PASS",
+   "case": "onboarding-preview.html: Einstellungsleiste sichtbar oben",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
    "case": "onboarding-preview.html: Umschalter → dunkel",
    "detail": ""
   },
@@ -409,8 +424,33 @@
   },
   {
    "r": "PASS",
+   "case": "onboarding-preview.html: Dunkel-Knopf markiert",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
    "case": "onboarding-preview.html: heller Hintergrund",
    "detail": "#f5f1e8"
+  },
+  {
+   "r": "PASS",
+   "case": "Handy: Einstellungsknopf in Kopfleiste sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Handy: Einstellungen öffnen sich",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Handy: Hell-Umschaltung wirkt",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Handy: Sprachwechsel über Kopfleiste",
+   "detail": ""
   },
   {
    "r": "PASS",

@@ -21,6 +21,18 @@ function themeGet(){ try{ var t=localStorage.getItem(THEME_KEY); if(t==="light"|
 function themeApply(t){ document.documentElement.setAttribute("data-theme",t); var m=document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute("content",t==="light"?"#f5f1e8":"#0b1a22"); }
 function themeBtn(compact){ var t=themeGet(); return '<button type="button" class="themebtn noprint" data-act="theme" data-compact="'+(compact?1:0)+'" aria-label="'+esc(tr("Hell- oder Dunkelmodus"))+'" title="'+esc(tr("Hell- oder Dunkelmodus"))+'">'+(t==="light"?"☾":"☀")+(compact?"":" "+(t==="light"?tr("Dunkel"):tr("Hell")))+'</button>'; }
 themeApply(themeGet());
+/* Sichtbare Einstellungsleiste: Sprache (ausgeschrieben) + Hell/Dunkel als Segment-Schalter */
+function setBar(){ var t=themeGet(); return '<div class="setbar noprint" role="group" aria-label="'+esc(tr("Sprache und Ansicht"))+'">'+
+  (LANGS.length>1?'<label class="setlang"><span class="seticon" aria-hidden="true">🌐</span><span class="setlbl">'+esc(L.ui.language)+'</span><select data-act="langsel" aria-label="'+esc(L.ui.language)+'">'+LANGS.map(function(l){ return '<option value="'+l+'"'+(S.lang===l?' selected':'')+'>'+esc(I18N[l].label)+'</option>'; }).join("")+'</select></label>':'')+
+  '<div class="seg" role="group" aria-label="'+esc(tr("Ansicht"))+'"><button type="button" data-act="themeset" data-v="light" class="'+(t==="light"?"on":"")+'" aria-pressed="'+(t==="light")+'">☀ '+tr("Hell")+'</button><button type="button" data-act="themeset" data-v="dark" class="'+(t==="dark"?"on":"")+'" aria-pressed="'+(t==="dark")+'">☾ '+tr("Dunkel")+'</button></div></div>'; }
+function setBtn(){ return '<button type="button" class="setbtn noprint" data-act="setopen" aria-expanded="false" aria-controls="setpop" title="'+esc(tr("Sprache und Ansicht"))+'">🌐 '+esc(String(S.lang).toUpperCase())+' · '+(themeGet()==="light"?"☀":"☾")+'</button>'; }
+function setRefresh(){ Array.prototype.forEach.call(document.querySelectorAll(".setbar"),function(x){ x.outerHTML=setBar(); }); Array.prototype.forEach.call(document.querySelectorAll('[data-act="setopen"]'),function(x){ var o=x.getAttribute("aria-expanded"); x.outerHTML=setBtn(); }); var p=document.getElementById("setpop"); var b=document.querySelector('[data-act="setopen"]'); if(p&&b&&!p.hidden) b.setAttribute("aria-expanded","true"); }
+document.addEventListener("click",function(e){
+  var t=e.target.closest && e.target.closest('[data-act="themeset"]');
+  if(t){ var v=t.getAttribute("data-v"); try{ localStorage.setItem(THEME_KEY,v); }catch(err){} themeApply(v); setRefresh(); Array.prototype.forEach.call(document.querySelectorAll('[data-act="theme"]'),function(x){ x.outerHTML=themeBtn(x.getAttribute("data-compact")==="1"); }); return; }
+  var o=e.target.closest && e.target.closest('[data-act="setopen"]');
+  if(o){ var p=document.getElementById("setpop"); if(p){ p.hidden=!p.hidden; o.setAttribute("aria-expanded",String(!p.hidden)); } }
+});
 document.addEventListener("click",function(e){ var b=e.target.closest && e.target.closest('[data-act="theme"]'); if(!b) return; var t=themeGet()==="light"?"dark":"light"; try{ localStorage.setItem(THEME_KEY,t); }catch(err){} themeApply(t); Array.prototype.forEach.call(document.querySelectorAll('[data-act="theme"]'),function(x){ x.outerHTML=themeBtn(x.getAttribute("data-compact")==="1"); }); });
 var TX=function(){ return L.tx; };
 var PATHS=["side","cust","merch","net","team","unsure"];
