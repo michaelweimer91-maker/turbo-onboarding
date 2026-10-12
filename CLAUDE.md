@@ -14,17 +14,18 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 - `gas/Turbo.gs` – Zusatzdatei für das Apps Script der bestehenden Tabelle „FastTrack Controlling – Best Prime“. Schreibt ins Blatt **„Turbo“**. Einrichtung: siehe ANLEITUNG.md.
 
 ## Testversion (`test.html`)
-- `build.py` erzeugt zusätzlich `test.html`: gleiche App + `window.TURBO_TEST=true` → eigener Speicher `bp_turbo_test_v1`, **kein Controlling-Sync**, Banner „TESTVERSION“, noindex.
-- Neue Funktionen nur über `TEST` in app.js schalten; Texte im Block `I18N.de.test` (de.js): `over` (Überschreibungen), `scriptsAdd` (Vorlagen hinten anhängen), `easy` (Einsteiger-Tempo).
-- Aktuell im Test: Tempo-Wahl Turbo 48 h (30/10/5) vs. Einsteiger 7 Tage (10/5/3) über `P()`, „Kopiert ≠ Gesendet“ (Button „✓ Gesendet“), „Woran hängt es?“ unter jedem offenen Schritt, „Nächste Aktion mit Datum“ im Abschluss, ePAY-Formulierung „geplant / gemäß offiziellem Produktstatus“, zwei Einwand-Vorlagen, „Ehrliche Grenze“ im Gespräch.
-- Übernahme in Live: Funktion aus dem `TEST`-Schalter lösen, Texte aus `test.over` in den Hauptblock verschieben. Tempo + „Woran hängt es?“ brauchen dann Felder in `payload()` + Spalten/Ampel in `gas/Turbo.gs` (Script neu einspielen).
+- `build.py` baut `index.html` (Live) **ohne** und `test.html` **mit** Test-Erweiterung: `src/test/texts.js` (Texte, `I18N.de.test`) + `src/test/ext.js` (wird an `/*@@TEST_EXT@@*/` in app.js eingesetzt). Der Build bricht ab, wenn Test-Code in Live landet.
+- `test.html`: `window.TURBO_TEST=true` → eigener Speicher `bp_turbo_test_v1`, **kein Controlling-Sync**, Banner „TESTVERSION“, noindex.
+- Stand 12.10.2026: Nutzerführung nach Anpassungsauftrag „Psychologisches Onboarding“ – Ziel vor Tempo (6 Wege), Zeitraum startet erst mit bestätigtem Arbeitsplan, Selbstcheck statt Leader-Sperre, Vergütung mit „noch zu klären“, transparente Vorlagen (du/Sie), Versand zählt nur per Bestätigung je Kontakt+Vorlage (`S.ev`), Fortschritt nur aus Pflichtschritten des Wegs (`REQ` in ext.js), Duplikation nur im Teamweg.
+- Prüfprotokoll + offene Produktfragen + Schritte zur Live-Übernahme: `docs/pruefprotokoll-testversion-2026-10-12.md`.
+- Vorlagen in der Testversion per `scriptsSet` an derselben Position ersetzen (IDs bleiben stabil); 4. Feld = Sie-Variante.
 
 ## Vergütungsplan
 - Schritt 3 „Dein Weg“ (`plan`) zwischen System und Namensliste: Warum → Was → Wohin → Mit wem. Bild: `img/verguetungsplan.jpg` (austauschen = Datei ersetzen). Erklärung, Szenarien und Rechner sind Platzhalter (`m.plan.parts` in de.js) und werden nachgereicht.
 - Immer mit Hinweis „keine Einkommensgarantie, verbindlich sind die offiziellen Unterlagen“.
 
 ## Inhaltliche Regeln
-- **Händler-Thema bleibt draußen** (Merchant Activation, Händlergespräche, Händlervorteile) – das wird beim Event in München präsentiert. Einziger Verweis: ein Satz im Schritt „System in 60 Sekunden“.
+- **Händler-Thema bleibt draußen (Live)** (Merchant Activation, Händlergespräche, Händlervorteile) – das wird beim Event in München präsentiert. Einziger Verweis: ein Satz im Schritt „System in 60 Sekunden“. Ausnahme: Die Testversion enthält auf Auftrag vom 12.10.2026 einen Händlerweg – vor Live-Übernahme mit Michael klären.
 - Keine Einkommensversprechen, keine erfundenen Zahlen. Das Duplikations-Rechenbeispiel immer mit Hinweis „keine Prognose“.
 - Ansprache-Vorlagen in `scripts` (de.js): `an` = Einsteiger (3. Feld = Gruppe für Filter-Chips: fr/be/wa/ka/re), `vk` = Vertriebsköpfe (aufklappbar im Schritt Ansprache), `fu` = Follow-ups & Einwände (Schritt Pipeline). IDs werden aus der Reihenfolge erzeugt (a1…, v1…, f1…) – neue Vorlagen nur hinten anhängen, sonst verschieben sich die Nutzungszähler. `sent` im Controlling = an + vk.
 - Keine Kontaktnamen ins Controlling (DSGVO, Daten Dritter) – `payload()` sendet nur Zählwerte.

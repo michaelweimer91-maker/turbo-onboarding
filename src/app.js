@@ -10,6 +10,7 @@ var EASY=null, BASE_DE=null;
 if(TEST && I18N.de.test){
   var TT=I18N.de.test;
   if(TT.scriptsAdd) for(var tg in TT.scriptsAdd) I18N.de.scripts[tg]=I18N.de.scripts[tg].concat(TT.scriptsAdd[tg]);
+  if(TT.scriptsSet) for(var sg in TT.scriptsSet) for(var si2 in TT.scriptsSet[sg]) I18N.de.scripts[sg][+si2]=TT.scriptsSet[sg][si2];
   dmerge(I18N.de,clone(TT.over||{}));
   EASY=TT.easy||null; BASE_DE=clone(I18N.de);
 }
@@ -107,7 +108,7 @@ var QUIZ_C=[1,0,0];
 var STATUSES=["","NEU","TERMIN","FU","ENT","GO","NO"];
 var SC_PRE={an:"a",vk:"v",fu:"f"};
 var SC_IDS={}; for(var gk in SC_PRE){ SC_IDS[gk]=[]; for(var si=1;si<=(I18N.de.scripts[gk]||[]).length;si++) SC_IDS[gk].push(SC_PRE[gk]+si); }
-function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||""}; }); }
+function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||"",x2:s[3]||""}; }); }
 
 /* ---------- Derived ---------- */
 function tops(){ return S.list.filter(function(c){return c.top;}); }
@@ -137,7 +138,13 @@ function autoDone(id){
   }
   return false;
 }
-function doneCount(){ var n=0; ORDER.forEach(function(id){ if(S.done[id]) n++; }); return n; }
+/* Andockstellen – in der Live-App neutral, die Testversion (src/test/ext.js) ersetzt sie */
+function isDone(m){ return !!S.done[m]; }
+function isOpt(m){ return false; }
+function totalReq(){ return ORDER.length; }
+function navCls(m){ return S.done[m]?"done":(autoDone(m)?"auto":""); }
+function tok(h){ return h; }
+function doneCount(){ var n=0; ORDER.forEach(function(id){ if(isDone(id) && !isOpt(id)) n++; }); return n; }
 function level(){
   var understood=systemOk();
   var active=understood && S.list.length>=P().names && tops().length>=P().top && contacted().length>=P().cont && S.talks.length>=1;
@@ -173,26 +180,26 @@ function langSelect(){
 }
 function brand(){ return '<div class="brand">Best<span class="p">Prime</span><span class="sep">|</span><span class="t">Turbo</span></div>'; }
 function render(){
-  if(!S.startedAt){ root.innerHTML=renderWelcome(); return; }
-  var pct=Math.round(doneCount()/ORDER.length*100), C=2*Math.PI*24;
+  if(!S.startedAt){ root.innerHTML=tok(renderWelcome()); return; }
+  var pct=Math.round(doneCount()/totalReq()*100), C=2*Math.PI*24;
   var side='<aside class="side" id="side">'+brand()+
    '<div class="me"><svg class="ring" viewBox="0 0 60 60"><circle class="bgc" cx="30" cy="30" r="24"/><circle class="fgc" cx="30" cy="30" r="24" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 30 30)"/><text x="30" y="34" text-anchor="middle">'+pct+'%</text></svg>'+
-   '<div style="min-width:0"><div style="font-weight:600">'+esc(S.name)+'</div><div class="small muted">'+F(L.ui.modulesOf,{a:doneCount(),b:ORDER.length})+' · '+sprintLabel()+'</div></div></div>'+langButtons();
+   '<div style="min-width:0"><div style="font-weight:600">'+esc(S.name)+'</div><div class="small muted">'+F(L.ui.modulesOf,{a:doneCount(),b:totalReq()})+' · '+sprintLabel()+'</div></div></div>'+langButtons();
   PHASES.forEach(function(mods,pi){
-    var d=mods.filter(function(m){return S.done[m];}).length;
-    side+='<div class="phase"><div class="phase-h"><span>0'+(pi+1)+' · '+L.phases[pi]+'</span><span class="tab">'+d+'/'+mods.length+'</span></div>';
+    var req=mods.filter(function(m){return !isOpt(m);}), d=req.filter(function(m){return isDone(m);}).length;
+    side+='<div class="phase"><div class="phase-h"><span>0'+(pi+1)+' · '+L.phases[pi]+'</span><span class="tab">'+d+'/'+req.length+'</span></div>';
     mods.forEach(function(m){
-      var cls=S.done[m]?"done":(autoDone(m)?"auto":"");
-      side+='<button class="nav'+(S.view===m?" on":"")+'" data-go="'+m+'"><span class="dot '+cls+'">'+(S.done[m]?"✓":(ORDER.indexOf(m)+1))+'</span><span>'+MT(m)+'</span></button>';
+      var cls=navCls(m);
+      side+='<button class="nav'+(S.view===m?" on":"")+(isOpt(m)?" opt":"")+'" data-go="'+m+'"><span class="dot '+cls+'">'+(isDone(m)?"✓":(ORDER.indexOf(m)+1))+'</span><span>'+MT(m)+(isOpt(m)?' <small class="muted">· '+(L.ui.optTag||"")+'</small>':'')+'</span></button>';
     });
     side+='</div>';
   });
   side+='<div class="side-foot"><div class="small muted" id="syncinfo">'+esc(syncText())+'</div><button class="btn sm ghost" data-act="backup">'+L.ui.backup+'</button></div></aside>';
   var i=ORDER.indexOf(S.view);
-  root.innerHTML='<div class="app">'+side+'<div class="overlay" id="ov" data-act="closeside"></div><main class="main">'+
+  root.innerHTML=tok('<div class="app">'+side+'<div class="overlay" id="ov" data-act="closeside"></div><main class="main">'+
    '<div class="topbar"><button class="btn sm" data-act="openside">☰ '+L.ui.menu+'</button><span class="small muted tab">'+(i+1)+' / '+ORDER.length+' · '+sprintLabel()+'</span>'+langSelect()+'</div>'+
    '<div class="wrap">'+testBar()+consentBanner()+(R[S.view]?R[S.view]():"")+renderFoot(S.view)+'</div></main>'+
-   '<nav class="mobnav"><button class="btn" data-go="'+(ORDER[i-1]||"")+'" '+(i===0?"disabled":"")+'>'+L.ui.back+'</button><button class="btn pri" data-go="'+(ORDER[i+1]||"")+'" '+(i===ORDER.length-1?"disabled":"")+'>'+L.ui.next+'</button></nav></div>';
+   '<nav class="mobnav"><button class="btn" data-go="'+(ORDER[i-1]||"")+'" '+(i===0?"disabled":"")+'>'+L.ui.back+'</button><button class="btn pri" data-go="'+(ORDER[i+1]||"")+'" '+(i===ORDER.length-1?"disabled":"")+'>'+L.ui.next+'</button></nav></div>');
 }
 function hoursGone(){ return (Date.now()-S.startedAt)/3600000; }
 function sprintLabel(){ var h=hoursGone(), H=P().h; if(h>=H) return L.ui.sprintOver; return H>48?F(L.ui.sprintLeftD||L.ui.sprintLeft,{d:Math.ceil((H-h)/24),h:Math.ceil(H-h)}):F(L.ui.sprintLeft,{h:Math.ceil(H-h)}); }
@@ -647,6 +654,7 @@ function pitchStop(count){
   render();
 }
 
+/*@@TEST_EXT@@*/
 /* ---------- Boot ---------- */
 var hadSaved=false;
 try{ hadSaved=!!localStorage.getItem(KEY); }catch(e){}

@@ -185,6 +185,16 @@ td input,td select{padding:6px 8px}
 .na-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .na-sum>div{display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
 input[type=datetime-local]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;color:inherit}
+.avail{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.avail.now{border-color:rgba(95,207,154,.45)}.avail.now b{color:var(--ok)}
+.avail.plan{border-color:rgba(227,165,76,.5)}.avail.plan b{color:var(--warn)}
+.qrow{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.yn{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ok);cursor:pointer;font-weight:700}
+.yn.on{border-color:var(--ok);background:rgba(95,207,154,.15)}
+table.pick td,table.pick th{text-align:center}table.pick td:first-child,table.pick th:first-child{text-align:left}
+.linkbtn{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.nav.opt{opacity:.62}
+.field small{font-size:12px}
 .modfoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:9px 16px;border-radius:9px;font-weight:600;font-size:14px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 
@@ -400,72 +410,6 @@ bk:{title:"Fortschritt sichern / laden",close:"Schließen",hint:"Dein Fortschrit
  file:"Als Datei speichern",copy:"Code kopieren",loadL:"Sicherung laden: Datei wählen oder Code einfügen",codePh:"Sicherungscode hier einfügen",load:"Sicherung laden",
  resetSum:"Alles zurücksetzen",resetBtn:"Ja, alle Daten auf diesem Gerät löschen",loaded:"Sicherung geladen",invalid:"Das ist keine gültige Turbo-Sicherung",need:"Bitte Code einfügen oder Datei wählen",saved:"Gespeichert",canceled:"Speichern abgebrochen",reset:"Zurückgesetzt"}
 }};
-/* ===== TESTVERSION (test.html) – wird nur mit window.TURBO_TEST angewendet. Live-App bleibt unverändert. =====
-   over      = ersetzt/ergänzt Texte (Arrays werden komplett ersetzt)
-   scriptsAdd= hängt Vorlagen hinten an (IDs bleiben stabil)
-   easy      = zusätzliche Überschreibungen im Einsteiger-Tempo (7 Tage · 10/5/3) */
-I18N.de.test={
-over:{
- ui:{
-  testT:"TESTVERSION",test:"Neue Funktionen zum Ausprobieren. Daten bleiben nur auf diesem Gerät, nichts geht ins Controlling.",
-  startBtn:"Jetzt starten",
-  paceT:"Dein Tempo",paces:[["turbo","Turbo · 48 Stunden","30 Namen · TOP 10 · 5 Ansprachen. Für alle, die jetzt richtig Gas geben wollen."],["easy","Einsteiger · 7 Tage","10 Namen · TOP 5 · 3 Ansprachen. Gleicher Weg, kleinere Schritte – wenn du wenig Zeit hast."]],
-  paceSet:"Tempo geändert",toEasy:"Zum Einsteiger-Tempo wechseln",
-  sprintLeftD:"Start: noch {d} Tage",
-  copiedSend:"Kopiert. Nach dem Senden auf „Gesendet“ tippen.",sentOk:"Gesendet ✓ – in der Pipeline als NEU eingetragen",
-  yourLeader:"deinem Leader",
-  stuckT:"Woran hängt es gerade?",
-  stuckR:[["understand","Nicht verstanden"],["time","Keine Zeit"],["unsure","Unsicher bei der Ansprache"],["help","Brauche Hilfe"]],
-  stuckA:{understand:"Kein Problem – schau dir das Video im 48h-Fahrplan noch einmal an und lies die drei Karten im Schritt „System in 60 Sekunden“. Was dann noch offen ist, klärst du in 10 Minuten mit {l}.",
-   time:"Dann mach es kleiner statt gar nicht: Das Einsteiger-Tempo gibt dir 7 Tage und kleinere Ziele. Gleicher Weg, nur in deinem Rhythmus.",
-   unsure:"Ganz normal am Anfang. Nimm die lockere Vorlage, lies sie einmal laut und schreib sie in deinen Worten. Oder führe die ersten Ansprachen gemeinsam mit {l} – im 2er-Team lernst du am schnellsten.",
-   help:"Melde dich jetzt bei {l} – eine kurze Nachricht reicht: „Ich hänge bei [Schritt], hast du heute 10 Minuten?“"}
- },
- m:{
-  sc:{used:"{n}× gesendet",sentBtn:"✓ Gesendet"},
-  talkto:{note:"So zählt es: Vorlage kopieren oder in WhatsApp öffnen, anpassen, absenden – und erst dann auf „✓ Gesendet“ tippen. Dann wird der Kontakt in der Pipeline auf „NEU“ gesetzt. Nur kopieren zählt nicht als Ansprache."},
-  system:{
-   sys:[["Best Prime","Vertrieb & Wachstum","Die internationale Vertriebs- und Community-Organisation. Sie strukturiert Recruiting, Onboarding, Duplikation, Führung und Marktausbau."],["ePOINT","Plattform & Ökosystem","Die Technologieplattform und zentrale Marke des Ökosystems. Verbraucher, Unternehmen und Partner werden in einer gemeinsamen Infrastruktur verbunden."],["ePAY","Payment-Ebene","Die geplante Payment- und Transaktionsebene des Ökosystems. Mit dem Start von ePAY wird der Nutzen direkt beim Bezahlen im Alltag verankert. Verfügbarkeit und Starttermin nur gemäß offiziellem Produktstatus."]],
-   core:"Best Prime baut die Vertriebs- und Wachstumsstruktur. ePOINT ist die Technologieplattform, die Verbraucher, Unternehmen und Partner in einem gemeinsamen Ökosystem verbindet. Mit ePAY kommt die Zahlungs- und Transaktionsebene dazu. Meine Aufgabe als Partner: Menschen gewinnen, die diesen Aufbau mit mir gemeinsam duplizieren."},
-  talk:{honestT:"Ehrliche Grenze",honest:"Nicht alles ist für jeden interessant – und das ist okay. Lass dein Gegenüber Kosten, Aufwand und persönliche Passung selbst prüfen. Ein ehrliches Nein ist mehr wert als ein überredetes Ja: Es schützt deinen Ruf und deine Beziehung."},
-  finish:{
-   naL:"Nächste Aktion",naT:"Dein nächster Schritt – mit Datum",naLead:"Ohne festen Termin passiert meist nichts. Leg genau eine machbare Handlung fest.",
-   naWhatL:"Das mache ich als Nächstes",naWhatPh:"z. B. Kontakt Nr. 6 aus meiner TOP 10 anschreiben",
-   naWhenL:"Ich mache es am",naNeedL:"Dafür brauche ich (optional)",naNeedPh:"z. B. 15 Minuten, Handy, Vorlage",
-   naHelp:"Wenn du hängen bleibst: kurze Nachricht an {l}.",
-   naBtn:"Als nächsten Schritt festhalten",naNeed:"Bitte Handlung und Termin eintragen",
-   naPrepared:"Du hast den nächsten Schritt vorbereitet.",naDoneBtn:"✓ Erledigt – nächsten Schritt festlegen",naDoneT:"Erledigt. Was ist dein nächster sinnvoller Schritt?",
-   naCount:"{n} Schritte erledigt"}
- }
-},
-scriptsAdd:{
- fu:[["Einwand · „Ist das ein Schneeballsystem?“ (sachlich)","Berechtigte Frage – die solltest du auch stellen. Entscheidend ist, ob es echte Produkte und Kundenleistungen gibt und welche Aktivitäten tatsächlich vergütet werden. Lass uns das anhand der offiziellen Unterlagen gemeinsam anschauen. Ich möchte, dass du dir selbst ein fundiertes Urteil bildest."],
-  ["Einwand · „Was ist das genau?“ (mit Unterlagen)","Gern kurz und direkt: Es geht um Best Prime und ePOINT – ein Ökosystem mit Nutzen für Kunden und Partner. Funktionsweise, Kosten und Vergütung zeige ich dir anhand der offiziellen Unterlagen. Was ist für dich zuerst wichtig?"]]
-},
-easy:{
- ui:{sprintOver:"7 Tage vorbei"},
- mods:{start:["Dein 7-Tage-Fahrplan","Startprofil"],finish:["7-Tage-Check","Abschluss mit deinem Leader"]},
- days:[["Tag 1–2","Verstehen · Fokus",["Startprofil ausgefüllt","60-Sekunden-Erklärung sitzt (3×)","Leader-Check bestanden","Mindestens 10 Namen","TOP 5 + erste 3 gewählt"]],["Tag 3–7","Aktivität · Duplizieren",["3 Ansprachen gesendet","3 Kontakte mit Status","Follow-up mit Datum gesetzt","Erstes Gespräch geführt","Duplikation geplant"]]],
- dupSteps:["Startprofil","60-Sekunden-Erklärung","Namensliste + TOP 5","Erste 3 Ansprachen","7-Tage-Review"],
- m:{
-  start:{lead:"Das Einsteiger-Tempo ist dein Arbeitsplan für die ersten 7 Tage: gleicher Weg wie der Turbo, nur mit kleineren Schritten. Jeder Schritt endet mit einer konkreten Handlung – alles wird automatisch gespeichert.",
-   sprint:"Deine 7 Tage",tl:["Start","Tag 1–2: Verstehen + Fokus","Tag 3–7: Aktivität","7 Tage"],
-   task:"Beantworte die drei Fragen und wähle deinen Starttyp. Dein Sponsor / Leader richtet daran deine 7 Tage aus. Ein goldener Kreis im Menü heißt: Kriterium erfüllt – markiere den Schritt dann als erledigt."},
-  list:{min30:"Mindestens 10",go100:"Ziel erreicht – gern weiter",t30:"10 Namen – Ziel geschafft",
-   task:"Schreibe mindestens 10 Namen auf – ohne zu bewerten. Mehr geht immer, aber 10 reichen für deinen Start."},
-  top:{of:"{n} / 5 TOP-Kontakte",hint:"Vergib 1–5 Punkte. Die Liste sortiert sich nach Gesamtpunkten. Markiere 5 als TOP und davon 3, die du in den nächsten Tagen ansprichst.",
-   cols:["TOP","Name","Vertrauen","Potenzial","Tempo","Σ","Erste 3"],max5:"Maximal 3 – das ist der Fokus",
-   task:"Wähle deine TOP 5 und markiere davon die ersten 3, die du in den nächsten Tagen ansprichst."},
-  talkto:{task:"Sende in deinen 7 Tagen 3 Ansprachen – an deine „Erste 3“ aus den TOP 5. Ziel jeder Nachricht ist nur ein 10-Minuten-Termin."},
-  talk:{task:"Führe in deinen 7 Tagen mindestens ein Gespräch mit echter Bedarfsanalyse – gern als 2er-Gespräch mit deinem Leader."},
-  dup:{flow:["1. Startprofil","2. System","3. Liste + TOP 5","4. Ansprache","5. 7 Tage Aktion"]},
-  finish:{lead:"Nach 7 Tagen setzt du dich mit deinem Leader zusammen: Zahlen anschauen, nächste Schritte festlegen. Abschluss = Wissen + echte Aktivität.",
-   sc:"Dein 7-Tage-Scoreboard",eyebrow:"Einsteiger-Start · 7 Tage",
-   lv:[["Verstanden","System sitzt","60-Sekunden-Erklärung, Mini-Check und Leader-Bestätigung."],["Aktiv","Aktivität nachweisbar","10+ Namen, TOP 5, 3 Kontakte angesprochen, erstes Gespräch geführt."],["Dupliziert","Prozess weitergegeben","Dein erster eigener Partner hat den Start mit dir durchlaufen."]],
-   review:"7-Tage-Review mit meinem Leader{l} ist erledigt",did:"hat den 7-Tage-Start durchlaufen · Stufe"}
- }
-}
-};
 
 (function(){
 "use strict";
@@ -479,6 +423,7 @@ var EASY=null, BASE_DE=null;
 if(TEST && I18N.de.test){
   var TT=I18N.de.test;
   if(TT.scriptsAdd) for(var tg in TT.scriptsAdd) I18N.de.scripts[tg]=I18N.de.scripts[tg].concat(TT.scriptsAdd[tg]);
+  if(TT.scriptsSet) for(var sg in TT.scriptsSet) for(var si2 in TT.scriptsSet[sg]) I18N.de.scripts[sg][+si2]=TT.scriptsSet[sg][si2];
   dmerge(I18N.de,clone(TT.over||{}));
   EASY=TT.easy||null; BASE_DE=clone(I18N.de);
 }
@@ -576,7 +521,7 @@ var QUIZ_C=[1,0,0];
 var STATUSES=["","NEU","TERMIN","FU","ENT","GO","NO"];
 var SC_PRE={an:"a",vk:"v",fu:"f"};
 var SC_IDS={}; for(var gk in SC_PRE){ SC_IDS[gk]=[]; for(var si=1;si<=(I18N.de.scripts[gk]||[]).length;si++) SC_IDS[gk].push(SC_PRE[gk]+si); }
-function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||""}; }); }
+function scripts(g){ return L.scripts[g].map(function(s,i){ return {id:SC_IDS[g][i],t:s[0],x:s[1],g:s[2]||"",x2:s[3]||""}; }); }
 
 /* ---------- Derived ---------- */
 function tops(){ return S.list.filter(function(c){return c.top;}); }
@@ -606,7 +551,13 @@ function autoDone(id){
   }
   return false;
 }
-function doneCount(){ var n=0; ORDER.forEach(function(id){ if(S.done[id]) n++; }); return n; }
+/* Andockstellen – in der Live-App neutral, die Testversion (src/test/ext.js) ersetzt sie */
+function isDone(m){ return !!S.done[m]; }
+function isOpt(m){ return false; }
+function totalReq(){ return ORDER.length; }
+function navCls(m){ return S.done[m]?"done":(autoDone(m)?"auto":""); }
+function tok(h){ return h; }
+function doneCount(){ var n=0; ORDER.forEach(function(id){ if(isDone(id) && !isOpt(id)) n++; }); return n; }
 function level(){
   var understood=systemOk();
   var active=understood && S.list.length>=P().names && tops().length>=P().top && contacted().length>=P().cont && S.talks.length>=1;
@@ -642,26 +593,26 @@ function langSelect(){
 }
 function brand(){ return '<div class="brand">Best<span class="p">Prime</span><span class="sep">|</span><span class="t">Turbo</span></div>'; }
 function render(){
-  if(!S.startedAt){ root.innerHTML=renderWelcome(); return; }
-  var pct=Math.round(doneCount()/ORDER.length*100), C=2*Math.PI*24;
+  if(!S.startedAt){ root.innerHTML=tok(renderWelcome()); return; }
+  var pct=Math.round(doneCount()/totalReq()*100), C=2*Math.PI*24;
   var side='<aside class="side" id="side">'+brand()+
    '<div class="me"><svg class="ring" viewBox="0 0 60 60"><circle class="bgc" cx="30" cy="30" r="24"/><circle class="fgc" cx="30" cy="30" r="24" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 30 30)"/><text x="30" y="34" text-anchor="middle">'+pct+'%</text></svg>'+
-   '<div style="min-width:0"><div style="font-weight:600">'+esc(S.name)+'</div><div class="small muted">'+F(L.ui.modulesOf,{a:doneCount(),b:ORDER.length})+' · '+sprintLabel()+'</div></div></div>'+langButtons();
+   '<div style="min-width:0"><div style="font-weight:600">'+esc(S.name)+'</div><div class="small muted">'+F(L.ui.modulesOf,{a:doneCount(),b:totalReq()})+' · '+sprintLabel()+'</div></div></div>'+langButtons();
   PHASES.forEach(function(mods,pi){
-    var d=mods.filter(function(m){return S.done[m];}).length;
-    side+='<div class="phase"><div class="phase-h"><span>0'+(pi+1)+' · '+L.phases[pi]+'</span><span class="tab">'+d+'/'+mods.length+'</span></div>';
+    var req=mods.filter(function(m){return !isOpt(m);}), d=req.filter(function(m){return isDone(m);}).length;
+    side+='<div class="phase"><div class="phase-h"><span>0'+(pi+1)+' · '+L.phases[pi]+'</span><span class="tab">'+d+'/'+req.length+'</span></div>';
     mods.forEach(function(m){
-      var cls=S.done[m]?"done":(autoDone(m)?"auto":"");
-      side+='<button class="nav'+(S.view===m?" on":"")+'" data-go="'+m+'"><span class="dot '+cls+'">'+(S.done[m]?"✓":(ORDER.indexOf(m)+1))+'</span><span>'+MT(m)+'</span></button>';
+      var cls=navCls(m);
+      side+='<button class="nav'+(S.view===m?" on":"")+(isOpt(m)?" opt":"")+'" data-go="'+m+'"><span class="dot '+cls+'">'+(isDone(m)?"✓":(ORDER.indexOf(m)+1))+'</span><span>'+MT(m)+(isOpt(m)?' <small class="muted">· '+(L.ui.optTag||"")+'</small>':'')+'</span></button>';
     });
     side+='</div>';
   });
   side+='<div class="side-foot"><div class="small muted" id="syncinfo">'+esc(syncText())+'</div><button class="btn sm ghost" data-act="backup">'+L.ui.backup+'</button></div></aside>';
   var i=ORDER.indexOf(S.view);
-  root.innerHTML='<div class="app">'+side+'<div class="overlay" id="ov" data-act="closeside"></div><main class="main">'+
+  root.innerHTML=tok('<div class="app">'+side+'<div class="overlay" id="ov" data-act="closeside"></div><main class="main">'+
    '<div class="topbar"><button class="btn sm" data-act="openside">☰ '+L.ui.menu+'</button><span class="small muted tab">'+(i+1)+' / '+ORDER.length+' · '+sprintLabel()+'</span>'+langSelect()+'</div>'+
    '<div class="wrap">'+testBar()+consentBanner()+(R[S.view]?R[S.view]():"")+renderFoot(S.view)+'</div></main>'+
-   '<nav class="mobnav"><button class="btn" data-go="'+(ORDER[i-1]||"")+'" '+(i===0?"disabled":"")+'>'+L.ui.back+'</button><button class="btn pri" data-go="'+(ORDER[i+1]||"")+'" '+(i===ORDER.length-1?"disabled":"")+'>'+L.ui.next+'</button></nav></div>';
+   '<nav class="mobnav"><button class="btn" data-go="'+(ORDER[i-1]||"")+'" '+(i===0?"disabled":"")+'>'+L.ui.back+'</button><button class="btn pri" data-go="'+(ORDER[i+1]||"")+'" '+(i===ORDER.length-1?"disabled":"")+'>'+L.ui.next+'</button></nav></div>');
 }
 function hoursGone(){ return (Date.now()-S.startedAt)/3600000; }
 function sprintLabel(){ var h=hoursGone(), H=P().h; if(h>=H) return L.ui.sprintOver; return H>48?F(L.ui.sprintLeftD||L.ui.sprintLeft,{d:Math.ceil((H-h)/24),h:Math.ceil(H-h)}):F(L.ui.sprintLeft,{h:Math.ceil(H-h)}); }
@@ -1115,6 +1066,7 @@ function pitchStop(count){
   }
   render();
 }
+
 
 /* ---------- Boot ---------- */
 var hadSaved=false;
