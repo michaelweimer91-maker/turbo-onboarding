@@ -5,6 +5,7 @@ fs.mkdirSync(OUT,{recursive:true});
 const results=[];let browser,server;
 const hooks='window.__qa={state:function(){return S;},calc:cCalculate,config:CC,done:autoDone,level:level,payload:payload,go:go};';
 async function check(name,fn){try{await fn();results.push({name,status:'passed'});}catch(e){results.push({name,status:'failed',error:e.message});console.error(name+': '+e.message);}}
+const openM=(pg,t)=>pg.evaluate(t=>{const s=[...document.querySelectorAll('summary .more-t')].find(x=>x.textContent===t);if(s&&!s.closest('details').open)s.closest('summary').click();},t); /* Bereiche bleiben offen: nur öffnen, nie zuklappen */
 async function main(){
  server=http.createServer((req,res)=>{
   const file=decodeURIComponent(req.url.split('?')[0]);
@@ -43,13 +44,13 @@ async function main(){
    await check('Breite '+width+' / '+id+' ohne Seitenüberlauf',async()=>assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)));
   }
   await p.evaluate(()=>window.__qa.go('plan'));
-  await p.getByText('Mehr erfahren: Team, Positionen und IBM',{exact:true}).click();
+  await p.evaluate(()=>document.querySelectorAll('details.more').forEach(d=>{if(d.textContent.includes('Mehr erfahren: Team'))d.open=true;}));
   for(const title of ['Mit Community Buildern zusammenarbeiten','Dein Team: Ebenen statt Ränge','Vom kleinen Start bis zum großen Team','Positionen und Voraussetzungen','Der IBM-Welttopf']){
-   await p.getByText(title,{exact:true}).click();
+   await p.evaluate(t=>{const s=[...document.querySelectorAll('summary .more-t')].find(x=>x.textContent===t);if(s&&!s.closest('details').open)s.closest('summary').click();},title);
    await check('Detail '+title+' bei '+width+' px ohne Überlauf',async()=>assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)));
   }
  }
- await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{window.__qa.state().commission.card=0;window.__qa.go('plan');});
+ await p.setViewportSize({width:390,height:844});await p.reload();await p.waitForTimeout(300);await p.evaluate(()=>{window.__qa.state().commission.card=0;window.__qa.go('plan');});
  await check('Nur vier Hauptbereiche',async()=>assert.equal(await p.locator('.simple-nav > button').count(),4));
  await check('Vertiefungen standardmäßig geschlossen',async()=>assert(!await p.getByText('Der IBM-Welttopf',{exact:true}).isVisible()));
  await check('Nur eine Grundlagenfrage sichtbar',async()=>assert.equal(await p.locator('[data-act="cQuiz"][data-advanced="0"]:visible').count(),2));
@@ -58,8 +59,8 @@ async function main(){
  for(const [q,a] of [[0,1],[1,0],[2,1]])await p.locator('[data-act="cQuiz"][data-q="'+q+'"][data-a="'+a+'"][data-advanced="0"]').click();
  await p.locator('[data-bind="plan.ok"]').check();
  await check('Grundlagenabschluss aktualisiert sich',async()=>assert(await p.evaluate(()=>window.__qa.done('plan'))));
- await p.getByText('Mit eigenen Zahlen rechnen',{exact:true}).click();
- await p.locator('[data-calc="rank"]').selectOption('TB');await p.getByText('Annahmen und Wunschziel ändern',{exact:true}).click();await p.locator('[data-calc="cp"]').fill('0.10');await p.waitForFunction(()=>document.getElementById('commission-results').innerText.includes('200,00'),null,{timeout:3000}).catch(()=>{});
+ await openM(p,'Mit eigenen Zahlen rechnen');
+ await p.locator('[data-calc="rank"]').selectOption('TB');await openM(p,'Annahmen und Wunschziel ändern');await p.locator('[data-calc="cp"]').fill('0.10');await p.waitForFunction(()=>document.getElementById('commission-results').innerText.includes('200,00'),null,{timeout:3000}).catch(()=>{});
  await check('TB-Beispiel ergibt 200 Euro',async()=>assert((await p.locator('#commission-results').innerText()).includes('200,00 €')));
  await p.locator('[data-calc="customers"]').fill('-2');
  await check('Negative Eingabe zeigt Fehler statt Provision',async()=>assert((await p.locator('#commission-results').innerText()).includes('gültige')));
@@ -67,7 +68,7 @@ async function main(){
  await check('CP-Umschalter hält Rechner geöffnet',async()=>{assert(await p.locator('.commission-calc').getAttribute('open')!==null);assert((await p.locator('#commission-results').innerText()).includes('100,00 €'));});
  await p.evaluate(()=>{window.__qa.state().commission.card=4;window.__qa.go('plan');});
  for(const [preset,amount] of [['starter','100,00 €'],['build','1.500,00 €'],['lead','3.000,00 €'],['high','25.000,00 €']]){
-  await p.getByText('Mehr erfahren: Team, Positionen und IBM',{exact:true}).click();await p.getByText('Vom kleinen Start bis zum großen Team',{exact:true}).click();
+  await p.evaluate(()=>document.querySelectorAll('details.more').forEach(d=>{if(d.textContent.includes('Mehr erfahren: Team'))d.open=true;}));await openM(p,'Vom kleinen Start bis zum großen Team');
   await p.locator('[data-act="cPreset"][data-v="'+preset+'"]').click();
   await check('Preset '+preset+' per Klick bedienbar',async()=>assert((await p.locator('#commission-results').innerText()).includes(amount)));
  }

@@ -88,3 +88,18 @@ scriptBlock2=function(g,title,excludeNo){
  var options=document.createElement('div');options.innerHTML=more(tr('Weitere Nachrichtenvorlagen'),rest,'',open);grid.after(options.firstElementChild);
  return doc.innerHTML;
 };
+/* Aufgeklappte Bereiche bleiben offen: Nach jeder Eingabe baut render() die Seite neu auf –
+   geöffnete more()-Bereiche (Schlüssel: Ansicht + Titel) werden danach wieder geöffnet, die Scrollposition bleibt. */
+var openMore={};
+function moreKey(d){ var t=d.querySelector(':scope > summary .more-t'); return (S.startedAt?S.view:'welcome')+'|'+(t?t.textContent:''); }
+document.addEventListener('toggle',function(e){ var d=e.target; if(!d||!d.classList||!d.classList.contains('more')||!d.closest('#root'))return; var k=moreKey(d); if(d.open)openMore[k]=1; else delete openMore[k]; },true);
+var _keepRender=render;
+render=function(){
+ var view=S.startedAt?S.view:'welcome', y=window.scrollY||0;
+ _keepRender();
+ var any=false;
+ Array.prototype.forEach.call(document.querySelectorAll('#root details.more'),function(d){ if(openMore[moreKey(d)]&&!d.open){ d.open=true; any=true; } });
+ if(view===_keepView && y) window.scrollTo(0,y);
+ _keepView=view;
+};
+var _keepView=null;

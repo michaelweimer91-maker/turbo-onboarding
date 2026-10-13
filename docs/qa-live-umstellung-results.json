@@ -1,5 +1,5 @@
 {
- "passed": 16,
+ "passed": 20,
  "failed": 0,
  "results": [
   {
@@ -55,6 +55,26 @@
   {
    "r": "PASS",
    "case": "Neu: Vergütung ohne Händler-Hinweise",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "Offen bleibt: Selbstcheck-Bereich nach Antworten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Offen bleibt: Rechner + Vertiefung nach Quiz-Klick",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Offen bleibt: weitere Vorlagen nach Wechsel du→Sie",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Offen bleibt: keine JS-Fehler",
    "detail": "[]"
   },
   {

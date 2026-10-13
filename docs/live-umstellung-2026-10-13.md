@@ -19,3 +19,6 @@ Live-Umstellung 16/16 (neuer Partner, Einwilligung Pflicht, Sync abgefangen: `ap
 2. Übersetzungen von Muttersprachlern gegenlesen lassen.
 3. Produktfakten (Kosten, Auszahlung, Qualifikation) weiter offen – in der App als „noch zu klären“ gekennzeichnet.
 4. Team-Abschluss 20/6/4 € „je CP“ ist eine Annahme aus der Grafik.
+
+## Nachbesserung 13.10.2026, 09:30 – aufgeklappte Bereiche klappten zu
+Meldung Michael: Beim Ausfüllen des Selbstchecks in „Meine Rolle, Selbstcheck und Übung“ klappte nach jeder Antwort alles zu. Ursache: Jede Eingabe baut die Ansicht neu auf. Lösung (`simple.js`, Ende): geöffnete `more()`-Bereiche werden je Ansicht + Titel gemerkt und nach dem Neuaufbau wieder geöffnet; die Scrollposition bleibt. Test: `tests/live-umstellung.py` 20/20 (Selbstcheck, Rechner + Vertiefung, Vorlagen du→Sie bleiben offen), übrige Suiten grün.
