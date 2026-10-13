@@ -17,7 +17,7 @@ render=function(){
  var me=side.querySelector('.me');if(me)me.insertAdjacentHTML('afterend',setBar());
  var tb=document.querySelector('.topbar');if(tb){tb.insertAdjacentHTML('beforeend',setBtn());tb.insertAdjacentHTML('afterend','<div class="setpop noprint" id="setpop" hidden>'+setBar()+'</div>');}
 };
-renderFoot=function(id){var sequence=req(),i=sequence.indexOf(id),next=(i>=0?sequence[i+1]:sequence.filter(function(m){return ORDER.indexOf(m)>ORDER.indexOf(id);})[0])||simpleNext();return stuckBox(id)+'<div class="modfoot noprint"><span class="badge '+(autoDone(id)?'b-ok':'b-mut')+'">'+(autoDone(id)?tr('Erledigt'):tr('In Bearbeitung'))+'</span><div class="row">'+(i>0?'<button class="btn ghost" data-go="'+sequence[i-1]+tr('">Zurück</button>'):'')+(id!==next?'<button class="btn pri" data-go="'+next+tr('">Weiter: ')+MT(next)+'</button>':'')+'</div></div>';};
+renderFoot=function(id){var sequence=req(),i=sequence.indexOf(id),next=(i>=0?sequence[i+1]:sequence.filter(function(m){return ORDER.indexOf(m)>ORDER.indexOf(id);})[0])||simpleNext();return stuckBox(id)+'<div class="modfoot noprint"><span class="stepstate '+(autoDone(id)?'ok':'open')+'" role="status">'+(autoDone(id)?'✓ '+tr('Schritt erledigt'):'○ '+tr('Noch offen – wird automatisch abgehakt, sobald die Aufgabe oben erfüllt ist'))+'</span><div class="row">'+(i>0?'<button class="btn ghost" data-go="'+sequence[i-1]+tr('">Zurück</button>'):'')+(id!==next?'<button class="btn pri" data-go="'+next+tr('">Weiter: ')+MT(next)+'</button>':'')+'</div></div>';};
 var _simpleStart=R.start;
 R.start=function(){
  var full=_simpleStart();if(!S.planAt)return full;

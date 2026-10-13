@@ -54,7 +54,7 @@ async def run(b,page,key,w):
         await pg.click(f"[data-act=cQuiz][data-q='{q}'][data-a='{a}'][data-advanced='0']"); await pg.wait_for_timeout(120)
     ok(tag+" Quiz: 3 von 3", "3 von 3" in await pg.inner_text("body"))
     await pg.click("input[data-bind='plan.ok']"); await pg.wait_for_timeout(250)
-    done="Grundlagen erledigt" in await pg.inner_text("#commission-check") and "Erledigt" in await pg.inner_text(".modfoot .badge")
+    done="Grundlagen erledigt" in await pg.inner_text("#commission-check") and "erledigt" in await pg.inner_text(".modfoot .stepstate")
     ok(tag+" Vergütung erledigt ohne Pflicht-Freitext", bool(done))
     # Rechner
     await pg.get_by_text("Mit eigenen Zahlen rechnen",exact=True).click()

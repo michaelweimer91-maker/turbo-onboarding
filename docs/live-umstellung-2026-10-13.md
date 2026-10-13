@@ -22,3 +22,6 @@ Live-Umstellung 16/16 (neuer Partner, Einwilligung Pflicht, Sync abgefangen: `ap
 
 ## Nachbesserung 13.10.2026, 09:30 – aufgeklappte Bereiche klappten zu
 Meldung Michael: Beim Ausfüllen des Selbstchecks in „Meine Rolle, Selbstcheck und Übung“ klappte nach jeder Antwort alles zu. Ursache: Jede Eingabe baut die Ansicht neu auf. Lösung (`simple.js`, Ende): geöffnete `more()`-Bereiche werden je Ansicht + Titel gemerkt und nach dem Neuaufbau wieder geöffnet; die Scrollposition bleibt. Test: `tests/live-umstellung.py` 20/20 (Selbstcheck, Rechner + Vertiefung, Vorlagen du→Sie bleiben offen), übrige Suiten grün.
+
+## Nachbesserung 13.10.2026, 09:40 – „Erledigt“-Knopf
+Meldung Michael: „Der Erledigt-Button funktioniert nicht.“ Das grüne „Erledigt“ unten war nur eine Statusanzeige (Schritte haken sich automatisch ab), sah aber wie ein Knopf aus und war verrutscht. Ersetzt durch eine Statuszeile ohne Knopf-Optik: „○ Noch offen – wird automatisch abgehakt, sobald die Aufgabe oben erfüllt ist“ bzw. „✓ Schritt erledigt“ (6 Sprachen). Alle Suiten grün.
