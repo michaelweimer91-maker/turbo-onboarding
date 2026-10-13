@@ -55,6 +55,16 @@ async def main():
     ok("Geburtsdatum: gespeichert",(await pg.evaluate("JSON.parse(localStorage.getItem('bp_turbo_v1')).birth"))=="1990-05-17")
     await pg.evaluate("document.dispatchEvent(new Event('visibilitychange'))"); await pg.evaluate("Object.defineProperty(document,'visibilityState',{value:'hidden',configurable:true});document.dispatchEvent(new Event('visibilitychange'))"); await pg.wait_for_timeout(400)
     ok("Geburtsdatum: in Controlling-Meldung",any('"birth":"1990-05-17"' in x for x in posts[n0:]),len(posts)-n0)
+    # „Mein Ziel und Arbeitsplan“ bleibt beim Markieren offen (Meldung Michael 13.10.2026, 09:59)
+    await pg.evaluate("location.hash='start'"); await pg.reload(); await pg.wait_for_timeout(300)
+    if await pg.locator("[data-act=tPlan]").count() and await pg.locator("[data-act=tPlan]").is_visible():
+      await pg.click("[data-act=tTime][data-v='30']"); await pg.click("[data-act=tSkill][data-v=write]"); await pg.fill("#p_block","2026-10-14T19:00"); await pg.wait_for_timeout(200); await pg.click("[data-act=tPlan]"); await pg.wait_for_timeout(300)
+    zs=pg.locator("details.more > summary", has_text="Mein Ziel und Arbeitsplan")
+    if await zs.count():
+      await zs.click(); await pg.wait_for_timeout(150)
+      for sel in ["[data-act=tTime][data-v='60']","[data-act=tSkill][data-v=phone]","[data-act=tMot]"]:
+        await pg.locator(sel).first.click(); await pg.wait_for_timeout(200)
+      ok("Offen bleibt: Mein Ziel und Arbeitsplan nach Markieren",await pg.evaluate("[...document.querySelectorAll('details.more')].some(d=>d.open && d.querySelector('summary').textContent.includes('Mein Ziel'))"))
     # Aufgeklappte Bereiche bleiben beim Ausfüllen offen (Meldung Michael 13.10.2026)
     await pg.evaluate("location.hash='system'"); await pg.reload(); await pg.wait_for_timeout(300)
     sm=pg.locator("details.more > summary", has_text="Meine Rolle, Selbstcheck")

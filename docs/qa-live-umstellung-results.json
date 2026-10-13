@@ -1,5 +1,5 @@
 {
- "passed": 23,
+ "passed": 24,
  "failed": 0,
  "results": [
   {
@@ -71,6 +71,11 @@
    "r": "PASS",
    "case": "Geburtsdatum: in Controlling-Meldung",
    "detail": "1"
+  },
+  {
+   "r": "PASS",
+   "case": "Offen bleibt: Mein Ziel und Arbeitsplan nach Markieren",
+   "detail": ""
   },
   {
    "r": "PASS",

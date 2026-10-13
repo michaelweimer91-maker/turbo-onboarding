@@ -28,3 +28,6 @@ Meldung Michael: „Der Erledigt-Button funktioniert nicht.“ Das grüne „Erl
 
 ## Ergänzung 13.10.2026, 10:00 – Geburtsdatum
 Auftrag Michael: bei „Persönliche Angaben“ Geburtsdatum ergänzen; **freiwillig**, **mit ins Controlling**. Umsetzung: Datumsfeld `S.birth` (Schritt Start → Persönliche Angaben) mit Hinweis „Freiwillig. Wird mit deinem Fortschritt an dein Leader-Team übermittelt.“; Payload-Feld `birth` (nur gültiges JJJJ-MM-TT); `gas/Turbo.gs` neue letzte Spalte „Geburtsdatum“; Einwilligungstext um „und – falls angegeben – mein Geburtsdatum“ ergänzt (6 Sprachen). Live-Test 23/23, übrige Suiten grün. **Turbo.gs neu einspielen + setupTurbo ausführen**, damit die Spalte erscheint.
+
+## Nachbesserung 13.10.2026, 10:10 – neue Versionen kamen verzögert an
+Meldung Michael: „Mein Ziel und Arbeitsplan“ klappt beim Markieren zu. Nachgestellt: mit der aktuellen Version bleibt der Bereich offen (inkl. „Weg oder Tempo ändern“, „Starttyp“, Geburtsdatum) – Michael hatte noch eine zwischengespeicherte Version. Ursache: GitHub Pages erlaubt Browsern bis zu 10 Min. Zwischenspeicherung, der Service Worker nutzte diese Kopie. `sw.js` fragt jetzt mit `cache:'no-cache'` immer beim Server nach (offline weiter aus dem App-Cache). Test ergänzt: live 24/24.
