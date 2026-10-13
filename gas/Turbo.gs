@@ -25,7 +25,7 @@ var TURBO_HEAD = ['Partner-ID','Name','Leader','Sprache','Start','Letzte Aktivit
 /* Spalten nur ANHÄNGEN: alte Daten und vorhandene Spaltenpositionen bleiben erhalten. */
 var TURBO_V2_HEAD=['Schema-Version','Einstiegsweg','Tempo','Plan bestätigt','Plan-Zeitraum h',
  'Vergütung verstanden','Bestätigte Erstansprachen','Nachfassnachrichten','Ziel Namen','Ziel TOP','Ziel Erstansprachen',
- 'Gespräch Pflicht','Erster Arbeitsblock','Nächste Aktion am','Pflicht-IDs','Erledigte IDs','Profil fertig'];
+ 'Gespräch Pflicht','Erster Arbeitsblock','Nächste Aktion am','Pflicht-IDs','Erledigte IDs','Profil fertig','Geburtsdatum'];
 TURBO_HEAD=TURBO_HEAD.concat(TURBO_V2_HEAD);
 
 var TURBO_LEVELS = ['Offen','Verstanden','Aktiv','Dupliziert'];
@@ -127,7 +127,8 @@ function turboRow_(p, now) {
       Number(p.schemaVersion)||1,p.path||'',p.pace||'',dt(p.planAt),p.planDuration||48,
       p.planOk?'ja':'nein',p.firstSent||0,p.followUps||0,p.goalNames||0,p.goalTop||0,p.goalSent||0,
       p.talkRequired?'ja':'nein',p.firstBlock||'',p.nextActionAt||'',
-      (p.requiredIds||[]).join(','),(p.doneIds||[]).join(','),p.diagDone?'ja':'nein']);
+      (p.requiredIds||[]).join(','),(p.doneIds||[]).join(','),p.diagDone?'ja':'nein',
+      /^\d{4}-\d{2}-\d{2}$/.test(String(p.birth||''))?new Date(p.birth+'T12:00:00'):'']);
 }
 
 /* ---------- Aufruf aus doPost (Code.gs) – läuft dort bereits im Lock ---------- */

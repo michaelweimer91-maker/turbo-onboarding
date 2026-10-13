@@ -1,5 +1,5 @@
 {
- "passed": 20,
+ "passed": 23,
  "failed": 0,
  "results": [
   {
@@ -56,6 +56,21 @@
    "r": "PASS",
    "case": "Neu: Vergütung ohne Händler-Hinweise",
    "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "Geburtsdatum: Feld vorhanden",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Geburtsdatum: gespeichert",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Geburtsdatum: in Controlling-Meldung",
+   "detail": "1"
   },
   {
    "r": "PASS",

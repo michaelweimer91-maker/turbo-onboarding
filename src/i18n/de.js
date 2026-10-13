@@ -15,7 +15,7 @@ ui:{
  critOk:"Kriterium erfüllt",critOpen:"Kriterium offen",markDone:"Als erledigt markieren",doneReset:"✓ Erledigt – zurücksetzen",toastDone:"Schritt erledigt",
  moreOpen:"Antippen zum Öffnen",moreClose:"Zuklappen",copied:"Kopiert",copyManual:"Bitte Text markieren und kopieren",language:"Sprache",
  lbl:{task:"Aufgabe",first:"Dein erster Schritt",today:"Aufgabe heute",rule:"Regel",mantra:"Merksatz",next:"Dein nächster Schritt"},
- consent:"Ich bin einverstanden, dass mein Onboarding-Fortschritt (Schritte, Kennzahlen, Startprofil) an mein Leader-Team übermittelt wird, damit es mich gezielt unterstützen kann. Namen meiner Kontakte werden nicht übertragen.",
+ consent:"Ich bin einverstanden, dass mein Onboarding-Fortschritt (Schritte, Kennzahlen, Startprofil und – falls angegeben – mein Geburtsdatum) an mein Leader-Team übermittelt wird, damit es mich gezielt unterstützen kann. Namen meiner Kontakte werden nicht übertragen.",
  consentNeed:"Bitte der Übermittlung an dein Leader-Team zustimmen",consentBtn:"Zustimmen",consentTitle:"Fortschritt mit deinem Leader-Team teilen",
  videoT:"Kurz erklärt: Was dir der Turbo bringt",videoPlay:"Video abspielen",videoNote:"Beim Abspielen werden Inhalte von {p} geladen.",
  syncOk:"Synchronisiert {t}",syncErr:"Nicht synchronisiert – Verbindung prüfen",syncWait:"Wird synchronisiert …"

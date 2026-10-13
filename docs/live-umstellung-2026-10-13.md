@@ -25,3 +25,6 @@ Meldung Michael: Beim Ausfüllen des Selbstchecks in „Meine Rolle, Selbstcheck
 
 ## Nachbesserung 13.10.2026, 09:40 – „Erledigt“-Knopf
 Meldung Michael: „Der Erledigt-Button funktioniert nicht.“ Das grüne „Erledigt“ unten war nur eine Statusanzeige (Schritte haken sich automatisch ab), sah aber wie ein Knopf aus und war verrutscht. Ersetzt durch eine Statuszeile ohne Knopf-Optik: „○ Noch offen – wird automatisch abgehakt, sobald die Aufgabe oben erfüllt ist“ bzw. „✓ Schritt erledigt“ (6 Sprachen). Alle Suiten grün.
+
+## Ergänzung 13.10.2026, 10:00 – Geburtsdatum
+Auftrag Michael: bei „Persönliche Angaben“ Geburtsdatum ergänzen; **freiwillig**, **mit ins Controlling**. Umsetzung: Datumsfeld `S.birth` (Schritt Start → Persönliche Angaben) mit Hinweis „Freiwillig. Wird mit deinem Fortschritt an dein Leader-Team übermittelt.“; Payload-Feld `birth` (nur gültiges JJJJ-MM-TT); `gas/Turbo.gs` neue letzte Spalte „Geburtsdatum“; Einwilligungstext um „und – falls angegeben – mein Geburtsdatum“ ergänzt (6 Sprachen). Live-Test 23/23, übrige Suiten grün. **Turbo.gs neu einspielen + setupTurbo ausführen**, damit die Spalte erscheint.

@@ -206,7 +206,7 @@ R.plan=function(){
 var _cPayload=payload;
 payload=function(){
  var p=_cPayload(), done=req().filter(function(m){return autoDone(m);});
- p.schemaVersion=2;p.path=pth();p.pace=S.pace;p.planAt=S.planAt||0;p.startedAt=S.planAt||0;
+ p.schemaVersion=2;p.birth=/^\d{4}-\d{2}-\d{2}$/.test(S.birth||'')?S.birth:'';p.path=pth();p.pace=S.pace;p.planAt=S.planAt||0;p.startedAt=S.planAt||0;
  p.doneModules=done.map(MT);p.doneIds=done;p.requiredIds=req();p.doneCount=done.length;p.total=req().length;p.pct=Math.round(done.length/p.total*100);
  p.level=level();p.diagDone=autoDone('start');p.quizOk=quiz2Ok();p.planOk=autoDone('plan');
  p.contacted=firstIds().length;p.sent=firstIds().length;p.firstSent=firstIds().length;p.followUps=fuCount();p.talks=okTalks().length;
