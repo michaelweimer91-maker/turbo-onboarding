@@ -16,7 +16,7 @@ Live (nach Aktivierung von GitHub Pages): https://michaelweimer91-maker.github.i
 ## LIVE seit 13.10.2026: neue Nutzerführung
 - `index.html` = Testversions-Nutzerführung (V3 + Vergütung + Abschlussrechner + 6 Sprachen + Hell/Dunkel) mit `window.TURBO_ONBOARDING_V2=true` und `window.TURBO_NO_MERCH=true` (Händlerweg, Händler-Vorlagen und Händler-Hinweise ausgeblendet – kommt nach München). Speicher `bp_turbo_v1` (Bestandspartner behalten Name, Kontakte, Einwilligung), Controlling-Sync an (Schema 2), Einwilligungs-Häkchen auf der Startseite Pflicht.
 - Inhalte werden weiter in `src/test/*` gepflegt; `build.py` baut daraus Live, Test und Vorschau. `test.html` behält den Händlerweg zum Ausprobieren.
-- Rückweg: `python3 build.py --live-alt` baut die alte Live-Nutzerführung (byte-gleich zum Git-Tag `live-vor-umstellung-2026-10-13`), dann committen/pushen.
+- Rückweg: `python3 build.py --live-alt` baut die alte Live-Nutzerführung (byte-gleich zum Stand vor der Umstellung, Commit f26493b), dann committen/pushen.
 - Controlling: `gas/Turbo.gs` (V2-Spalten + Ampel nach Weg) muss im Apps-Script-Projekt eingespielt sein, sonst bewertet die alte Ampel Nicht-Teamwege falsch.
 - Test: `tests/live-umstellung.py` (neuer Partner, Bestandspartner, Sync abgefangen, kein Händler).
 

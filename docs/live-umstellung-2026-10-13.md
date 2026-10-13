@@ -12,7 +12,7 @@ Auftrag Michael: „Überspiele es auf die Live App“. Händlerweg: **ausblende
 Live-Umstellung 16/16 (neuer Partner, Einwilligung Pflicht, Sync abgefangen: `app=turbo`, Schema 2, keine Kontaktnamen; Bestandspartner mit altem Stand; alle 10 Schritte; kein „Händler“ in Ansprache und Vergütung) · Logik 65/65 · Browser 90/90 · V3-Abnahme 131/131 · Abschlussrechner 18/18 · Sprachen/Hell-Dunkel 92/92.
 
 ## Rückweg
-`python3 build.py --live-alt` erzeugt die alte `index.html` (geprüft: byte-gleich zum Stand vor der Umstellung, Tag `live-vor-umstellung-2026-10-13`). Danach committen und pushen.
+`python3 build.py --live-alt` erzeugt die alte `index.html` (geprüft: byte-gleich zum Stand vor der Umstellung, Commit `f26493b`). Danach committen und pushen.
 
 ## Offen / zu tun
 1. **`gas/Turbo.gs` im Apps Script einspielen** (V2-Spalten + Ampel nach Weg). Bis dahin kommen die Meldungen an, die Ampel bewertet aber nach alter 48h-Logik.
