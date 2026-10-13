@@ -1,0 +1,86 @@
+{
+ "passed": 16,
+ "failed": 0,
+ "results": [
+  {
+   "r": "PASS",
+   "case": "Neu: kein Testbanner",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Einstellungsleiste (Sprache + Hell/Dunkel)",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Ziele ohne Händlerweg",
+   "detail": "['', 'side', 'cust', 'net', 'team', 'unsure']"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Einwilligung zum Controlling sichtbar",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: ohne Einwilligung kein Start",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Speicher bp_turbo_v1 mit Weg/Einwilligung",
+   "detail": "{'path': 'team', 'pace': 'easy', 'consent': True}"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Controlling-Meldung gesendet",
+   "detail": "1"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Meldung app=turbo, Schema 2, ohne Kontaktnamen",
+   "detail": "{'app': 'turbo', 'schemaVersion': 2, 'path': 'team', 'name': 'Neu Nina'}"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: alle 10 Schritte ohne JS-Fehler",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: keine Händler-Vorlage/-Filter",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "Neu: Vergütung ohne Händler-Hinweise",
+   "detail": "[]"
+  },
+  {
+   "r": "PASS",
+   "case": "Bestand: Identität und Kontakte erhalten",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Bestand: Einwilligung bleibt",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Bestand: landet in der App (nicht auf Startseite)",
+   "detail": ""
+  },
+  {
+   "r": "PASS",
+   "case": "Bestand: kann Weg wählen",
+   "detail": "5"
+  },
+  {
+   "r": "PASS",
+   "case": "Bestand: alle 10 Schritte ohne JS-Fehler",
+   "detail": "[]"
+  }
+ ]
+}

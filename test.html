@@ -1454,6 +1454,11 @@ document.addEventListener("click",function(e){
 document.addEventListener("click",function(e){ var b=e.target.closest && e.target.closest('[data-act="theme"]'); if(!b) return; var t=themeGet()==="light"?"dark":"light"; try{ localStorage.setItem(THEME_KEY,t); }catch(err){} themeApply(t); Array.prototype.forEach.call(document.querySelectorAll('[data-act="theme"]'),function(x){ x.outerHTML=themeBtn(x.getAttribute("data-compact")==="1"); }); });
 var TX=function(){ return L.tx; };
 var PATHS=["side","cust","merch","net","team","unsure"];
+/* Live ohne Händlerweg (window.TURBO_NO_MERCH): Händler-Thema erst nach dem Event in München */
+var NO_MERCH=!!window.TURBO_NO_MERCH;
+if(NO_MERCH){ PATHS=PATHS.filter(function(x){ return x!=="merch"; });
+  var _noM=function(o){ if(o && o.tx && o.tx.pathOrder) o.tx.pathOrder=o.tx.pathOrder.filter(function(x){ return x!=="merch"; }); };
+  for(var _lg in I18N) _noM(I18N[_lg]); _noM(BASE_DE); }
 function pth(){ return S.path||"unsure"; }
 function isTeam(){ return pth()==="team"; }
 /* Ziele des gewählten Wegs: Teamweg behält 30/10/5 bzw. 10/5/3, alle anderen starten klein */
@@ -1467,6 +1472,7 @@ var DEF_GROUP={side:"cu",cust:"cu",merch:"me",net:"co",team:"pa",unsure:"cu"};
 /* ---------- Zustand ergänzen (sichere Standards, alte Sicherungen bleiben ladbar) ---------- */
 var _migrate=migrate;
 migrate=function(d){ var hadFlow=!!(d.prof && d.path); d=_migrate(d); if(!d.prof) d.prof={}; if(!Array.isArray(d.ev)) d.ev=[]; if(!d.qz) d.qz={}; if(d.path==null) d.path=""; if(d.planAt==null) d.planAt=0; if(d.sie==null) d.sie=false; if(!hadFlow){d.pace="";d.planAt=0;d.plan.ok=false;} return d; };
+if(NO_MERCH){ var _migNM=migrate; migrate=function(d){ d=_migNM(d); if(d.path==="merch") d.path="unsure"; return d; }; }
 var _blank=blank;
 blank=function(lang){ var b=_blank(lang); b.prof={}; b.ev=[]; b.qz={}; b.path=""; b.planAt=0; b.sie=false; b.pace=""; return b; };
 S=blank(); /* neu aufbauen, damit Testfelder existieren */
@@ -1562,7 +1568,7 @@ function sysIntro(){
 /* ---------- Startseite: Ziel vor Tempo, kein Countdown vor dem Start ---------- */
 var draft={name:"",leader:"",path:"",pace:""};
 try{ var _dr=JSON.parse(sessionStorage.getItem("bp_turbo_draft")||"null"); if(_dr){ draft=_dr; sessionStorage.removeItem("bp_turbo_draft"); } }catch(e){}
-function keepDraft(){ var n=document.getElementById("w_name"), l=document.getElementById("w_leader"); if(n) draft.name=n.value; if(l) draft.leader=l.value; }
+function keepDraft(){ var n=document.getElementById("w_name"), l=document.getElementById("w_leader"), c=document.getElementById("w_consent"); if(n) draft.name=n.value; if(l) draft.leader=l.value; if(c) draft.consent=c.checked; }
 renderWelcome=function(){
   var t=TX();
   return '<div class="welcome">'+testBar()+'<div class="row" style="justify-content:space-between">'+brand()+'</div>'+
@@ -1740,6 +1746,7 @@ function scriptBlock2(g,title,excludeNo){
    '<div class="field"><span>'+t.form+'</span><div class="row" style="gap:4px">'+chip("tSie","0",t.du,!S.sie)+chip("tSie","1",t.sie,!!S.sie)+'</div></div></div></div>';
   if(!who) h+='<p class="small" style="color:var(--warn)">'+t.whoNone+'</p>';
   var list=scripts(g);
+  if(NO_MERCH) list=list.filter(function(x){ return x.g!=="me"; });
   if(g==="an"){
     var gs=[]; list.forEach(function(s){ if(s.g && gs.indexOf(s.g)<0) gs.push(s.g); });
     h+='<div class="chips">'+[""].concat(gs).map(function(k){ return '<button class="chip'+(scf===k?" on":"")+'" data-act="scf" data-v="'+k+'">'+(k?sc.groups[k]:sc.all)+'</button>'; }).join("")+'</div>';
@@ -1914,7 +1921,8 @@ document.addEventListener("submit",function(e){
   var f=e.target, t=TX();
   if(f.id==="startform2"){
     keepDraft(); var n=draft.name.trim(); if(!n){ toast(t.needName); return; } if(!draft.path){ toast(t.needGoal); return; } if(!draft.pace){ toast(t.needPace); return; }
-    S.name=n; S.leader=draft.leader.trim(); S.path=draft.path; S.pace=draft.pace; S.consent=false; S.startedAt=Date.now(); S.view="start"; scf=DEF_GROUP[S.path]; save(); render(); window.scrollTo(0,0); return; }
+    var cb=document.getElementById("w_consent"); if(SYNC && cb && !cb.checked){ toast(L.ui.consentNeed); return; }
+    S.name=n; S.leader=draft.leader.trim(); S.path=draft.path; S.pace=draft.pace; S.consent=!!(SYNC && cb && cb.checked); S.startedAt=Date.now(); S.view="start"; scf=DEF_GROUP[S.path]; save(); render(); window.scrollTo(0,0); sync(false); return; }
   if(f.id==="talkform2"){
     var who=document.getElementById("t2_who").value.trim(), d=document.getElementById("t2_date").value, imp=document.getElementById("t2_imp").value.trim(), ok=document.getElementById("t2_ok").checked;
     if(!who||!d||imp.length<10||!ok){ toast(t.pNeed); return; }
@@ -1985,7 +1993,7 @@ function cFactRows(){
  ["payout",tr("Auszahlung"),tr("Abrechnungszeitraum, Stichtag, Auszahlung und Mindestbeträge")],
  ["plan",tr("Aktuelle Planfassung"),tr("Datierte aktuelle Vergütungsunterlagen und bestätigte Modellwerte")],
  ["merchant",tr("Händlerprozess"),tr("Verfügbarer Prozess, Rollen und bestätigte Händlervergütung")]
- ].map(function(x){ var d=data[x[0]]||{}; return {id:x[0],title:x[1],need:x[2],fact:d,ok:!!(d.confirmed&&String(d.text||"").trim()&&String(d.source||"").trim()&&String(d.checkedAt||"").trim())}; });
+ ].filter(function(x){ return !(NO_MERCH && x[0]==="merchant"); }).map(function(x){ var d=data[x[0]]||{}; return {id:x[0],title:x[1],need:x[2],fact:d,ok:!!(d.confirmed&&String(d.text||"").trim()&&String(d.source||"").trim()&&String(d.checkedAt||"").trim())}; });
 }
 function productReady(){ return cFactRows().every(function(r){return r.ok;}); }
 function cClosureReady(){return cFactRows().filter(function(r){return ['commission','costs','payout','plan'].indexOf(r.id)>=0;}).every(function(r){return r.ok;});}
@@ -2079,7 +2087,7 @@ function cCardHTML(index){
  }else if(index===1){
   h=tr('<p><b>CP = Commission Points.</b> CP sind eine Rechengröße für vergütungsfähige Nutzung. Im Beispiel rechnen wir mit aktiven Kunden × angenommenen CP je Kunde. Echte CP ergeben sich aus den offiziellen Abrechnungsregeln.</p><p><b>Airtime = CP × dein berechtigter Rang-Satz.</b></p><div class="card hi"><span class="label">Beispiel Team Builder</span><h3>100 × 0,10 CP × 20 € = 200 €</h3><p class="small">100 aktive Kunden, 10 CP, 20 €/CP. Bei angenommenen 0,05 CP wären es 100 €. Beide CP-Werte sind Modellannahmen; weder ein garantierter Wert noch ein gemessener Durchschnitt.</p></div><p class="small muted">Der TB-Satz setzt die passende Qualifikation voraus. Auch ein kleineres Ziel braucht echte aktive Kunden, passende Voraussetzungen und einen Abrechnungszeitraum.</p>');
  }else if(index===2){
-  h=tr('<p>Im Modell arbeitet ein Team Builder mit einem Community Builder zusammen: TB 20 €/CP, CB 5 €/CP. Die rechnerische Differenz ist 15 €/CP.</p><div class="card hi"><h3>200 × 0,10 CP = 20 CP</h3><p>CB-Anteil separat: 20 × 5 € = <b>100 €</b>.<br>Rechnerische TB-Differenz: 20 × 15 € = <b>300 €</b>.</p></div><p class="small">Fünf vergleichbare CBs: 1.000 aktive Kunden, 100 CP, 1.500 € rechnerische TB-Differenz. Nicht zusätzlich Team Commission auf dieselben CP addieren.</p><p class="small muted">Ein Händler ist nicht automatisch ein CB. Der tatsächliche Händlerprozess und eine gesonderte Händler-Abschlussvergütung müssen aus aktuellen Unterlagen erklärt werden.</p>');
+  h=tr('<p>Im Modell arbeitet ein Team Builder mit einem Community Builder zusammen: TB 20 €/CP, CB 5 €/CP. Die rechnerische Differenz ist 15 €/CP.</p><div class="card hi"><h3>200 × 0,10 CP = 20 CP</h3><p>CB-Anteil separat: 20 × 5 € = <b>100 €</b>.<br>Rechnerische TB-Differenz: 20 × 15 € = <b>300 €</b>.</p></div><p class="small">Fünf vergleichbare CBs: 1.000 aktive Kunden, 100 CP, 1.500 € rechnerische TB-Differenz. Nicht zusätzlich Team Commission auf dieselben CP addieren.</p><p class="small muted">Ein Händler ist nicht automatisch ein CB. Der tatsächliche Händlerprozess und eine gesonderte Händler-Abschlussvergütung müssen aus aktuellen Unterlagen erklärt werden.</p>'); if(NO_MERCH) h=h.replace(/<p class="small muted">[^<]*<\/p>$/,'');
  }else if(index===3){
   h=tr('<p><b>Generation = Entfernung in deiner Partnerkette.</b> Jeder direkte Partner ist Generation 1, unabhängig vom Rang. Ein Country Manager kann deshalb 50 Team Builder direkt in Generation 1 haben.</p><div class="grid3">')+[1,2,3].map(function(g){return tr('<div class="card"><span class="label">Generation ')+g+'</span><h3>'+CC.generationRates[g]+' €/CP</h3><p class="small">'+[tr('Dein direkter Partner'),tr('Partner deines direkten Partners'),tr('Die nächste Partnerebene')][g-1]+'</p></div>';}).join('')+tr('</div><p class="small muted">Das sind Modellwerte der Team-Airtime. Einmalige Team-Abschlussprovisionen (20 / 6 / 4 € laut Vergütungsgrafik) sind ein anderer Baustein; Anlass und Einheit nicht ungeprüft übernehmen. Für Generation 4 ist hier kein Team-Airtime-Satz hinterlegt.</p>');
  }else if(index===4){
@@ -2238,7 +2246,7 @@ var _simpleSysIntro=sysIntro;
 sysIntro=function(){var t=TX();return tr('<section class="card hi stack" id="sysintro"><h2>Ein Beispiel aus dem Alltag</h2><p>')+t.example+'</p><p class="small muted">'+t.exNote+tr('</p></section><div class="card stack"><h2>Wer macht was?</h2>')+t.brands.map(function(b){return '<p class="small"><b>'+b[0]+':</b> '+b[1]+'</p>';}).join('')+'</div>'+more(tr('Ablauf und Verfügbarkeit im Detail'),_simpleSysIntro().replace('id="sysintro"',''));};
 renderWelcome=function(){
  var t=TX();if(!draft.pace)draft.pace='easy';
- return '<div class="welcome">'+testBar()+setBar()+brand()+tr('<header class="stack"><h1>Dein Start bei BestPrime</h1><p class="lead">Verstehen. Deinen Weg finden. Den ersten Schritt machen.</p></header><form class="card hi stack" id="startform2"><h2>Wie möchtest du starten?</h2><label class="field"><span>Dein Vorname</span><input id="w_name" autocomplete="given-name" value="')+esc(draft.name)+tr('"></label><label class="field"><span>Was ist dein Ziel?</span><select id="simple-path"><option value="">Bitte wählen</option>')+t.pathOrder.map(function(k){return '<option value="'+k+'"'+(draft.path===k?' selected':'')+'>'+t.paths[k][0]+'</option>';}).join('')+'</select></label><input type="hidden" id="w_leader" value="'+esc(draft.leader)+tr('"><p class="small muted">Du startest in deinem Tempo. Ziel und Tempo kannst du später anpassen.</p><button class="btn gold" type="submit">Los geht’s</button><p class="small muted">')+t.localNote+'</p></form>'+more(tr('Vorher kurz verstehen'),sysIntro())+more(tr('Bestehenden Stand laden'),'<button class="btn" data-act="backup">'+L.ui.loadBackup+'</button><div id="backupbox"></div>')+'</div>';
+ return '<div class="welcome">'+testBar()+setBar()+brand()+tr('<header class="stack"><h1>Dein Start bei BestPrime</h1><p class="lead">Verstehen. Deinen Weg finden. Den ersten Schritt machen.</p></header><form class="card hi stack" id="startform2"><h2>Wie möchtest du starten?</h2><label class="field"><span>Dein Vorname</span><input id="w_name" autocomplete="given-name" value="')+esc(draft.name)+tr('"></label><label class="field"><span>Was ist dein Ziel?</span><select id="simple-path"><option value="">Bitte wählen</option>')+t.pathOrder.map(function(k){return '<option value="'+k+'"'+(draft.path===k?' selected':'')+'>'+t.paths[k][0]+'</option>';}).join('')+'</select></label>'+(SYNC?'<label class="opt" style="align-items:flex-start"><input type="checkbox" id="w_consent" style="margin-top:4px"'+(draft.consent?' checked':'')+'> <span class="small">'+L.ui.consent+'</span></label>':'')+'<input type="hidden" id="w_leader" value="'+esc(draft.leader)+tr('"><p class="small muted">Du startest in deinem Tempo. Ziel und Tempo kannst du später anpassen.</p><button class="btn gold" type="submit">Los geht’s</button><p class="small muted">')+t.localNote+'</p></form>'+more(tr('Vorher kurz verstehen'),sysIntro())+more(tr('Bestehenden Stand laden'),'<button class="btn" data-act="backup">'+L.ui.loadBackup+'</button><div id="backupbox"></div>')+'</div>';
 };
 document.addEventListener('change',function(e){if(e.target.id==='simple-path'){keepDraft();draft.path=e.target.value;}});
 var _simpleStartFinal=R.start;

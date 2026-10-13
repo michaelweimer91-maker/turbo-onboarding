@@ -108,7 +108,7 @@ async def main():
         # Live unverändert
         pg=await b.new_page(locale="de-DE"); pg.on("pageerror",lambda e: ERR.append("index: "+str(e)))
         await pg.goto(BASE+"index.html"); await pg.wait_for_timeout(200)
-        ok("Live: kein V3-Einstieg (#simple-path fehlt)", await pg.locator("#simple-path").count()==0)
+        ok("Live: neue Nutzerführung ohne Händlerweg", await pg.locator("#simple-path").count()==1 and await pg.locator("#simple-path option[value=merch]").count()==0)
         ok("Live: kein Testbanner", "TESTVERSION" not in await pg.inner_text("body"))
         await b.close()
     ok("Keine JS-Fehler", not ERR, ERR[:3])

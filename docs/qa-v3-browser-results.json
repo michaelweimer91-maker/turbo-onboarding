@@ -313,11 +313,11 @@
       "status": "passed"
     },
     {
-      "name": "Live-Build behält bisherige Texte",
+      "name": "Live-Build zeigt neue Nutzerführung (seit 13.10.2026)",
       "status": "passed"
     },
     {
-      "name": "Live-Build enthält keine neuen Lernkarten",
+      "name": "Live-Build ohne Händlerweg",
       "status": "passed"
     },
     {

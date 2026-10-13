@@ -36,6 +36,11 @@ document.addEventListener("click",function(e){
 document.addEventListener("click",function(e){ var b=e.target.closest && e.target.closest('[data-act="theme"]'); if(!b) return; var t=themeGet()==="light"?"dark":"light"; try{ localStorage.setItem(THEME_KEY,t); }catch(err){} themeApply(t); Array.prototype.forEach.call(document.querySelectorAll('[data-act="theme"]'),function(x){ x.outerHTML=themeBtn(x.getAttribute("data-compact")==="1"); }); });
 var TX=function(){ return L.tx; };
 var PATHS=["side","cust","merch","net","team","unsure"];
+/* Live ohne Händlerweg (window.TURBO_NO_MERCH): Händler-Thema erst nach dem Event in München */
+var NO_MERCH=!!window.TURBO_NO_MERCH;
+if(NO_MERCH){ PATHS=PATHS.filter(function(x){ return x!=="merch"; });
+  var _noM=function(o){ if(o && o.tx && o.tx.pathOrder) o.tx.pathOrder=o.tx.pathOrder.filter(function(x){ return x!=="merch"; }); };
+  for(var _lg in I18N) _noM(I18N[_lg]); _noM(BASE_DE); }
 function pth(){ return S.path||"unsure"; }
 function isTeam(){ return pth()==="team"; }
 /* Ziele des gewählten Wegs: Teamweg behält 30/10/5 bzw. 10/5/3, alle anderen starten klein */
@@ -49,6 +54,7 @@ var DEF_GROUP={side:"cu",cust:"cu",merch:"me",net:"co",team:"pa",unsure:"cu"};
 /* ---------- Zustand ergänzen (sichere Standards, alte Sicherungen bleiben ladbar) ---------- */
 var _migrate=migrate;
 migrate=function(d){ var hadFlow=!!(d.prof && d.path); d=_migrate(d); if(!d.prof) d.prof={}; if(!Array.isArray(d.ev)) d.ev=[]; if(!d.qz) d.qz={}; if(d.path==null) d.path=""; if(d.planAt==null) d.planAt=0; if(d.sie==null) d.sie=false; if(!hadFlow){d.pace="";d.planAt=0;d.plan.ok=false;} return d; };
+if(NO_MERCH){ var _migNM=migrate; migrate=function(d){ d=_migNM(d); if(d.path==="merch") d.path="unsure"; return d; }; }
 var _blank=blank;
 blank=function(lang){ var b=_blank(lang); b.prof={}; b.ev=[]; b.qz={}; b.path=""; b.planAt=0; b.sie=false; b.pace=""; return b; };
 S=blank(); /* neu aufbauen, damit Testfelder existieren */
@@ -144,7 +150,7 @@ function sysIntro(){
 /* ---------- Startseite: Ziel vor Tempo, kein Countdown vor dem Start ---------- */
 var draft={name:"",leader:"",path:"",pace:""};
 try{ var _dr=JSON.parse(sessionStorage.getItem("bp_turbo_draft")||"null"); if(_dr){ draft=_dr; sessionStorage.removeItem("bp_turbo_draft"); } }catch(e){}
-function keepDraft(){ var n=document.getElementById("w_name"), l=document.getElementById("w_leader"); if(n) draft.name=n.value; if(l) draft.leader=l.value; }
+function keepDraft(){ var n=document.getElementById("w_name"), l=document.getElementById("w_leader"), c=document.getElementById("w_consent"); if(n) draft.name=n.value; if(l) draft.leader=l.value; if(c) draft.consent=c.checked; }
 renderWelcome=function(){
   var t=TX();
   return '<div class="welcome">'+testBar()+'<div class="row" style="justify-content:space-between">'+brand()+'</div>'+
@@ -322,6 +328,7 @@ function scriptBlock2(g,title,excludeNo){
    '<div class="field"><span>'+t.form+'</span><div class="row" style="gap:4px">'+chip("tSie","0",t.du,!S.sie)+chip("tSie","1",t.sie,!!S.sie)+'</div></div></div></div>';
   if(!who) h+='<p class="small" style="color:var(--warn)">'+t.whoNone+'</p>';
   var list=scripts(g);
+  if(NO_MERCH) list=list.filter(function(x){ return x.g!=="me"; });
   if(g==="an"){
     var gs=[]; list.forEach(function(s){ if(s.g && gs.indexOf(s.g)<0) gs.push(s.g); });
     h+='<div class="chips">'+[""].concat(gs).map(function(k){ return '<button class="chip'+(scf===k?" on":"")+'" data-act="scf" data-v="'+k+'">'+(k?sc.groups[k]:sc.all)+'</button>'; }).join("")+'</div>';
@@ -496,7 +503,8 @@ document.addEventListener("submit",function(e){
   var f=e.target, t=TX();
   if(f.id==="startform2"){
     keepDraft(); var n=draft.name.trim(); if(!n){ toast(t.needName); return; } if(!draft.path){ toast(t.needGoal); return; } if(!draft.pace){ toast(t.needPace); return; }
-    S.name=n; S.leader=draft.leader.trim(); S.path=draft.path; S.pace=draft.pace; S.consent=false; S.startedAt=Date.now(); S.view="start"; scf=DEF_GROUP[S.path]; save(); render(); window.scrollTo(0,0); return; }
+    var cb=document.getElementById("w_consent"); if(SYNC && cb && !cb.checked){ toast(L.ui.consentNeed); return; }
+    S.name=n; S.leader=draft.leader.trim(); S.path=draft.path; S.pace=draft.pace; S.consent=!!(SYNC && cb && cb.checked); S.startedAt=Date.now(); S.view="start"; scf=DEF_GROUP[S.path]; save(); render(); window.scrollTo(0,0); sync(false); return; }
   if(f.id==="talkform2"){
     var who=document.getElementById("t2_who").value.trim(), d=document.getElementById("t2_date").value, imp=document.getElementById("t2_imp").value.trim(), ok=document.getElementById("t2_ok").checked;
     if(!who||!d||imp.length<10||!ok){ toast(t.pNeed); return; }

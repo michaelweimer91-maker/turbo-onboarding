@@ -103,7 +103,7 @@ check('7-Tage-Kundenweg ohne Leader-Haken wird passend bewertet',()=>{const p=q.
 check('Kein bestätigter Arbeitsplan löst keinen falschen 48h-Verzug aus',()=>{const r=gas.turboAssess_({schemaVersion:2,pace:'easy',planAt:0,requiredIds:['start'],doneIds:[]},Date.now());assert.equal(r.ampel,'GELB');});
 check('Controlling-Zeile passt zu Spaltenzahl',()=>assert.equal(gas.turboRow_(q.payload(),Date.now()).length,gas.TURBO_HEAD.length));
 let live=boot('index.html');
-check('Live-Start bleibt bestehender Turbo',()=>{assert(live.w.document.body.textContent.includes('Turbo-Start'));assert(!live.w.document.body.textContent.includes('So verdienst du Geld'));assert.deepEqual(live.errors,[]);});
+check('Live-Start zeigt neue Nutzerführung ohne Händlerweg',()=>{const sel=live.w.document.getElementById('simple-path');assert(sel);assert(![...sel.options].some(o=>o.value==='merch'));assert.deepEqual(live.errors,[]);});
 for(const x of [a,oldApp,preview,live])x.dom.window.close();
 const report={date:'2026-10-12',method:'Node + JSDOM: DOM-/Zustands- und Rechenlogik; kein Layout-, Geräte- oder echter Nutzertest',passed:results.filter(r=>r.status==='passed').length,failed:results.filter(r=>r.status==='failed').length,results};
 fs.mkdirSync(path.join(ROOT,'docs'),{recursive:true});fs.writeFileSync(path.join(ROOT,'docs/qa-v3-dom-results.json'),JSON.stringify(report,null,2));

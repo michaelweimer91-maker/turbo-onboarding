@@ -97,11 +97,11 @@ async function main(){
  await p.emulateMedia({media:'screen'});await p.screenshot({path:path.join(OUT,'finish-desktop.png'),fullPage:true});
  await check('Kein JavaScript-Fehler im neuen Ablauf',async()=>assert.deepEqual(errors,[]));
  const legacy=await ctx.newPage(),legacyErrors=[];await legacy.setViewportSize({width:1440,height:1000});legacy.on('pageerror',e=>legacyErrors.push(e.message));await legacy.goto(base+'/index.html');
- await check('Live-Build behält bisherige Texte',async()=>assert((await legacy.locator('body').innerText()).toLowerCase().includes('turbo-start')));
- await check('Live-Build enthält keine neuen Lernkarten',async()=>assert(!fs.readFileSync(path.join(ROOT,'index.html'),'utf8').includes('var CC=')));
- await legacy.locator('#w_name').fill('Test GPT Legacy');await legacy.locator('#startform button[type="submit"]').click();
+ await check('Live-Build zeigt neue Nutzerführung (seit 13.10.2026)',async()=>assert(await legacy.locator('#simple-path').count()===1));
+ await check('Live-Build ohne Händlerweg',async()=>assert(!(await legacy.locator('#simple-path option').evaluateAll(o=>o.map(x=>x.value))).includes('merch')));
+ await legacy.locator('#w_name').fill('Test Live');await legacy.locator('#simple-path').selectOption('side');if(await legacy.locator('#w_consent').count())await legacy.locator('#w_consent').check();await legacy.locator('#startform2 button[type="submit"]').click();await legacy.waitForTimeout(300);
  for(const id of ['start','system','plan','list','top','talkto','pipe','talk','dup','finish']){
-   await legacy.locator('.nav[data-go="'+id+'"]').click();
+   await legacy.evaluate(v=>{location.hash=v;},id);await legacy.reload();await legacy.waitForTimeout(150);
    await check('Live-Regression: '+id+' lädt ohne Fehler',async()=>assert.deepEqual(legacyErrors,[]));
  }
  await check('Live-Build bootet ohne JavaScriptfehler',async()=>assert.deepEqual(legacyErrors,[]));

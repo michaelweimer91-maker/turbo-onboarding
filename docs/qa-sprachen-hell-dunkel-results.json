@@ -454,12 +454,12 @@
   },
   {
    "r": "PASS",
-   "case": "Live: bleibt Deutsch, ohne Sprachwahl",
+   "case": "Live: Sprachwahl vorhanden, folgt Gerätesprache",
    "detail": ""
   },
   {
    "r": "PASS",
-   "case": "Live: kein Hell/Dunkel-Schalter",
+   "case": "Live: Hell/Dunkel vorhanden (System hell → hell)",
    "detail": ""
   }
  ]
